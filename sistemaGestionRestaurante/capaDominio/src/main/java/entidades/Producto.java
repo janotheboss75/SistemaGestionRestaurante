@@ -4,10 +4,12 @@ import enums.TipoProducto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 /**
@@ -46,7 +48,7 @@ public class Producto implements Serializable {
      * Relacion uno a muchos, bidireccional, la entidad IngredienteProducto 
      * es la dueña de la relacion.
      */
-    @OneToMany(mappedBy = "producto")
+    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<IngredienteProducto> ingredientes = new ArrayList<>();
     
     /**
@@ -147,6 +149,6 @@ public class Producto implements Serializable {
      */
     @Override
     public String toString() {
-        return "Producto{" + "nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientes=" + ingredientes + '}';
+        return "Producto{" + "nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + '}';
     }
 }

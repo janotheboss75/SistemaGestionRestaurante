@@ -3,9 +3,11 @@ package entidades;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -64,14 +66,14 @@ public abstract class Cliente implements Serializable {
      */
     @Column(name = "fechaRegistro", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    private LocalDate fechaRegistro;
+    private Date fechaRegistro;
     
     /**
      * Lista de comandas asociadas al cliente.
      * Relacion uno a muchos, bidireccional, la entidad Comanda es la dueña
      * de la relacion.
      */
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Comanda> comandas = new ArrayList<>();
 
     /**
@@ -89,7 +91,7 @@ public abstract class Cliente implements Serializable {
      * @param correoElectronico Correo electrónico del cliente (puede ser nulo).
      * @param fechaRegistro Fecha de registro del cliente.
      */
-    public Cliente(String telefono, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronico, LocalDate fechaRegistro) {
+    public Cliente(String telefono, String nombre, String apellidoPaterno, String apellidoMaterno, String correoElectronico, Date fechaRegistro) {
         this.telefono = telefono;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -195,7 +197,7 @@ public abstract class Cliente implements Serializable {
      * 
      * @return Fecha de registro.
      */
-    public LocalDate getFechaRegistro() {
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
@@ -204,7 +206,7 @@ public abstract class Cliente implements Serializable {
      * 
      * @param fechaRegistro Fecha de registro.
      */
-    public void setFechaRegistro(LocalDate fechaRegistro) {
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
@@ -233,6 +235,6 @@ public abstract class Cliente implements Serializable {
      */
     @Override
     public String toString() {
-        return "Cliente{" + "telefono=" + telefono + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas + '}';
+        return "Cliente{" + "telefono=" + telefono + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro + '}';
     }
 }

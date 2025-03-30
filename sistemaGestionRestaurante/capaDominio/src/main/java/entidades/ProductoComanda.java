@@ -166,6 +166,6 @@ public class ProductoComanda implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductoComanda{" + "id=" + id + ", comanda=" + comanda + ", producto=" + producto + ", precioActual=" + precioActual + ", comentario=" + comentario + '}';
+        return "ProductoComanda{" + "id=" + id + ", comanda=" + comanda.getFolio() + ", producto=" + producto.getNombre() + ", precioActual=" + precioActual + ", comentario=" + comentario + '}';
     }
 }

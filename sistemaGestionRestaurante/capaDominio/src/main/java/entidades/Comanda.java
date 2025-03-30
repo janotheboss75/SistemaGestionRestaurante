@@ -4,11 +4,14 @@ import enums.EstadoComanda;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,7 +42,7 @@ public class Comanda implements Serializable {
      */
     @Column(name = "fechaComanda", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
-    private LocalDate fechaComanda;
+    private Date fechaComanda;
     
     /** 
      * Estado actual de la comanda 
@@ -60,8 +63,7 @@ public class Comanda implements Serializable {
      * de la relacion
      */
     @ManyToOne()
-    @JoinColumn(name = "telefono")
-    @Column(name = "telefono", nullable = true)
+    @JoinColumn(name = "telefono", nullable = true)
     private Cliente cliente;
     
     /** 
@@ -69,7 +71,7 @@ public class Comanda implements Serializable {
      * Relacion uno a muchos, bidireccional, la entidad ProductoComanda 
      * es la dueña de la relacion.
      */
-    @OneToMany(mappedBy = "comanda")
+    @OneToMany(mappedBy = "comanda", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<ProductoComanda> productos = new ArrayList<>();
 
     /**
@@ -87,7 +89,7 @@ public class Comanda implements Serializable {
      * @param total Monto total de la comanda.
      * @param cliente Cliente que realizó la comanda.
      */
-    public Comanda(String folio, LocalDate fechaComanda, EstadoComanda estado, double total, Cliente cliente) {
+    public Comanda(String folio, Date fechaComanda, EstadoComanda estado, double total, Cliente cliente) {
         this.folio = folio;
         this.fechaComanda = fechaComanda;
         this.estado = estado;
@@ -103,11 +105,11 @@ public class Comanda implements Serializable {
         this.folio = folio;
     }
 
-    public LocalDate getFechaComanda() {
+    public Date getFechaComanda() {
         return fechaComanda;
     }
 
-    public void setFechaComanda(LocalDate fechaComanda) {
+    public void setFechaComanda(Date fechaComanda) {
         this.fechaComanda = fechaComanda;
     }
 
@@ -145,6 +147,6 @@ public class Comanda implements Serializable {
 
     @Override
     public String toString() {
-        return "Comanda{" + "folio=" + folio + ", fechaComanda=" + fechaComanda + ", estado=" + estado + ", total=" + total + ", cliente=" + cliente + ", productos=" + productos + '}';
+        return "Comanda{" + "folio=" + folio + ", fechaComanda=" + fechaComanda + ", estado=" + estado + ", total=" + total + '}';
     }
 }
