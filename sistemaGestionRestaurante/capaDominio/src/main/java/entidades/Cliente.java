@@ -11,6 +11,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  * Clase abstracta que representa un cliente.
@@ -62,6 +63,7 @@ public abstract class Cliente implements Serializable {
      * Fecha de registro del cliente en la base de datos.
      */
     @Column(name = "fechaRegistro", nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private LocalDate fechaRegistro;
     
     /**

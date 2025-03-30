@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  * Entidad que representa una comanda en el sistema.
@@ -37,6 +38,7 @@ public class Comanda implements Serializable {
      * Fecha en la que se creó la comanda 
      */
     @Column(name = "fechaComanda", nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private LocalDate fechaComanda;
     
     /** 
