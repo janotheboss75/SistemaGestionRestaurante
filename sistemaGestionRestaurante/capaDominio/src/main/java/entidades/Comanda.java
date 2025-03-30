@@ -72,7 +72,7 @@ public class Comanda implements Serializable {
      */
     @OneToMany(mappedBy = "comanda", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     private List<ProductoComanda> productos = new ArrayList<>();
-
+    
     /**
      * Constructor por defecto.
      */

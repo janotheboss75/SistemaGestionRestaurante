@@ -1,4 +1,4 @@
-package com.carniceria.capadominio;
+ package com.carniceria.capadominio;
 
 import entidades.Cliente;
 import entidades.ClienteFrecuente;
