@@ -2,7 +2,6 @@ package entidades;
 
 import enums.EstadoComanda;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

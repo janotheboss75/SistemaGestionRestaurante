@@ -48,7 +48,7 @@ public class Producto implements Serializable {
      * Relacion uno a muchos, bidireccional, la entidad IngredienteProducto 
      * es la dueña de la relacion.
      */
-    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER /*, cascade = {CascadeType.REMOVE}*/)
     private List<IngredienteProducto> ingredientes = new ArrayList<>();
     
     /**

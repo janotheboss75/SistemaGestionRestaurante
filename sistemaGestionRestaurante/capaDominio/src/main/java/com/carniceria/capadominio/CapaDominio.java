@@ -154,6 +154,26 @@ public class CapaDominio {
         Comanda c1 = entityManager.find(Comanda.class, "3ewudjsjd");
         System.out.println(c1.getProductos());*/
         
+        //PRUEBA PARA VER SI SIRVE CASCADETYPE.REMOVE
+        //ELIMINANDO COMANDA
+        /*
+        Comanda c1 = entityManager.find(Comanda.class, "3ewudjsjd");
+        System.out.println(c1.getProductos());
         
+        entityManager.getTransaction().begin();
+        entityManager.remove(c1);
+        entityManager.getTransaction().commit();
+        */
+        
+        /* DUDA EN ESTE POR QUE SI SE ELIMINA UN PRODUCTO TAMBIEN TIENE REGISTRO EN LAS COMANDAS
+           ASI QUE LE QUITARE LO DE CASCADETYPE.REMOVE
+        //ELIMINANDO PRODUCTO
+        Producto p1 = entityManager.find(Producto.class, "Hamburguesa");
+        System.out.println(p1.getIngredientes());
+        
+        entityManager.getTransaction().begin();
+        entityManager.remove(p1);
+        entityManager.getTransaction().commit();
+        */
     }
 }
