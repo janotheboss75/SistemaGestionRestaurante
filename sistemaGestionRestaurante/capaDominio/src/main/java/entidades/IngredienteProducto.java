@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Representa la relación entre un ingrediente y un producto en el sistema.
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
  * @author janot
  */
 @Entity
+@Table(name = "IngredientesProductos")
 public class IngredienteProducto implements Serializable {
 
     private static final long serialVersionUID = 1L;

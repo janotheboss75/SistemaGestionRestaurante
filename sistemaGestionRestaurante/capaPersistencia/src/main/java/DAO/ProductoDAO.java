@@ -11,6 +11,27 @@ import java.util.List;
  * @author janot
  */
 public class ProductoDAO implements IProductoDAO{
+    
+    private static ProductoDAO instanceProductoDAO;
+    
+    /**
+     * Constructor privado para evitar instancias múltiples.
+     */
+    private ProductoDAO() {
+    }
+    
+    /**
+     * Método para obtener la única instancia de IngredienteDAO.
+     *
+     * @return Instancia de IngredienteDAO.
+     */
+    public static ProductoDAO getInstanceDAO() {
+        if (instanceProductoDAO == null) {
+            instanceProductoDAO = new ProductoDAO();
+        }
+        return instanceProductoDAO;
+    }
+    
     /**
      * Agrega un nuevo producto a la bd.
      * 

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Representa la relación entre un producto y una comanda en el sistema.
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
  * @author janot
  */
 @Entity
+@Table(name = "ProductosComandas")
 public class ProductoComanda implements Serializable {
 
     private static final long serialVersionUID = 1L;

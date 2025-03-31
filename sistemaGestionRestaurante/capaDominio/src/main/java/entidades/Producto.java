@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 /**
  * Entidad Producto que representa un producto en el sistema.
  * Contiene información sobre su nombre, precio, tipo y sus ingredientes.
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
  * @author janot
  */
 @Entity
+@Table(name = "Productos")
 public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;

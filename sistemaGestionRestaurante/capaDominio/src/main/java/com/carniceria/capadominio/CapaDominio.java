@@ -26,7 +26,6 @@ public class CapaDominio {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         
-        /*
         //INGREDIENTES
         Ingrediente ingrediente1 = new Ingrediente("Pan", UnidadDeMedida.PIEZAS, 10);
         Ingrediente ingrediente2 = new Ingrediente("Carne", UnidadDeMedida.GRAMOS, 1000);
@@ -40,6 +39,7 @@ public class CapaDominio {
         Ingrediente ingrediente10 = new Ingrediente("Levadura", UnidadDeMedida.GRAMOS, 1000);
         Ingrediente ingrediente11 = new Ingrediente("Harina", UnidadDeMedida.GRAMOS, 1000);
         Ingrediente ingrediente12 = new Ingrediente("Huevo", UnidadDeMedida.PIEZAS, 1000);
+        
         //PRODUCTOS
         Producto producto1 = new Producto("Hamburguesa", 150, TipoProducto.PLATILLO);
         Producto producto2 = new Producto("Limonada", 20, TipoProducto.BEBIDA);
@@ -80,6 +80,8 @@ public class CapaDominio {
         ProductoComanda prodCom5 = new ProductoComanda(comanda3, producto1, 150, null);
         ProductoComanda prodCom6 = new ProductoComanda(comanda3, producto3, 70, null);
         
+        
+        /*
         //Agregar Clientes a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(cliente1);
