@@ -1,10 +1,13 @@
 package DAO;
 
 import conexion.Conexion;
+import entidades.Ingrediente;
 import entidades.IngredienteProducto;
 import entidades.Producto;
+import entidades.ProductoComanda;
 import excepciones.PersistenciaException;
 import interfaces.IProductoDAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
@@ -14,7 +17,7 @@ import javax.persistence.PersistenceException;
  * @author janot
  */
 public class ProductoDAO implements IProductoDAO{
-    
+
     private static ProductoDAO instanceProductoDAO;
     
     /**
@@ -40,59 +43,98 @@ public class ProductoDAO implements IProductoDAO{
      * 
      * @param producto Producto que se desea agregar a la bd.
      * @return Producto con su id.
-     * @throws PersistenciaException Si no se logra la insercion o si el producto
-     * ya existe en la base de datos.
+     * @throws PersistenciaException Si no se logra la insercion, si no se pudo obtener la conexion, y si
+     * no se pudo generar
      */
     @Override
     public Producto agregarProductoAlMenu(Producto producto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = Conexion.crearConexion();
+
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+
+        try {
+            em.getTransaction().begin();
+            em.persist(producto);
+            em.getTransaction().commit();
+
+            if (producto.getId() == null) {
+                throw new PersistenciaException("Error: No se generó un ID para el producto.");
+            }
+            return producto;
+
+        } catch (PersistenceException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("No se pudo registrar el producto: " + e.getMessage(), e);
+
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
+
 
     /**
      * Modifica un producto de la bd
      * @param producto Producto con los datos nuevos
      * @return Producto con los datos actualizados.
-     * @throws PersistenciaException Si el producto que se desea modificar no existe.
+     * @throws PersistenciaException Si el producto que se desea modificar no existe, o si no se
+     * pudo lograr la conexion
      */
     @Override
     public Producto modificarProductoDelMenu(Producto producto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * Asigna un ingrediente al producto
-     * 
-     * @param nombreProducto Identificador del producto al que se le agregara un ingrediente
-     * @param idIngrediente Id del ingrediente que se desea agregar.
-     * @return true si se logra agregar el ingrediente y false en caso contrario.
-     * @throws PersistenciaException Si el producto o el ingrediente no existen.
-     */
-    @Override
-    public boolean asignarIngredienteAlProducto(String nombreProducto, Long idIngrediente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    /**
-     * Quita un ingrediente al producto
-     * @param nombreProducto Identificador del producto al que se le quitara un ingrediente
-     * @param idIngrediente Id del ingrediente que se desea quitar.
-     * @return true si se logra quitar el ingrediente y false en caso contrario.
-     * @throws PersistenciaException Si el producto o el ingrediente no existen.
-     */
-    @Override
-    public boolean quitarIngredienteAlProducto(String nombreProducto, Long idIngrediente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        try {
+            em.getTransaction().begin();
+            Producto actualizado = em.merge(producto);
+            em.getTransaction().commit();
+            
+            return actualizado;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            
+            throw new PersistenciaException("No se pudo actualizar el producto: " + e.getMessage());
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     /**
      * Consulta un producto por su nombre
-     * @param nombreProducto Identificador del producto que se desea consultar
-     * @return Producto sus datos
+     * @param idProducto Identificador del producto que se desea consultar
+     * @return Producto con sus datos
      * @throws PersistenciaException Si el producto no existe.
      */
     @Override
-    public Producto consultarProductoPorNombre(String nombreProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Producto consultarProductoPorId(Long idProducto) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        Producto p = em.find(Producto.class, idProducto);
+        
+        if (p == null) {
+            throw new PersistenciaException("Error: el id del producto no existe");
+        }
+        
+        return p;
     }
     /**
      * Consulta todos los productos que hay registrados en la bd.
@@ -102,18 +144,49 @@ public class ProductoDAO implements IProductoDAO{
      */
     @Override
     public List<Producto> consultarTodosLosProductos() throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Producto> productos = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        try {
+            productos = em.createQuery("SELECT p FROM Producto p", Producto.class).getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar a todos los productos", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        
+        return productos;
     }
 
     /**
-     * Consulta los Ingredientes que tiene el producto
-     * @param nombreProducto Identificador del producto al que se desea ver los ingredientes.
-     * @return Lista con los ingredientes.
+     * Consulta los Ingredientes que tiene el producto.
+     * 
+     * @param idProducto Identificador del producto al que se desea ver los ingredientes.
+     * @return Lista con los ingredientes del producto.
      * @throws PersistenciaException Si no se logra hacer la consulta.
      */
     @Override
-    public List<IngredienteProducto> consultarIngredientesDelProducto(String nombreProducto) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<IngredienteProducto> consultarIngredientesDelProducto(Long idProducto) throws PersistenciaException {
+        List<IngredienteProducto> IngredientesProducto = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        try {
+            IngredientesProducto = em.createQuery("SELECT ingProd FROM IngredienteProducto ingProd", IngredienteProducto.class).getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar a todos los ingredientes del producto", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        
+        return IngredientesProducto;
     }
     
 }
