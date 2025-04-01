@@ -24,6 +24,7 @@ public class ProductoComanda implements Serializable {
     
     /** Identificador único del producto dentro de una comanda. */
     @Id
+    @Column(name = "idProductoComanda")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
@@ -33,7 +34,7 @@ public class ProductoComanda implements Serializable {
      * relacion
      */
     @ManyToOne()
-    @JoinColumn(name = "folioComanda", nullable = false)
+    @JoinColumn(name = "IdComanda", nullable = false)
     private Comanda comanda;
     
     /** 
@@ -41,7 +42,7 @@ public class ProductoComanda implements Serializable {
      * Relacion muchos a uno.
      */
     @ManyToOne()
-    @JoinColumn(name = "nombreProducto", nullable = false)
+    @JoinColumn(name = "idProducto", nullable = false)
     private Producto producto;
     
     /** 
@@ -55,6 +56,18 @@ public class ProductoComanda implements Serializable {
      */
     @Column(name = "comentario", length = 200)
     private String comentario;
+    
+    /**
+     * Cantidad del producto que se ordenara
+     */
+    @Column(name = "cantidad", nullable = false)
+    private double cantidad;
+    
+    /**
+     * Importe del producto
+     */
+    @Column(name = "importe", nullable = false)
+    private double importe;
 
     /**
      * Constructor por defecto.
@@ -69,14 +82,19 @@ public class ProductoComanda implements Serializable {
      * @param producto Producto que se ordenó en la comanda.
      * @param precioActual Precio actual del producto en la comanda.
      * @param comentario Comentario opcional sobre el producto.
+     * @param cantidad Cantidad del producto
+     * @param importe importe total del producto
      */
-    public ProductoComanda(Comanda comanda, Producto producto, double precioActual, String comentario) {
+    public ProductoComanda(Comanda comanda, Producto producto, double precioActual, String comentario, double cantidad, double importe) {    
         this.comanda = comanda;
         this.producto = producto;
         this.precioActual = precioActual;
         this.comentario = comentario;
+        this.cantidad = cantidad;
+        this.importe = importe;
     }
-/**
+
+    /**
      * Obtiene el identificador único del producto en la comanda.
      * 
      * @return ID del producto en la comanda.
@@ -156,7 +174,7 @@ public class ProductoComanda implements Serializable {
     public String getComentario() {
         return comentario;
     }
-
+   
     /**
      * Establece un comentario sobre el producto en la comanda.
      * 
@@ -165,9 +183,46 @@ public class ProductoComanda implements Serializable {
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
+    
+    /**
+     * Obtiene la cantidad de producto en la comanda
+     * 
+     * @return Cantidad sobre el producto en la comanda
+     */
+    public double getCantidad() {
+        return cantidad;
+    }
+
+    /**
+     * Establece la cantidad del producto en la comanda
+     * 
+     * @param cantidad Nueva cantidad actual del producto
+     */
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    /**
+     * Obtiene el importe de producto en la comanda
+     * 
+     * @return Importe sobre el producto en la comanda
+     */
+    public double getImporte() {
+        return importe;
+    }
+
+    /**
+     * Establece el importe  del producto en la comanda
+     * 
+     * @param importe Nuevo importe del producto
+     */
+    public void setImporte(double importe) {
+        this.importe = importe;
+    }
 
     @Override
     public String toString() {
-        return "ProductoComanda{" + "id=" + id + ", comanda=" + comanda.getFolio() + ", producto=" + producto.getNombre() + ", precioActual=" + precioActual + ", comentario=" + comentario + '}';
+        return "ProductoComanda{" + "id=" + id + ", comanda=" + comanda.getFolio() + ", producto=" + producto.getNombre() + ", precioActual=" + precioActual + ", comentario=" + comentario + ", cantidad=" + cantidad + ", importe=" + importe + '}';
     }
+    
 }

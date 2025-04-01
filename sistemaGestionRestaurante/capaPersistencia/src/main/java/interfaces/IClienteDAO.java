@@ -10,12 +10,14 @@ import java.util.List;
  * @author janot
  */
 public interface IClienteDAO {
+    
     /**
-     * Registra un cliente.
+     * Agrega un nuevo producto a la bd.
      * 
-     * @param cliente Cliente que se desea registrar a la BD.
-     * @return El cliente con el id asignado.
-     * @throws PersistenciaException Si no se logra hacer la insercion.
+     * @param producto Producto que se desea agregar a la bd.
+     * @return Producto con su id.
+     * @throws PersistenciaException Si no se logra la insercion o si el producto
+     * ya existe en la base de datos.
      */
     public Cliente registrarCliente(Cliente cliente) throws PersistenciaException;
     

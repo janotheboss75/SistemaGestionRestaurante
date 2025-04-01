@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,10 +27,15 @@ public class Producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
+    /** Identificador único del producto. */
+    @Id
+    @Column(name = "idProducto")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
     /**
      * Identificador único del producto
      */
-    @Id
     @Column(name = "nombre", nullable = false, length = 200)
     private String nombre;
     
@@ -50,7 +57,7 @@ public class Producto implements Serializable {
      * Relacion uno a muchos, bidireccional, la entidad IngredienteProducto 
      * es la dueña de la relacion.
      */
-    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER /*, cascade = {CascadeType.REMOVE}*/)
+    @OneToMany(mappedBy = "producto", fetch = FetchType.EAGER)
     private List<IngredienteProducto> ingredientes = new ArrayList<>();
     
     /**
@@ -145,12 +152,30 @@ public class Producto implements Serializable {
     }
 
     /**
+     * Devuelve el identificador único de la entidad.
+     * 
+     * @return El identificador de la entidad.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Establece el identificador único de la entidad.
+     * 
+     * @param id El identificador a asignar.
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /**
      * Representación en cadena de la entidad Producto.
      * 
      * @return Cadena con los atributos del producto
      */
     @Override
     public String toString() {
-        return "Producto{" + "nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientes=" + ingredientes + '}';
     }
 }

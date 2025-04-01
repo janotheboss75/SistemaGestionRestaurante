@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -29,10 +31,15 @@ import javax.persistence.Temporal;
 public abstract class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    /**
-     * Número de teléfono del cliente. Se utiliza como clave primaria.
-     */
+    /** Identificador único del Cliente */
     @Id
+    @Column(name = "idCliente")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    /**
+     * Número de teléfono del cliente.
+     */
     @Column(name = "telefono", nullable = false, length = 250)
     private String telefono;
     
@@ -72,7 +79,7 @@ public abstract class Cliente implements Serializable {
      * Relacion uno a muchos, bidireccional, la entidad Comanda es la dueña
      * de la relacion.
      */
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
     private List<Comanda> comandas = new ArrayList<>();
 
     /**
@@ -228,12 +235,31 @@ public abstract class Cliente implements Serializable {
     }
 
     /**
+     * Obtiene el importe de producto en la comanda
+     * 
+     * @return Importe sobre el producto en la comanda
+     */
+    public Long getId() {
+        return id;
+    }
+    
+    /**
+     * Establece el identificador único de la entidad.
+     * 
+     * @param id El identificador a asignar.
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    /**
      * Representación en cadena del objeto Cliente.
      * 
      * @return Cadena con los datos del cliente.
      */
     @Override
     public String toString() {
-        return "Cliente{" + "telefono=" + telefono + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro + '}';
+        return "Cliente{" + "id=" + id + ", telefono=" + telefono + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas.size() + '}';
     }
+
 }

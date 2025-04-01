@@ -24,12 +24,13 @@ public class IngredienteProducto implements Serializable {
     
     /** Identificador único de la relación entre ingrediente y producto. */
     @Id
+    @Column(name = "idIngredienteProducto")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /** Producto al que pertenece este ingrediente. */
     @ManyToOne()
-    @JoinColumn(name = "nombreProducto", nullable = false)
+    @JoinColumn(name = "idProducto", nullable = false)
     private Producto producto;
     
     /** Ingrediente utilizado en la composición del producto. */
@@ -131,7 +132,7 @@ public class IngredienteProducto implements Serializable {
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
-
+    
     @Override
     public String toString() {
         return "IngredienteProducto{" + "id=" + id + ", producto=" + producto.getNombre() + ", ingrediente=" + ingrediente.getNombre() + ", cantidad=" + cantidad + '}';

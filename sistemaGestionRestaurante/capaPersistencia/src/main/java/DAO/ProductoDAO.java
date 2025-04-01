@@ -1,10 +1,13 @@
 package DAO;
 
+import conexion.Conexion;
 import entidades.IngredienteProducto;
 import entidades.Producto;
 import excepciones.PersistenciaException;
 import interfaces.IProductoDAO;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -37,7 +40,8 @@ public class ProductoDAO implements IProductoDAO{
      * 
      * @param producto Producto que se desea agregar a la bd.
      * @return Producto con su id.
-     * @throws PersistenciaException Si no se logra la insercion,
+     * @throws PersistenciaException Si no se logra la insercion o si el producto
+     * ya existe en la base de datos.
      */
     @Override
     public Producto agregarProductoAlMenu(Producto producto) throws PersistenciaException {
@@ -47,12 +51,11 @@ public class ProductoDAO implements IProductoDAO{
     /**
      * Modifica un producto de la bd
      * @param producto Producto con los datos nuevos
-     * @param nombreProducto Identificador del producto que se desea modificar
      * @return Producto con los datos actualizados.
      * @throws PersistenciaException Si el producto que se desea modificar no existe.
      */
     @Override
-    public Producto modificarProductoDelMenu(Producto producto, String nombreProducto) throws PersistenciaException {
+    public Producto modificarProductoDelMenu(Producto producto) throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

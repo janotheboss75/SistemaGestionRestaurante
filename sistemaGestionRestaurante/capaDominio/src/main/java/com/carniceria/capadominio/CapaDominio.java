@@ -5,9 +5,11 @@ import entidades.ClienteFrecuente;
 import entidades.Comanda;
 import entidades.Ingrediente;
 import entidades.IngredienteProducto;
+import entidades.Mesa;
 import entidades.Producto;
 import entidades.ProductoComanda;
 import enums.EstadoComanda;
+import enums.EstadoMesa;
 import enums.TipoProducto;
 import enums.UnidadDeMedida;
 import java.time.Instant;
@@ -25,6 +27,12 @@ public class CapaDominio {
     public static void main(String[] args) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("conexionPU");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
+        
+        //MESAS
+        Mesa mesa1 = new Mesa(1, EstadoMesa.DISPONIBLE);
+        Mesa mesa2 = new Mesa(2, EstadoMesa.DISPONIBLE);
+        Mesa mesa3= new Mesa(3, EstadoMesa.DISPONIBLE);
+        Mesa mesa4 = new Mesa(4, EstadoMesa.DISPONIBLE);
         
         //INGREDIENTES
         Ingrediente ingrediente1 = new Ingrediente("Pan", UnidadDeMedida.PIEZAS, 10);
@@ -51,35 +59,44 @@ public class CapaDominio {
         Cliente cliente3 = new ClienteFrecuente("6441388452","Pedro","Narez","Osuna","pedritoAntritaxgmail.com",new Date());
         
         //COMANDAS
-        Comanda comanda1 = new Comanda("3ewudjsjd", new Date(), EstadoComanda.ABIERTA, 0, cliente1);
-        Comanda comanda2 = new Comanda("333223", new Date(), EstadoComanda.ABIERTA, 0, cliente2);
-        Comanda comanda3 = new Comanda("344e", new Date(), EstadoComanda.ABIERTA, 0, cliente3);
-        Comanda comanda4 = new Comanda("334345", new Date(), EstadoComanda.ABIERTA, 0, cliente3);
+        Comanda comanda1 = new Comanda("3ewudjsjd", new Date(), EstadoComanda.ABIERTA, 0, entityManager.find(ClienteFrecuente.class, 101L), entityManager.find(Mesa.class, 1L));
+        Comanda comanda2 = new Comanda("333223", new Date(), EstadoComanda.ABIERTA, 0, entityManager.find(ClienteFrecuente.class, 102L), entityManager.find(Mesa.class, 2L));
+        Comanda comanda3 = new Comanda("344e", new Date(), EstadoComanda.ABIERTA, 0, entityManager.find(ClienteFrecuente.class, 103L), entityManager.find(Mesa.class, 3L));
+        Comanda comanda4 = new Comanda("334345", new Date(), EstadoComanda.ABIERTA, 0, entityManager.find(ClienteFrecuente.class, 103L), entityManager.find(Mesa.class, 4L));
         
         //INGREDIENTES PRODUCTO
-        IngredienteProducto ingProd1 = new IngredienteProducto(producto1, ingrediente1, 2);
-        IngredienteProducto ingProd2 = new IngredienteProducto(producto1, ingrediente2, 100);
-        IngredienteProducto ingProd3 = new IngredienteProducto(producto1, ingrediente3, 2);
-        IngredienteProducto ingProd4 = new IngredienteProducto(producto1, ingrediente4, 1);
-        IngredienteProducto ingProd5 = new IngredienteProducto(producto1, ingrediente5, 1);
-        IngredienteProducto ingProd6 = new IngredienteProducto(producto2, ingrediente6, 2);
-        IngredienteProducto ingProd7 = new IngredienteProducto(producto2, ingrediente7, 30);
-        IngredienteProducto ingProd8 = new IngredienteProducto(producto2, ingrediente8, 150);
-        IngredienteProducto ingProd9 = new IngredienteProducto(producto3, ingrediente9, 100);
-        IngredienteProducto ingProd10 = new IngredienteProducto(producto3, ingrediente10, 50);
-        IngredienteProducto ingProd11= new IngredienteProducto(producto3, ingrediente11, 30);
-        IngredienteProducto ingProd12 = new IngredienteProducto(producto3, ingrediente12, 150);
+        IngredienteProducto ingProd1 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 351L), 2);
+        IngredienteProducto ingProd2 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 352L), 100);
+        IngredienteProducto ingProd3 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 353L), 2);
+        IngredienteProducto ingProd4 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 354L), 1);
+        IngredienteProducto ingProd5 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 355L), 1);
+        IngredienteProducto ingProd6 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 356L), 2);
+        IngredienteProducto ingProd7 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 357L), 30);
+        IngredienteProducto ingProd8 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 358L), 150);
+        IngredienteProducto ingProd9 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 359L), 100);
+        IngredienteProducto ingProd10 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 360L), 50);
+        IngredienteProducto ingProd11= new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 361L), 30);
+        IngredienteProducto ingProd12 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 362L), 150);
         
         //PRODUCTOS COMANDA
-        ProductoComanda prodCom1 = new ProductoComanda(comanda1, producto1, 150, "Sin tomate");
-        ProductoComanda prodCom2 = new ProductoComanda(comanda1, producto2, 20, "Con hielo");
+        ProductoComanda prodCom1 = new ProductoComanda(entityManager.find(Comanda.class, 301L), entityManager.find(Producto.class, 151L), 150, "Sin tomate",2,300);
+        ProductoComanda prodCom2 = new ProductoComanda(entityManager.find(Comanda.class, 301L), entityManager.find(Producto.class, 152L), 20, "Con hielo",1,20);
         
-        ProductoComanda prodCom3 = new ProductoComanda(comanda2, producto3, 70, null);
-        ProductoComanda prodCom4 = new ProductoComanda(comanda2, producto2, 20, "Con hielo");
+        ProductoComanda prodCom3 = new ProductoComanda(entityManager.find(Comanda.class, 302L), entityManager.find(Producto.class, 153L), 70, null, 1, 70);
+        ProductoComanda prodCom4 = new ProductoComanda(entityManager.find(Comanda.class, 302L), entityManager.find(Producto.class, 152L), 20, "Con hielo", 1, 20);
         
-        ProductoComanda prodCom5 = new ProductoComanda(comanda3, producto1, 150, null);
-        ProductoComanda prodCom6 = new ProductoComanda(comanda3, producto3, 70, null);
+        ProductoComanda prodCom5 = new ProductoComanda(entityManager.find(Comanda.class, 303L), entityManager.find(Producto.class, 151L), 150, null, 2, 300);
+        ProductoComanda prodCom6 = new ProductoComanda(entityManager.find(Comanda.class, 303L), entityManager.find(Producto.class, 153L), 70, null, 2,140);
         
+        /*
+        //Agregar Mesas a la BD
+        entityManager.getTransaction().begin();
+        entityManager.persist(mesa1);
+        entityManager.persist(mesa2);
+        entityManager.persist(mesa3);
+        entityManager.persist(mesa4);
+        entityManager.getTransaction().commit();
+        */
         
         /*
         //Agregar Clientes a la BD
@@ -88,14 +105,18 @@ public class CapaDominio {
         entityManager.persist(cliente2);
         entityManager.persist(cliente3);
         entityManager.getTransaction().commit();
-
+        */
+        
+        /*
         //Agregar Producto a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(producto1);
         entityManager.persist(producto2);
         entityManager.persist(producto3);
         entityManager.getTransaction().commit();
+        */
         
+        /*
         //Agregar Comanda a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(comanda1);
@@ -103,7 +124,9 @@ public class CapaDominio {
         entityManager.persist(comanda3);
         entityManager.persist(comanda4);
         entityManager.getTransaction().commit();
+        */
         
+        /*
         //Agregar Ingredientes a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(ingrediente1);
@@ -119,7 +142,9 @@ public class CapaDominio {
         entityManager.persist(ingrediente11);
         entityManager.persist(ingrediente12);
         entityManager.getTransaction().commit();
+        */
         
+        /*
         //AGREGAR INGREDIENTES A PRODUCTOS EN LA BD
         entityManager.getTransaction().begin();
         entityManager.persist(ingProd1);
@@ -135,7 +160,9 @@ public class CapaDominio {
         entityManager.persist(ingProd11);
         entityManager.persist(ingProd12);
         entityManager.getTransaction().commit();
+        */
         
+        /*
         //AGREGAR PRODUCTOS A LAS COMANDAS
         entityManager.getTransaction().begin();
         entityManager.persist(prodCom1);
@@ -149,19 +176,18 @@ public class CapaDominio {
         
         //VER SI LA LISTA DE INGREDIENTES SE ESTA GUARDANDO
         /*
-        Producto p1 = entityManager.find(Producto.class, "Hamburguesa");
-        System.out.println(p1.getIngredientes());*/
-
+        Producto p1 = entityManager.find(Producto.class, 151L);
+        System.out.println(p1.getIngredientes());
+        */
+        
         /*
-        Comanda c1 = entityManager.find(Comanda.class, "3ewudjsjd");
-        System.out.println(c1.getProductos());*/
+        Comanda c1 = entityManager.find(Comanda.class, 301L);
+        System.out.println(c1.getProductos());
+        */
         
         //PRUEBA PARA VER SI SIRVE CASCADETYPE.REMOVE
         //ELIMINANDO COMANDA
         /*
-        Comanda c1 = entityManager.find(Comanda.class, "3ewudjsjd");
-        System.out.println(c1.getProductos());
-        
         entityManager.getTransaction().begin();
         entityManager.remove(c1);
         entityManager.getTransaction().commit();

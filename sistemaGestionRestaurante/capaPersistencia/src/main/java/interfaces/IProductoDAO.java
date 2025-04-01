@@ -22,11 +22,10 @@ public interface IProductoDAO {
     /**
      * Modifica un producto de la bd
      * @param producto Producto con los datos nuevos
-     * @param nombreProducto Identificador del producto que se desea modificar
      * @return Producto con los datos actualizados.
      * @throws PersistenciaException Si el producto que se desea modificar no existe.
      */
-    public Producto modificarProductoDelMenu(Producto producto, String nombreProducto) throws PersistenciaException;
+    public Producto modificarProductoDelMenu(Producto producto) throws PersistenciaException;
     
     /**
      * Asigna un ingrediente al producto
