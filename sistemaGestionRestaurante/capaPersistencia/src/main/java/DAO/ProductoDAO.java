@@ -27,9 +27,9 @@ public class ProductoDAO implements IProductoDAO{
     }
     
     /**
-     * Método para obtener la única instancia de IngredienteDAO.
+     * Método para obtener la única instancia de ProductoDAO.
      *
-     * @return Instancia de IngredienteDAO.
+     * @return Instancia de ProductoDAO.
      */
     public static ProductoDAO getInstanceDAO() {
         if (instanceProductoDAO == null) {

@@ -5,6 +5,7 @@ import entidades.Comanda;
 import entidades.ProductoComanda;
 import enums.EstadoComanda;
 import excepciones.PersistenciaException;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.PersistenceException;
 
@@ -18,101 +19,67 @@ public interface IComandaDAO {
      * La comanda por defecto tiene el estado Abierto
      * 
      * @param comanda Comanda que se desea crear.
-     * @return La comanda con su folio generado.
+     * @return La comanda con su id y su folio generado.
      * @throws PersistenceException Si no se logra agregar una nueva comanda.
      */
-    public Comanda crearComanda(Comanda comanda) throws PersistenceException;
+    public Comanda crearComanda(Comanda comanda) throws PersistenciaException;
     
     /**
      * Elimina una comanda de la bd.
      * 
-     * @param folio Folio de la comanda que se desea eliminar.
+     * @param idComanda id de la comanda que se desea eliminar.
      * @return true si se logra eliminar y false en caso contrario.
      * @throws PersistenceException Si la comanda no existe.
      */
-    public boolean eliminarComanda(String folio) throws PersistenceException;
-    
-    /**
-     * Agrega un producto a la comanda.
-     * 
-     * @param folio Folio de la comanda.
-     * @param nombreProducto Nombre del producto que se desea agregar.
-     * @return true si se logra agregar el producto y false en caso contrario.
-     * @throws PersistenciaException Si no se logra encontrar el folio o el producto.
-     */
-    public boolean agregarProductoAcomanda(String folio, String nombreProducto) throws PersistenciaException;
-    
-    /**
-     * Quita un producto a la comanda.
-     * 
-     * @param folio Folio de la comanda a la cual se le quitara el producto.
-     * @param nombreProducto Nombre del producto que se desea eliminar.
-     * @return true si se logra quitar y false en caso contrario.
-     * @throws PersistenciaException Si no se logra encontrar el folio o el producto.
-     */
-    public boolean quitarProductoDecomanda(String folio, String nombreProducto) throws PersistenciaException;  
+    public boolean eliminarComanda(Long idComanda) throws PersistenciaException;
     
     /**
      * Le asocia un cliente a la comanda.
      * 
-     * @param folio Folio de la comanda a la cual se le asignara un cliente.
-     * @param telefono Identificador del cliente que se desea agregar.
+     * @param idComandade id de la comanda a la cual se le asignara un cliente.
+     * @param idCliente Id del cliente que se desea asignar a la comanda.
      * @return true si se logra asignar al cliente y false en caso contrario.
-     * @throws PersistenciaException Si no se logra encontrar el folio o el cliente.
+     * @throws PersistenciaException Si no se logra encontrar el idComanda o el idCliente.
      */
-    public boolean asociarClienteAcomanda(String folio, String telefono) throws PersistenciaException;
+    public boolean asociarClienteAcomanda(Long idComanda, Long idCliente) throws PersistenciaException;
     
     /**
      * Actualiza los datos de una comanda.
      * 
-     * @param folio Folio de la comanda que se desea actualizar
-     * @return La comanda actualizada con el folio.
-     * @throws PersistenciaException Si no se logra encontrar el folio.
+     * @param Comanda con los datos nuevos.
+     * @return La comanda actualizada .
+     * @throws PersistenciaException Si no se logra modificar la comanda.
      */
-    public Comanda actualizarComanda(String folio) throws PersistenciaException;
+    public Comanda actualizarComanda(Comanda comanda) throws PersistenciaException;
     
     /**
      * Cambia el estado de una comanda (Abierta, Entregada, Cancelada)
      * 
-     * @param folio Folio de la comanda que se le cambiara el estado.
+     * @param idComanda id de la comanda que se le cambiara el estado.
      * @param estado Estado que se le asignara a la comanda.
-     * @return Comanda con el estado nuevo y el folio
-     * @throws PersistenciaException 
+     * @return Comanda con el estado nuevo
+     * @throws PersistenciaException Si no se logra encontrar la id de la comanda
      */
-    public Comanda cambiarEstadoComanda(String folio, EstadoComanda estado) throws PersistenciaException;
+    public Comanda cambiarEstadoComanda(Long idComanda, EstadoComanda estado) throws PersistenciaException;
     
     /**
-     * Consulta una comanda por su Folio.
+     * Consulta una comanda por su id
      * 
-     * @param folio Folio de la comanda que se desea consultar
-     * @return Comanda con el folio.
+     * @param idComanda id de la comanda que se desea consultar
+     * @return Comanda 
      * @throws PersistenciaException Si no encuentra la comanda.
      */
-    public Comanda consultarComandaPorFolio(String folio) throws PersistenciaException;
+    public Comanda consultarComandaPorId(Long idComanda) throws PersistenciaException;
     
     /**
-     * Consulta todas las comandas Canceladas.
+     * Consulta todas las comandas por estado
      * 
-     * @return Lista con las comandas con el estado Cancelada.
+     * @param estado Estado del que se quieren obtener las comandas.
+     * @return Lista con las comandas que tienen el estado asignado
      * @throws PersistenciaException Si no se logra la consulta.
      */
-    public List<Comanda> consultartTodasLasComandasCanceladas() throws PersistenciaException;
+    public List<Comanda> consultarComandasPorEstado(EstadoComanda estado) throws PersistenciaException;
     
-    /**
-     * Consulta todas las comandas Abiertas.
-     * 
-     * @return Lista con las comandas con el estado Abierta.
-     * @throws PersistenciaException Si no se logra la consulta.
-     */
-    public List<Comanda> consultartTodasLasComandasAbiertas() throws PersistenciaException;
-    
-    /**
-     * Consulta todas las comandas Entregadas.
-     * 
-     * @return Lista con las comandas con el estado Entregada.
-     * @throws PersistenciaException Si no se logra la consulta.
-     */
-    public List<Comanda> consultartTodasLasComandasEntregadas() throws PersistenciaException;
     
     /**
      * Consulta todas las comandas.
@@ -120,24 +87,34 @@ public interface IComandaDAO {
      * @return Lista con las comandas.
      * @throws PersistenciaException Si no se logra la consulta.
      */
-    public List<Comanda> consultartTodasLasComandas() throws PersistenciaException;
+    public List<Comanda> consultarTodasLasComandas() throws PersistenciaException;
     
     /**
      * Consulta todos los productos agregados en la comanda.
      * 
-     * @param folio Folio de la comanda que se desea saber los productos.
+     * @param idComanda id de la comanda que se desea saber los productos.
      * @return Lista con la lista de productos agregados.
      * @throws PersistenciaException Si no se logra la consulta.
      */
-    public List<ProductoComanda> consultartTodosLosProductosDeComanda(String folio) throws PersistenciaException;
+    public List<ProductoComanda> consultarTodosLosProductosDeComanda(Long idComanda) throws PersistenciaException;
     
     /**
      * Consulta el cliente que esta asignado en la comanda.
      * 
-     * @param folio Folio de la comanda que se desea saber el Cliente asignado.
+     * @param idComanda id de la comanda que se desea saber el Cliente asignado.
      * @return Cliente si esta asignado y null en caso de que no haya cliente asignado.
-     * @throws PersistenciaException Si no existe el folio,
+     * @throws PersistenciaException Si no existe el id de la comanda
      */
-    public Cliente consultarClienteDeComanda(String folio) throws PersistenciaException;
+    public Cliente consultarClienteDeComanda(Long idComanda) throws PersistenciaException;
+    
+    /**
+     * Consulta las comandas por un rango de fechas
+     * 
+     * @param desde Desde que fecha
+     * @param hasta Hasta que fecha
+     * @return Lista con los 
+     * @throws PersistenciaException 
+     */
+    public List<Comanda> consultarComandasPorFecha(Date desde, Date hasta) throws PersistenciaException;
 
 }
