@@ -14,20 +14,20 @@ public interface IIngredienteDAO {
     /**
      * Agrega un nuevo ingrediente a la bd.
      * 
+     * @param ingrediente Ingrediente que se desea agregar.
      * @return Ingrediente con su id asignado.
      * @throws PersistenciaException Si no se logra la insercion.
      */
-    public Ingrediente agregarIngredienteAlInventario() throws PersistenciaException;
+    public Ingrediente agregarIngredienteAlInventario(Ingrediente ingrediente) throws PersistenciaException;
     
     /**
      * Modifica un ingrediente de la bd.
      * 
      * @param ingrediente Ingrediente con los datos nuevos.
-     * @param idIngrediente Id del ingrediente que se modificara.
      * @return Ingrediente con los datos nuevos y su id.
-     * @throws PersistenciaException Si no encuentra el ingrediente a modificar
+     * @throws PersistenciaException Si no se logra modificar el ingrediente.
      */
-    public Ingrediente modificarIngrediente(Ingrediente ingrediente, Long idIngrediente) throws PersistenciaException;
+    public Ingrediente modificarIngrediente(Ingrediente ingrediente) throws PersistenciaException;
     
     //METODO IGNORADO HASTA SABER DUDAS
     /**

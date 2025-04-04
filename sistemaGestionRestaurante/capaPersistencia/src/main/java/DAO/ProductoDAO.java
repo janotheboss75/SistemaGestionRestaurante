@@ -1,10 +1,9 @@
 package DAO;
 
 import conexion.Conexion;
-import entidades.Ingrediente;
 import entidades.IngredienteProducto;
 import entidades.Producto;
-import entidades.ProductoComanda;
+import enums.EstadoProducto;
 import excepciones.PersistenciaException;
 import interfaces.IProductoDAO;
 import java.util.ArrayList;
@@ -187,6 +186,50 @@ public class ProductoDAO implements IProductoDAO{
         }
         
         return IngredientesProducto;
+    }
+
+    /**
+     * Inhabilita un Producto de la base de datos
+     * 
+     * @param idProducto Id del producto que se desea inhabilitar.
+     * @return true si se logra inhabilitar el producto y false en caso contrario.
+     * @throws PersistenciaException Si el producto no existe.
+     */
+    @Override
+    public boolean inhabilitarProducto(Long idProducto) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        Producto p = em.find(Producto.class, idProducto);
+        
+        if (p == null) {
+            throw new PersistenciaException("Error: el id del producto no existe");
+        }
+        
+        p.setEstado(EstadoProducto.INHABILITADO);
+        
+        try {
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            
+            return true;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            
+            throw new PersistenciaException("No se pudo inhabilitar el producto: " + e.getMessage());
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
     
 }

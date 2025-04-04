@@ -3,7 +3,6 @@ package DAO;
 import conexion.Conexion;
 import entidades.Cliente;
 import entidades.Comanda;
-import entidades.Producto;
 import entidades.ProductoComanda;
 import enums.EstadoComanda;
 import excepciones.PersistenciaException;
@@ -11,10 +10,7 @@ import interfaces.IComandaDAO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 /**
@@ -32,9 +28,9 @@ public class ComandaDAO implements IComandaDAO{
     }
     
     /**
-     * Método para obtener la única instancia de ProductoComandaDAO.
+     * Método para obtener la única instancia de ComandaDAO.
      *
-     * @return Instancia de ProductoComandaDAO.
+     * @return Instancia de ComandaDAO.
      */
     public static ComandaDAO getInstanceDAO() {
         if (instanceComandaDAO == null) {
@@ -314,7 +310,7 @@ public class ComandaDAO implements IComandaDAO{
             comandas = em.createQuery("SELECT c FROM Comanda c", Comanda.class).getResultList();
             
         } catch (Exception e) {
-            throw new PersistenciaException("Error al consultar a todos los productos", e);
+            throw new PersistenciaException("Error al consultar a todos las comandas", e);
             
         } finally {
             if (em.isOpen()) {
@@ -372,13 +368,40 @@ public class ComandaDAO implements IComandaDAO{
             throw new PersistenciaException("Error: el id de la comanda no existe");
         }
         
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        
+        return c.getCliente();
     }
 
+    /**
+     * Consulta las comandas que esten en el rango de fechas
+     * 
+     * @param desde Desde que fecha se desean filtrar las comandas.
+     * @param hasta Hasta que fecha se desea filtrar las comandas.
+     * @return Una lista de comandas que esten entre el rango de fechas.
+     * @throws PersistenciaException Error si no se logra hacer la consulta.
+     */
     @Override
     public List<Comanda> consultarComandasPorFecha(Date desde, Date hasta) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Comanda> comandas = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        String jpql = "SELECT c FROM Comanda c WHERE c.fechaComanda BETWEEN :desde AND :hasta";
+        
+        try {
+            comandas = em.createQuery(jpql, Comanda.class)
+                    .setParameter("desde", desde)
+                    .setParameter("hasta", hasta)
+                    .getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar a todos las comandas", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        
+        return comandas;
     }
     
 }

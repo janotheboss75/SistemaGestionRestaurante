@@ -30,12 +30,13 @@ public interface IProductoDAO {
     public Producto modificarProductoDelMenu(Producto producto) throws PersistenciaException;
 
     /**
+     * Inhabilita un Producto de la base de datos
      * 
-     * @param intProducto
-     * @return
-     * @throws PersistenciaException 
+     * @param idProducto Id del producto que se desea inhabilitar.
+     * @return true si se logra inhabilitar el producto y false en caso contrario.
+     * @throws PersistenciaException Si el producto no existe.
      */
-    //public boolean eliminarProducto(Long intProducto) throws PersistenciaException;
+    public boolean inhabilitarProducto(Long idProducto) throws PersistenciaException;
     
     /**
      * Consulta un producto por su nombre

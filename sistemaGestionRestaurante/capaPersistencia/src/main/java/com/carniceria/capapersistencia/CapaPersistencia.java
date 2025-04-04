@@ -32,11 +32,12 @@ public class CapaPersistencia {
     public static void main(String[] args) throws PersistenciaException {
 
         ComandaDAO comandaDAO = ComandaDAO.getInstanceDAO();
+        ProductoDAO productoDAO = ProductoDAO.getInstanceDAO();
         EntityManager em = Conexion.crearConexion();
         Comanda comanda = new Comanda("47483djdj", new Date(), EstadoComanda.ENTREGADA, 0, null, em.find(Mesa.class, 1L));
         
         try {
-            System.out.println(comandaDAO.consultarTodosLosProductosDeComanda(1L));
+            System.out.println(productoDAO.inhabilitarProducto(1L));
         } catch (PersistenciaException ex) {
             ex.printStackTrace();
         }

@@ -10,6 +10,7 @@ import entidades.Producto;
 import entidades.ProductoComanda;
 import enums.EstadoComanda;
 import enums.EstadoMesa;
+import enums.EstadoProducto;
 import enums.TipoProducto;
 import enums.UnidadDeMedida;
 import java.time.Instant;
@@ -49,9 +50,9 @@ public class CapaDominio {
         Ingrediente ingrediente12 = new Ingrediente("Huevo", UnidadDeMedida.PIEZAS, 1000);
         
         //PRODUCTOS
-        Producto producto1 = new Producto("Hamburguesa", 150, TipoProducto.PLATILLO);
-        Producto producto2 = new Producto("Limonada", 20, TipoProducto.BEBIDA);
-        Producto producto3 = new Producto("Cheese-cake", 70, TipoProducto.POSTRE);
+        Producto producto1 = new Producto("Hamburguesa", 150, TipoProducto.PLATILLO, EstadoProducto.HABILITADO);
+        Producto producto2 = new Producto("Limonada", 20, TipoProducto.BEBIDA, EstadoProducto.HABILITADO);
+        Producto producto3 = new Producto("Cheese-cake", 70, TipoProducto.POSTRE, EstadoProducto.HABILITADO);
         
         //CLIENTES
         Cliente cliente1 = new ClienteFrecuente("6442200293", "Alejandro", "Valdez", "Hermosillo", "janovaldezhillo@gmail.com", new Date());
@@ -65,18 +66,18 @@ public class CapaDominio {
         Comanda comanda4 = new Comanda("334345", new Date(), EstadoComanda.ABIERTA, 0, entityManager.find(ClienteFrecuente.class, 103L), entityManager.find(Mesa.class, 4L));
         
         //INGREDIENTES PRODUCTO
-        IngredienteProducto ingProd1 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 351L), 2);
-        IngredienteProducto ingProd2 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 352L), 100);
-        IngredienteProducto ingProd3 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 353L), 2);
-        IngredienteProducto ingProd4 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 354L), 1);
-        IngredienteProducto ingProd5 = new IngredienteProducto(entityManager.find(Producto.class, 151L), entityManager.find(Ingrediente.class, 355L), 1);
-        IngredienteProducto ingProd6 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 356L), 2);
-        IngredienteProducto ingProd7 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 357L), 30);
-        IngredienteProducto ingProd8 = new IngredienteProducto(entityManager.find(Producto.class, 152L), entityManager.find(Ingrediente.class, 358L), 150);
-        IngredienteProducto ingProd9 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 359L), 100);
-        IngredienteProducto ingProd10 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 360L), 50);
-        IngredienteProducto ingProd11= new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 361L), 30);
-        IngredienteProducto ingProd12 = new IngredienteProducto(entityManager.find(Producto.class, 153L), entityManager.find(Ingrediente.class, 362L), 150);
+        IngredienteProducto ingProd1 = new IngredienteProducto(entityManager.find(Producto.class, 1L), entityManager.find(Ingrediente.class, 4L), 2);
+        IngredienteProducto ingProd2 = new IngredienteProducto(entityManager.find(Producto.class, 1L), entityManager.find(Ingrediente.class, 5L), 100);
+        IngredienteProducto ingProd3 = new IngredienteProducto(entityManager.find(Producto.class, 1L), entityManager.find(Ingrediente.class, 6L), 2);
+        IngredienteProducto ingProd4 = new IngredienteProducto(entityManager.find(Producto.class, 1L), entityManager.find(Ingrediente.class, 7L), 1);
+        IngredienteProducto ingProd5 = new IngredienteProducto(entityManager.find(Producto.class, 1L), entityManager.find(Ingrediente.class, 8L), 1);
+        IngredienteProducto ingProd6 = new IngredienteProducto(entityManager.find(Producto.class, 2L), entityManager.find(Ingrediente.class, 9L), 2);
+        IngredienteProducto ingProd7 = new IngredienteProducto(entityManager.find(Producto.class, 2L), entityManager.find(Ingrediente.class, 10L), 30);
+        IngredienteProducto ingProd8 = new IngredienteProducto(entityManager.find(Producto.class, 2L), entityManager.find(Ingrediente.class, 11L), 150);
+        IngredienteProducto ingProd9 = new IngredienteProducto(entityManager.find(Producto.class, 3L), entityManager.find(Ingrediente.class, 12L), 100);
+        IngredienteProducto ingProd10 = new IngredienteProducto(entityManager.find(Producto.class, 3L), entityManager.find(Ingrediente.class, 13L), 50);
+        IngredienteProducto ingProd11= new IngredienteProducto(entityManager.find(Producto.class, 3L), entityManager.find(Ingrediente.class, 14L), 30);
+        IngredienteProducto ingProd12 = new IngredienteProducto(entityManager.find(Producto.class, 3L), entityManager.find(Ingrediente.class, 15L), 150);
         
         //PRODUCTOS COMANDA
         ProductoComanda prodCom1 = new ProductoComanda(entityManager.find(Comanda.class, 301L), entityManager.find(Producto.class, 151L), 150, "Sin tomate",2,300);

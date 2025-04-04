@@ -1,5 +1,6 @@
 package entidades;
 
+import enums.EstadoProducto;
 import enums.TipoProducto;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,6 +62,14 @@ public class Producto implements Serializable {
     private List<IngredienteProducto> ingredientes = new ArrayList<>();
     
     /**
+     * Estado del producto
+     * Se utiliza un enum que tiene como tipo(HABILITADO, INHABILITADO)
+     */
+    @Column(name = "estado", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private EstadoProducto estado;
+    
+    /**
      * Constructor por defecto.
      */
     public Producto() {
@@ -72,11 +81,13 @@ public class Producto implements Serializable {
      * @param nombre Nombre del producto
      * @param precio Precio del producto
      * @param tipo Tipo del producto
+     * @param estado Indica si un producto esta habilitado o inhabilitado
      */
-    public Producto(String nombre, double precio, TipoProducto tipo) {
+    public Producto(String nombre, double precio, TipoProducto tipo, EstadoProducto estado) {
         this.nombre = nombre;
         this.precio = precio;
         this.tipo = tipo;
+        this.estado = estado;
     }
 
     /**
@@ -170,12 +181,30 @@ public class Producto implements Serializable {
     }
 
     /**
+     * Devuelve un enum que tiene como tipo(HABILITADO, INHABILITADO)
+     * @return 
+     */
+    public EstadoProducto estado() {
+        return estado;
+    }
+
+    /**
+     * Establece si esta habilitado o inhabilitado
+     * 
+     * Se utiliza un enum que tiene como tipo(HABILITADO, INHABILITADO)
+     * @param habilitado 
+     */
+    public void setEstado(EstadoProducto habilitado) {
+        this.estado = habilitado;
+    }
+    
+    /**
      * Representación en cadena de la entidad Producto.
      * 
      * @return Cadena con los atributos del producto
      */
     @Override
     public String toString() {
-        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientes=" + ingredientes + '}';
+        return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", tipo=" + tipo + ", ingredientes=" + ingredientes + ", estado=" + estado + '}';
     }
 }

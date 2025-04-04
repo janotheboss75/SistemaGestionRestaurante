@@ -2,13 +2,17 @@ package entidades;
 
 import enums.UnidadDeMedida;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -50,6 +54,13 @@ public class Ingrediente implements Serializable {
      */
     @Column(name = "stock", nullable = false)
     private Integer stock;
+    
+    /* Lista de Ingredientes para elaborar el producto
+     * Relacion uno a muchos, bidireccional, la entidad IngredienteProducto 
+     * es la dueña de la relacion.
+     */
+    @OneToMany(mappedBy = "ingrediente", fetch = FetchType.EAGER)
+    private List<IngredienteProducto> ingredientes = new ArrayList<>();
 
     /**
      * Constructor por defecto.
@@ -141,6 +152,16 @@ public class Ingrediente implements Serializable {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
+    public List<IngredienteProducto> getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<IngredienteProducto> ingredientes) {
+        this.ingredientes = ingredientes;
+    }
+    
+    
 
     @Override
     public String toString() {
