@@ -18,17 +18,17 @@ public class NuevaComandaDTO {
     
     private double total;
     
-    private Cliente cliente;
+    private Long idCliente;
     
-    private Integer mesa;
+    private Long idMesa;
 
-    public NuevaComandaDTO(String folio, Date fechaComanda, EstadoComanda estado, double total, Cliente cliente, Integer mesa) {
+    public NuevaComandaDTO(String folio, Date fechaComanda, EstadoComanda estado, double total, Long idCliente, Long idMesa) {
         this.folio = folio;
         this.fechaComanda = fechaComanda;
         this.estado = estado;
         this.total = total;
-        this.cliente = cliente;
-        this.mesa = mesa;
+        this.idCliente = idCliente;
+        this.idMesa = idMesa;
     }
 
     public String getFolio() {
@@ -63,20 +63,20 @@ public class NuevaComandaDTO {
         this.total = total;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Long getIdCliente() {
+        return idCliente;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public Integer getMesa() {
-        return mesa;
+    public Long getIdMesa() {
+        return idMesa;
     }
 
-    public void setMesa(Integer mesa) {
-        this.mesa = mesa;
+    public void setIdMesa(Long idMesa) {
+        this.idMesa = idMesa;
     }
-   
+
 }

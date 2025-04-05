@@ -8,6 +8,7 @@ import enums.TipoProducto;
  * @author janot
  */
 public class NuevoProductoDTO {
+    
     private EstadoProducto estado;
     
     private String nombre;
