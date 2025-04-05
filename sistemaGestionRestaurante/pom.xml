@@ -9,6 +9,7 @@
         <module>capaDominio</module>
         <module>capaPersistencia</module>
         <module>capaNegocio</module>
+        <module>capaPresentacion</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
