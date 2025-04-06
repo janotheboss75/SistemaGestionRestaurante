@@ -159,6 +159,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconNuevaComanda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconNuevaComanda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/square-plus.png"))); // NOI18N
         jLabelIconNuevaComanda.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconNuevaComanda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconNuevaComandaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelNuevaComandaLayout = new javax.swing.GroupLayout(jPanelNuevaComanda);
         jPanelNuevaComanda.setLayout(jPanelNuevaComandaLayout);
@@ -264,6 +269,10 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         control.mostrarPantallaProductos();
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelIconProductosMouseClicked
+
+    private void jLabelIconNuevaComandaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconNuevaComandaMouseClicked
+        control.mostrarPantallaComandaNueva(this, rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jLabelIconNuevaComandaMouseClicked
 
 
 

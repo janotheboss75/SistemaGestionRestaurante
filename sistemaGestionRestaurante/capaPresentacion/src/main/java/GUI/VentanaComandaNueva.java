@@ -1,34 +1,20 @@
 package GUI;
 
-import DTOs.ProductoDTO;
-import entidades.Producto;
-import enums.EstadoProducto;
-import enums.TipoProducto;
-import excepciones.NegocioException;
-import interfaces.IProductoBO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import entidades.Cliente;
 
 /**
  *
  * @author janot
  */
-public class VentanaProductoNuevo extends javax.swing.JDialog {
-    private IProductoBO productoBO;
+public class VentanaComandaNueva extends javax.swing.JDialog {
     Control control = new Control();
     
     /**
-     * Creates new form NewJDialog
+     * Creates new form VentanaComandaNueva
      */
-    public VentanaProductoNuevo(java.awt.Frame parent, boolean modal) {
+    public VentanaComandaNueva(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        cargarComboBoxCategoria();
-        productoBO = ManejadorObjetosNegocio.crearProductoBO();
-        
     }
 
     /**
@@ -45,7 +31,6 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabelProductoNuevo2 = new javax.swing.JLabel();
         jLabelIconCerrar = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
-        jTextFieldPrecio = new javax.swing.JTextField();
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         jLabelCategoria = new javax.swing.JLabel();
         jLabelNombre = new javax.swing.JLabel();
@@ -64,14 +49,14 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
         jLabelAgregarIngrediente2.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelAgregarIngrediente2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelAgregarIngrediente2.setText("Ingrediente");
-        jPanel1.add(jLabelAgregarIngrediente2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, -1, -1));
+        jLabelAgregarIngrediente2.setText("Producto");
+        jPanel1.add(jLabelAgregarIngrediente2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, -1, -1));
 
         jLabelProductoNuevo2.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
         jLabelProductoNuevo2.setForeground(new java.awt.Color(0, 0, 0));
         jLabelProductoNuevo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProductoNuevo2.setText("Nuevo");
-        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 150, -1));
+        jLabelProductoNuevo2.setText("Nueva");
+        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 0, 150, -1));
 
         jLabelIconCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cross-small.png"))); // NOI18N
         jLabelIconCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -85,11 +70,8 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jTextFieldNombre.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 200, 30));
 
-        jTextFieldPrecio.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jTextFieldPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 130, 30));
-
         jComboBoxCategoria.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jComboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 140, 110, 30));
+        jPanel1.add(jComboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 110, 30));
 
         jLabelCategoria.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelCategoria.setForeground(new java.awt.Color(0, 0, 0));
@@ -98,18 +80,18 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
         jLabelNombre.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelNombre.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelNombre.setText("Nombre");
+        jLabelNombre.setText("Asignar Mesa");
         jPanel1.add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
 
         jLabelPrecio.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelPrecio.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelPrecio.setText("Precio");
+        jLabelPrecio.setText("Cliente");
         jPanel1.add(jLabelPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
 
         jLabelProductoNuevo3.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
         jLabelProductoNuevo3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelProductoNuevo3.setText("Producto");
-        jPanel1.add(jLabelProductoNuevo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 0, 210, -1));
+        jLabelProductoNuevo3.setText("Comanda");
+        jPanel1.add(jLabelProductoNuevo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, 230, -1));
 
         jLabelAgregarIngrediente1.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelAgregarIngrediente1.setForeground(new java.awt.Color(0, 0, 0));
@@ -146,7 +128,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 530));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -155,39 +137,18 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabelIconCerrarMouseClicked
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        //control.mostrarPantallaAgregarIngredienteAProducto(this,rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        guardarProducto();
         control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        control.mostrarPantallaAgregarIngredienteAProducto(this,rootPaneCheckingEnabled);
-    }//GEN-LAST:event_jLabel1MouseClicked
-
-
-    private void guardarProducto(){
-        String nombre = jTextFieldNombre.getText();
-        String precio = jTextFieldPrecio.getText();
-        TipoProducto categoria = (TipoProducto) jComboBoxCategoria.getSelectedItem();
-        
-        ProductoDTO productoDTO = new ProductoDTO(EstadoProducto.HABILITADO, nombre, Double.parseDouble(precio), categoria);
-        try {
-            productoBO.agregarProductoAlMenu(productoDTO);
-            JOptionPane.showMessageDialog(rootPane, "Producto agregado con exito");
-        } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex);
-        }
-        
-    }
     
-    private void cargarComboBoxCategoria(){
-        jComboBoxCategoria.addItem(TipoProducto.PLATILLO);
-        jComboBoxCategoria.addItem(TipoProducto.BEBIDA);
-        jComboBoxCategoria.addItem(TipoProducto.POSTRE);     
-    }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<TipoProducto> jComboBoxCategoria;
+    private javax.swing.JComboBox<Cliente> jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
@@ -201,6 +162,5 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelMesero;
     private javax.swing.JTextField jTextFieldNombre;
-    private javax.swing.JTextField jTextFieldPrecio;
     // End of variables declaration//GEN-END:variables
 }

@@ -32,9 +32,22 @@ public class Control {
     }
     
     public void mostrarPantallaProductoNuevo(JFrame ventana, boolean modal){
-        VentanaProductoNuevo pantallaProductoNuevo = new VentanaProductoNuevo(ventana, true);
+        VentanaProductoNuevo pantallaProductoNuevo = new VentanaProductoNuevo(ventana, modal);
         pantallaProductoNuevo.setLocationRelativeTo(ventana);
         pantallaProductoNuevo.setVisible(true);
+    }
+    
+    public void mostrarPantallaAgregarIngredienteAProducto(JDialog ventana, boolean modal){
+        VentanaAgregarIngredienteAProducto pantallaAgregarIngredienteAProducto = new VentanaAgregarIngredienteAProducto(ventana,modal);
+        pantallaAgregarIngredienteAProducto.setLocationRelativeTo(ventana);
+        pantallaAgregarIngredienteAProducto.setVisible(true);
+        
+    }
+    
+    public void mostrarPantallaComandaNueva(JFrame ventana, boolean modal){
+        VentanaComandaNueva pantallaComandaNueva = new VentanaComandaNueva(ventana, modal);
+        pantallaComandaNueva.setLocationRelativeTo(ventana);
+        pantallaComandaNueva.setVisible(true);
     }
     
     public void cerrarPantalla(JFrame ventana){

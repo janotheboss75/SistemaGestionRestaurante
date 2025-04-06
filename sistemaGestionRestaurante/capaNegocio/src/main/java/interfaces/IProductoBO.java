@@ -1,12 +1,13 @@
 package interfaces;
 
-import DTOs.NuevoProductoDTO;
+import DTOs.ProductoDTO;
+import excepciones.NegocioException;
 
 /**
  *
  * @author janot
  */
 public interface IProductoBO {
-    public NuevoProductoDTO agregarProductoAlMenu(NuevoProductoDTO nuevoProducto);
+    public ProductoDTO agregarProductoAlMenu(ProductoDTO nuevoProducto) throws NegocioException;
    
 }

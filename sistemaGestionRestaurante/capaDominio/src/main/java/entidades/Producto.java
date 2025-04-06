@@ -184,7 +184,7 @@ public class Producto implements Serializable {
      * Devuelve un enum que tiene como tipo(HABILITADO, INHABILITADO)
      * @return 
      */
-    public EstadoProducto estado() {
+    public EstadoProducto getEstado() {
         return estado;
     }
 
