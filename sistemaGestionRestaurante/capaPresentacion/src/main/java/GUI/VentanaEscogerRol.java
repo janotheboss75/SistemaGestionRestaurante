@@ -32,7 +32,7 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         jPanelAdmin = new GUI.PanelRound();
         jLabel1 = new javax.swing.JLabel();
         JLabelTitulo = new javax.swing.JLabel();
-        jPanelMe = new GUI.PanelRound();
+        jPanelMesero = new GUI.PanelRound();
         jLabelMesero = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -65,23 +65,24 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         JLabelTitulo.setFont(new java.awt.Font("Product Sans Infanity", 0, 48)); // NOI18N
         JLabelTitulo.setForeground(new java.awt.Color(0, 0, 0));
         JLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelTitulo.setText("INICIO");
+        JLabelTitulo.setText("Sistema Restaurante");
         jPanel1.add(JLabelTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 640, 60));
 
-        jPanelMe.setBackground(new java.awt.Color(44, 44, 44));
-        jPanelMe.setRoundBottomLeft(15);
-        jPanelMe.setRoundBottomRight(15);
-        jPanelMe.setRoundTopLeft(15);
-        jPanelMe.setRoundTopRight(15);
-        jPanelMe.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelMesero.setBackground(new java.awt.Color(44, 44, 44));
+        jPanelMesero.setRoundBottomLeft(15);
+        jPanelMesero.setRoundBottomRight(15);
+        jPanelMesero.setRoundTopLeft(15);
+        jPanelMesero.setRoundTopRight(15);
+        jPanelMesero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabelMesero.setFont(new java.awt.Font("Product Sans Infanity", 0, 36)); // NOI18N
         jLabelMesero.setForeground(new java.awt.Color(255, 255, 255));
         jLabelMesero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelMesero.setText("Soy Mesero");
-        jPanelMe.add(jLabelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 60));
+        jLabelMesero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jPanelMesero.add(jLabelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 60));
 
-        jPanel1.add(jPanelMe, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 310, 60));
+        jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 310, 60));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 340));
 
@@ -101,6 +102,6 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelMesero;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelAdmin;
-    private GUI.PanelRound jPanelMe;
+    private GUI.PanelRound jPanelMesero;
     // End of variables declaration//GEN-END:variables
 }

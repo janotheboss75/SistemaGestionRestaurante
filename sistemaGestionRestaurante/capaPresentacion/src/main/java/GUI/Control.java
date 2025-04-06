@@ -20,6 +20,16 @@ public class Control {
         pantallaMenuAdmin.setVisible(true);
     }
 
+    public void mostrarPantallaHistorialComandas(){
+        VentanaHistorialComandas pantallaHistorialComandas = new VentanaHistorialComandas();
+        pantallaHistorialComandas.setVisible(true);
+    }
+    
+    public void mostrarPantallaProductos(){
+        VentanaProductos pantallaVentanaProductos = new VentanaProductos();
+        pantallaVentanaProductos.setVisible(true);
+    }
+    
     public void cerrarPantalla(JFrame ventana){
         ventana.dispose();
     }

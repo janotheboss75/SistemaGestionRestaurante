@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
 
 /**
@@ -9,7 +5,8 @@ package GUI;
  * @author janot
  */
 public class VentanaMenuAdmin extends javax.swing.JFrame {
-
+    private Control control = new Control();
+    
     /**
      * Creates new form VentanaMenuAdmin
      */
@@ -47,6 +44,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIngredientes = new javax.swing.JLabel();
         jLabelClientes1 = new javax.swing.JLabel();
         jLabelNuevaComanda1 = new javax.swing.JLabel();
+        jLabelRegresar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(920, 590));
@@ -59,7 +57,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Restaurante");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 920, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 370, -1));
 
         jPanelComandas.setBackground(new java.awt.Color(217, 217, 217));
         jPanelComandas.setForeground(new java.awt.Color(217, 217, 217));
@@ -67,6 +65,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconComanda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconComanda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/order-food-online.png"))); // NOI18N
         jLabelIconComanda.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconComanda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconComandaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelComandasLayout = new javax.swing.GroupLayout(jPanelComandas);
         jPanelComandas.setLayout(jPanelComandasLayout);
@@ -91,6 +94,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconProductos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/hamburger-soda.png"))); // NOI18N
         jLabelIconProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconProductosMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelProductosLayout = new javax.swing.GroupLayout(jPanelProductos);
         jPanelProductos.setLayout(jPanelProductosLayout);
@@ -227,10 +235,35 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelNuevaComanda1.setText("Nueva Comanda");
         jPanel1.add(jLabelNuevaComanda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 490, 150, 50));
 
+        jLabelRegresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/arrow-small-left.png"))); // NOI18N
+        jLabelRegresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelRegresarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabelRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, 590));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+        control.mostrarPantallaEscogerRol();
+        control.cerrarPantalla(this);
+    }//GEN-LAST:event_jLabelRegresarMouseClicked
+
+    private void jLabelIconComandaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconComandaMouseClicked
+        control.mostrarPantallaHistorialComandas();
+        control.cerrarPantalla(this);
+    }//GEN-LAST:event_jLabelIconComandaMouseClicked
+
+    private void jLabelIconProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconProductosMouseClicked
+        control.mostrarPantallaProductos();
+        control.cerrarPantalla(this);
+    }//GEN-LAST:event_jLabelIconProductosMouseClicked
 
 
 
@@ -249,6 +282,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelNuevaComanda;
     private javax.swing.JLabel jLabelNuevaComanda1;
     private javax.swing.JLabel jLabelProductos;
+    private javax.swing.JLabel jLabelRegresar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelComandas;
     private javax.swing.JPanel jPanelComandasPendientes;
