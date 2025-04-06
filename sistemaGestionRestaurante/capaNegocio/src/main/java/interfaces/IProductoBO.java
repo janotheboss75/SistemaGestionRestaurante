@@ -1,9 +1,12 @@
 package interfaces;
 
+import DTOs.NuevoProductoDTO;
+
 /**
  *
  * @author janot
  */
-public class IProductoBO {
-    
+public interface IProductoBO {
+    public NuevoProductoDTO agregarProductoAlMenu(NuevoProductoDTO nuevoProducto);
+   
 }

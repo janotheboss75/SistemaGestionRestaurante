@@ -1,5 +1,6 @@
 package GUI;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 /**
@@ -30,7 +31,17 @@ public class Control {
         pantallaVentanaProductos.setVisible(true);
     }
     
+    public void mostrarPantallaProductoNuevo(JFrame ventana, boolean modal){
+        VentanaProductoNuevo pantallaProductoNuevo = new VentanaProductoNuevo(ventana, true);
+        pantallaProductoNuevo.setLocationRelativeTo(ventana);
+        pantallaProductoNuevo.setVisible(true);
+    }
+    
     public void cerrarPantalla(JFrame ventana){
+        ventana.dispose();
+    }
+    
+    public void cerrarDialogo(JDialog ventana){
         ventana.dispose();
     }
 }

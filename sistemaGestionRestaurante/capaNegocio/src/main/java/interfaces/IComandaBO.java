@@ -9,6 +9,7 @@ import excepciones.NegocioException;
  * @author janot
  */
 public interface IComandaBO {
+    
     public NuevaComandaDTO crearComanda(NuevaComandaDTO comandaNueva) throws NegocioException;
     
     public boolean eliminarComanda(Long id) throws NegocioException;

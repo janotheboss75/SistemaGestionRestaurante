@@ -48,11 +48,11 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         jPanelAdmin.setRoundTopRight(15);
         jPanelAdmin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Soy Administrador");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel1MouseClicked(evt);
@@ -75,11 +75,11 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         jPanelMesero.setRoundTopRight(15);
         jPanelMesero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabelMesero.setFont(new java.awt.Font("Product Sans Infanity", 0, 36)); // NOI18N
-        jLabelMesero.setForeground(new java.awt.Color(255, 255, 255));
         jLabelMesero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelMesero.setText("Soy Mesero");
         jLabelMesero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelMesero.setFont(new java.awt.Font("Product Sans Infanity", 0, 36)); // NOI18N
+        jLabelMesero.setForeground(new java.awt.Color(255, 255, 255));
         jPanelMesero.add(jLabelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 60));
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 310, 60));
