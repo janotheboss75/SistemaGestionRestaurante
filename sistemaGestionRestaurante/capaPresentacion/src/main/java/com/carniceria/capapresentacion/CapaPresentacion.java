@@ -4,6 +4,9 @@
 
 package com.carniceria.capapresentacion;
 
+import GUI.Control;
+import GUI.VentanaEscogerRol;
+
 /**
  *
  * @author janot
@@ -11,6 +14,7 @@ package com.carniceria.capapresentacion;
 public class CapaPresentacion {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Control control = new Control();
+        control.mostrarPantallaEscogerRol();
     }
 }
