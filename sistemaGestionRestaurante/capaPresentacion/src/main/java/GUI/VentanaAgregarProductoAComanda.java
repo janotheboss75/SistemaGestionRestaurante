@@ -1,5 +1,6 @@
 package GUI;
 
+import DTOs.ProductoComandaDTO;
 import entidades.Producto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
@@ -9,22 +10,28 @@ import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.SoloEnterosFilter;
 
 /**
  *
  * @author janot
  */
 public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
+    private Control control = new Control();
     private IProductoBO productoBO;
     private List<Producto> productosHabilitados;
+    private ProductoComandaDTO productoComandaDTO;
+    private VentanaComandaNueva ventana;
     
     /**
      * Creates new form VentanaAgregarProductoAComanda
      */
-    public VentanaAgregarProductoAComanda(JDialog ventana, boolean modal) {
+    public VentanaAgregarProductoAComanda(VentanaComandaNueva ventana, boolean modal) {
         super(ventana, modal);
         productoBO = ManejadorObjetosNegocio.crearProductoBO();
+        this.ventana = ventana;
         initComponents();
         asignarDatosListaproductosHabilitados();
         cargarjListProductos();
@@ -57,6 +64,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jLabelCancelar = new javax.swing.JLabel();
         jPanelAgregar = new GUI.PanelRound();
         jLabelAgregar = new javax.swing.JLabel();
+        jLabelComentario1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -66,9 +74,9 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
 
         jLabelDinero.setFont(new java.awt.Font("Product Sans Infanity", 0, 24)); // NOI18N
         jLabelDinero.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelDinero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelDinero.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabelDinero.setText("$");
-        jPanel1.add(jLabelDinero, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 470, 40, -1));
+        jPanel1.add(jLabelDinero, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 480, 200, -1));
 
         jLabel2.setFont(new java.awt.Font("Product Sans Infanity", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -77,22 +85,50 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, -1));
 
         jTextFieldCantidad.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldCantidad.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                calcularTotal();
+            }
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                jLabelDinero.setText("$");
+
+            }
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                // Este se usa con estilos en JTextPane, no aplica en JTextField
+            }
+
+        });
+
+        ((AbstractDocument) jTextFieldCantidad.getDocument()).setDocumentFilter(new SoloEnterosFilter());
         jPanel1.add(jTextFieldCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 190, 30));
 
-        jLabelComentario.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
+        jLabelComentario.setFont(new java.awt.Font("Product Sans Infanity", 0, 12)); // NOI18N
         jLabelComentario.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelComentario.setText("Comentario");
-        jPanel1.add(jLabelComentario, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, -1, -1));
+        jLabelComentario.setText("*Opcional");
+        jPanel1.add(jLabelComentario, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 365, -1, -1));
 
         jListProductos.setBackground(new java.awt.Color(255, 255, 255));
         jListProductos.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
         jListProductos.setForeground(new java.awt.Color(0, 0, 0));
         jListProductos.setModel(new DefaultListModel<>());
+        jListProductos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListProductosValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListProductos);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 190, 130));
 
         jTextFieldProducto.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldProductoActionPerformed(evt);
+            }
+        });
         jTextFieldProducto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFieldProductoKeyTyped(evt);
@@ -102,7 +138,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Buscar Producto");
+        jLabel4.setText("Producto");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, -1, -1));
 
         jTextAreaComentario.setBackground(new java.awt.Color(255, 255, 255));
@@ -110,7 +146,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jTextAreaComentario.setRows(3);
         jScrollPane2.setViewportView(jTextAreaComentario);
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 190, 70));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 400, 190, 70));
 
         jLabelCantidad.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
         jLabelCantidad.setForeground(new java.awt.Color(0, 0, 0));
@@ -127,7 +163,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jLabelTotal.setForeground(new java.awt.Color(0, 0, 0));
         jLabelTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTotal.setText("Total:");
-        jPanel1.add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 470, 70, -1));
+        jPanel1.add(jLabelTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 480, 70, -1));
 
         jPanelCancelar.setBackground(new java.awt.Color(44, 44, 44));
         jPanelCancelar.setRoundBottomLeft(15);
@@ -140,6 +176,12 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jLabelCancelar.setForeground(new java.awt.Color(255, 255, 255));
         jLabelCancelar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelCancelar.setText("Cancelar");
+        jLabelCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelCancelarMouseClicked(evt);
+            }
+        });
         jPanelCancelar.add(jLabelCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
 
         jPanel1.add(jPanelCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 530, 90, 30));
@@ -155,9 +197,20 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         jLabelAgregar.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAgregar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelAgregar.setText("Agregar");
+        jLabelAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelAgregarMouseClicked(evt);
+            }
+        });
         jPanelAgregar.add(jLabelAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
 
         jPanel1.add(jPanelAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 530, 90, 30));
+
+        jLabelComentario1.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
+        jLabelComentario1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelComentario1.setText("Comentario");
+        jPanel1.add(jLabelComentario1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 380, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 580));
 
@@ -167,8 +220,27 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
     private void jTextFieldProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldProductoKeyTyped
         String busqueda = jTextFieldProducto.getText();
         buscador(busqueda);
-
     }//GEN-LAST:event_jTextFieldProductoKeyTyped
+
+    private void jListProductosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListProductosValueChanged
+        if (jListProductos.getSelectedValue() != null) {
+            jTextFieldProducto.setText(jListProductos.getSelectedValue().toString());
+            jTextFieldCantidad.setText("1");
+        }
+    }//GEN-LAST:event_jListProductosValueChanged
+
+    private void jLabelAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAgregarMouseClicked
+        agregarProductoAComanda();
+        control.cerrarDialogo(this);
+    }//GEN-LAST:event_jLabelAgregarMouseClicked
+
+    private void jLabelCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCancelarMouseClicked
+        control.cerrarDialogo(this);
+    }//GEN-LAST:event_jLabelCancelarMouseClicked
+
+    private void jTextFieldProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldProductoActionPerformed
 
     
     /*UTILS*/
@@ -181,7 +253,6 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         
     }
     
-    
     public void cargarjListProductos(){
         DefaultListModel<Producto> modeloProductos = new DefaultListModel<>();
         jListProductos.setModel(modeloProductos);
@@ -193,7 +264,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
     
     public void buscador(String busqueda){
         List<Producto> productosFiltrados = productosHabilitados.stream()
-                                                                .filter(producto -> producto.getNombre().trim().toLowerCase().startsWith(busqueda.toLowerCase()))
+                                                                .filter(producto -> producto.getNombre().trim().toLowerCase().startsWith(busqueda.toLowerCase().trim()))
                                                                 .collect(Collectors.toList());
         DefaultListModel<Producto> modeloProductos = new DefaultListModel<>();
         jListProductos.setModel(modeloProductos);
@@ -203,6 +274,38 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         }
     }
     
+    public void calcularTotal(){
+        if(jListProductos.getSelectedValue() != null && !jTextFieldCantidad.getText().trim().isEmpty()){
+            jLabelDinero.setText("$");
+            double precioProducto = jListProductos.getSelectedValue().getPrecio();
+            int cantidad = Integer.parseInt(jTextFieldCantidad.getText());
+            double total = precioProducto * cantidad;
+            jLabelDinero.setText(jLabelDinero.getText() + total);
+        }
+    }
+    
+    public void agregarProductoAComanda(){
+        if(jListProductos.getSelectedValue() == null){
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado un Producto");
+        }
+        else if(jTextFieldCantidad.getText() == "0" || jTextFieldCantidad.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "La cantidad no puede ser 0, o estas vacia");
+        }
+        else{
+            Producto producto = jListProductos.getSelectedValue();
+            double precioActual = producto.getPrecio();
+            String comentario = jTextAreaComentario.getText();
+            Integer cantidad = Integer.parseInt(jTextFieldCantidad.getText());
+            double importe = precioActual * cantidad;
+            
+            productoComandaDTO = new ProductoComandaDTO(producto, precioActual, comentario, cantidad, importe);
+            
+            ventana.productosComandaDTO.add(productoComandaDTO);
+            ventana.cargarDatosTabla();
+        }
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -211,6 +314,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelCancelar;
     private javax.swing.JLabel jLabelCantidad;
     private javax.swing.JLabel jLabelComentario;
+    private javax.swing.JLabel jLabelComentario1;
     private javax.swing.JLabel jLabelDinero;
     private javax.swing.JLabel jLabelTotal;
     private javax.swing.JList<Producto> jListProductos;

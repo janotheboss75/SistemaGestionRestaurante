@@ -59,7 +59,7 @@ public class Control {
         pantallaComandaNueva.setVisible(true);
     }
     
-    public void mostrarPantallaAgregarProductoAComanda(JDialog ventana, boolean modal){
+    public void mostrarPantallaAgregarProductoAComanda(VentanaComandaNueva ventana, boolean modal){
         VentanaAgregarProductoAComanda pantallaAgregarProductoAComanda = new VentanaAgregarProductoAComanda(ventana, modal);
         pantallaAgregarProductoAComanda.setLocationRelativeTo(ventana);
         pantallaAgregarProductoAComanda.setVisible(modal);

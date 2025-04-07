@@ -1,13 +1,18 @@
 package GUI;
 
+import DTOs.ProductoComandaDTO;
 import entidades.Cliente;
 import entidades.Mesa;
+import entidades.Producto;
 import excepciones.NegocioException;
 import interfaces.IClienteBO;
 import interfaces.IMesaBO;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 
 /**
@@ -18,6 +23,8 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private IMesaBO mesaBO;
     private IClienteBO clienteBO;
     private Control control = new Control();
+    public List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
+    private List<Cliente> clientes;
     
     /**
      * Creates new form VentanaComandaNueva
@@ -29,7 +36,9 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         
         initComponents();
         cargarJComboBoxMesas();
-        cargarJComboBoxClientes();
+        
+        asignarDatosListaClientes();
+        cargarjListProductos();
     }
 
     /**
@@ -53,8 +62,12 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelIconAgregarProducto = new javax.swing.JLabel();
         jPanelCrear = new GUI.PanelRound();
         jLabelCrear = new javax.swing.JLabel();
-        jComboBoxClientes = new javax.swing.JComboBox<>();
         jLabelPrecio1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jListClientes = new javax.swing.JList<>();
+        jTextFieldCliente = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -80,15 +93,15 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
                 jLabelIconCerrarMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabelIconCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 60, 50));
+        jPanel1.add(jLabelIconCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 0, 60, 50));
 
         jComboBoxMesas.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jComboBoxMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 110, 30));
+        jPanel1.add(jComboBoxMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 110, 30));
 
         jLabelNombre.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelNombre.setForeground(new java.awt.Color(0, 0, 0));
         jLabelNombre.setText("Asignar Mesa");
-        jPanel1.add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, -1, -1));
+        jPanel1.add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, -1, -1));
 
         jLabelPrecio.setFont(new java.awt.Font("Product Sans Infanity", 0, 12)); // NOI18N
         jLabelPrecio.setForeground(new java.awt.Color(0, 0, 0));
@@ -133,15 +146,43 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         });
         jPanelCrear.add(jLabelCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
 
-        jPanel1.add(jPanelCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
-
-        jComboBoxClientes.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jComboBoxClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 160, 210, 30));
+        jPanel1.add(jPanelCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 480, 110, 30));
 
         jLabelPrecio1.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelPrecio1.setForeground(new java.awt.Color(0, 0, 0));
         jLabelPrecio1.setText("Asociar Cliente");
-        jPanel1.add(jLabelPrecio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, -1, -1));
+        jPanel1.add(jLabelPrecio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 120, -1, -1));
+
+        jTable1.setBackground(new java.awt.Color(255, 255, 255));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+            },
+            new String [] {
+                "Producto", "Cantidad", "Precio Unitario", "Importe", "Comentario", "Modificar", "Eliminar"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 870, 180));
+
+        jListClientes.setBackground(new java.awt.Color(255, 255, 255));
+        jListClientes.setModel(new javax.swing.DefaultListModel<Cliente>());
+        jScrollPane2.setViewportView(jListClientes);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, 210, 60));
+
+        jTextFieldCliente.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldClienteActionPerformed(evt);
+            }
+        });
+        jTextFieldCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldClienteKeyTyped(evt);
+            }
+        });
+        jPanel1.add(jTextFieldCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 142, 210, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 550));
 
@@ -160,9 +201,18 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabelCrearMouseClicked
 
+    private void jTextFieldClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldClienteActionPerformed
+
+    private void jTextFieldClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldClienteKeyTyped
+        String busqueda = jTextFieldCliente.getText();
+        buscador(busqueda);
+    }//GEN-LAST:event_jTextFieldClienteKeyTyped
+
     
     
-    /*UTILS*/
+    /*UTILS*/  
     public void cargarJComboBoxMesas(){
         List<Mesa> mesasDisponibles = new ArrayList();
         try {
@@ -178,25 +228,56 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         }
     }
     
-    public void cargarJComboBoxClientes(){
-        jComboBoxClientes.addItem(new Cliente(null, null, null, null, null, null) {
-        });
-        List<Cliente> clientes = new ArrayList();
-        try {
-           clientes =  clienteBO.consultarTodosLosClientes();
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, e);
+    public void cargarDatosTabla(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        for (ProductoComandaDTO productoComandaDTO : productosComandaDTO) {
+            model.addRow(new Object[]{
+                productoComandaDTO.getProducto().getNombre(),
+                productoComandaDTO.getCantidad(),
+                productoComandaDTO.getPrecioActual(),
+                productoComandaDTO.getImporte(),
+                productoComandaDTO.getComentario(),
+                "Modificar",
+                "Eliminar"
+            });
         }
+        jTable1.setModel(model);
         
-        if(clientes.size() != 0){
-            for (Cliente cliente : clientes) {
-                jComboBoxClientes.addItem(cliente);
-            }
-        }  
     }
     
+    public void cargarjListProductos(){
+        DefaultListModel<Cliente> modeloClientes = new DefaultListModel<>();
+        jListClientes.setModel(modeloClientes);
+        
+        for (Cliente cliente : clientes) {
+            modeloClientes.addElement(cliente);
+        }
+    }
+    
+    public void asignarDatosListaClientes(){
+        try {
+            this.clientes = clienteBO.consultarTodosLosClientes();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+    
+    public void buscador(String busqueda){
+        List<Cliente> clientesFiltrados = clientes.stream()
+                                                                .filter(cliente -> cliente.getNombre().concat(cliente.getApellidoPaterno()).trim().toLowerCase().startsWith(busqueda.trim().toLowerCase()))
+                                                                .collect(Collectors.toList());
+        DefaultListModel<Cliente> modeloClientes = new DefaultListModel<>();
+        jListClientes.setModel(modeloClientes);
+        
+        for (Cliente cliente : clientesFiltrados) {
+            modeloClientes.addElement(cliente);
+        }
+    }
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<Cliente> jComboBoxClientes;
     private javax.swing.JComboBox<Mesa> jComboBoxMesas;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
     private javax.swing.JLabel jLabelAgregarIngrediente2;
@@ -208,7 +289,12 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelPrecio1;
     private javax.swing.JLabel jLabelProductoNuevo2;
     private javax.swing.JLabel jLabelProductoNuevo3;
+    private javax.swing.JList<Cliente> jListClientes;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelCrear;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldCliente;
     // End of variables declaration//GEN-END:variables
 }
