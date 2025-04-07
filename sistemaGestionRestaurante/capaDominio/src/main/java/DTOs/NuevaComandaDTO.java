@@ -1,82 +1,57 @@
 package DTOs;
 
 import entidades.Cliente;
+import entidades.Comanda;
+import entidades.Mesa;
 import enums.EstadoComanda;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author janot
  */
 public class NuevaComandaDTO {
-    
-    private String folio;
-    
-    private Date fechaComanda;
-            
-    private EstadoComanda estado;
+         
+    private Comanda comanda;
     
     private double total;
     
-    private Long idCliente;
+    private Cliente Cliente;
     
-    private Long idMesa;
+    private Mesa mesa;
+    
+    private List<ProductoComandaDTO> productosComanda;
 
-    public NuevaComandaDTO(String folio, Date fechaComanda, EstadoComanda estado, double total, Long idCliente, Long idMesa) {
-        this.folio = folio;
-        this.fechaComanda = fechaComanda;
-        this.estado = estado;
+    public NuevaComandaDTO(double total, Cliente Cliente, Mesa mesa, List<ProductoComandaDTO> productosComanda) {
         this.total = total;
-        this.idCliente = idCliente;
-        this.idMesa = idMesa;
-    }
-
-    public String getFolio() {
-        return folio;
-    }
-
-    public void setFolio(String folio) {
-        this.folio = folio;
-    }
-
-    public Date getFechaComanda() {
-        return fechaComanda;
-    }
-
-    public void setFechaComanda(Date fechaComanda) {
-        this.fechaComanda = fechaComanda;
-    }
-
-    public EstadoComanda getEstado() {
-        return estado;
-    }
-
-    public void setEstado(EstadoComanda estado) {
-        this.estado = estado;
+        this.Cliente = Cliente;
+        this.mesa = mesa;
+        this.productosComanda = productosComanda;
     }
 
     public double getTotal() {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public Cliente getCliente() {
+        return Cliente;
     }
 
-    public Long getIdCliente() {
-        return idCliente;
+    public Mesa getMesa() {
+        return mesa;
     }
 
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
+    public List<ProductoComandaDTO> getProductosComanda() {
+        return productosComanda;
     }
 
-    public Long getIdMesa() {
-        return idMesa;
+    public Comanda getComanda() {
+        return comanda;
     }
 
-    public void setIdMesa(Long idMesa) {
-        this.idMesa = idMesa;
+    public void setComanda(Comanda comanda) {
+        this.comanda = comanda;
     }
 
 }

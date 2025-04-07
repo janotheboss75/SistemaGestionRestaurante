@@ -38,7 +38,7 @@ public class ClienteDAO implements IClienteDAO {
      * 
      * @return La instancia de ClienteDAO.
      */
-    public static ClienteDAO getInstance() {
+    public static ClienteDAO getInstanceDAO() {
         if (instance == null) {
             instance = new ClienteDAO();
         }

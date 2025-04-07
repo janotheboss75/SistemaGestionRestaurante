@@ -231,7 +231,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
 
     private void jLabelAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAgregarMouseClicked
         agregarProductoAComanda();
-        control.cerrarDialogo(this);
+
     }//GEN-LAST:event_jLabelAgregarMouseClicked
 
     private void jLabelCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCancelarMouseClicked
@@ -302,6 +302,7 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
             
             ventana.productosComandaDTO.add(productoComandaDTO);
             ventana.cargarDatosTabla();
+            control.cerrarDialogo(this);
         }
     }
 

@@ -1,11 +1,14 @@
 package GUI;
 
+import DTOs.NuevaComandaDTO;
 import DTOs.ProductoComandaDTO;
 import entidades.Cliente;
+import entidades.ClienteFrecuente;
+import entidades.Comanda;
 import entidades.Mesa;
-import entidades.Producto;
 import excepciones.NegocioException;
 import interfaces.IClienteBO;
+import interfaces.IComandaBO;
 import interfaces.IMesaBO;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 public class VentanaComandaNueva extends javax.swing.JDialog {
     private IMesaBO mesaBO;
     private IClienteBO clienteBO;
+    private IComandaBO comandaBO;
     private Control control = new Control();
     public List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
     private List<Cliente> clientes;
@@ -33,6 +37,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         super(parent, modal);
         mesaBO = ManejadorObjetosNegocio.crearMesaBO();
         clienteBO = ManejadorObjetosNegocio.crearClienteBO();
+        comandaBO = ManejadorObjetosNegocio.crearComandaBO();
         
         initComponents();
         cargarJComboBoxMesas();
@@ -167,6 +172,11 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
 
         jListClientes.setBackground(new java.awt.Color(255, 255, 255));
         jListClientes.setModel(new javax.swing.DefaultListModel<Cliente>());
+        jListClientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListClientesValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListClientes);
 
         jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 170, 210, 60));
@@ -198,7 +208,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabelIconAgregarProductoMouseClicked
 
     private void jLabelCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCrearMouseClicked
-        control.cerrarDialogo(this);
+        crearComanda();
     }//GEN-LAST:event_jLabelCrearMouseClicked
 
     private void jTextFieldClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClienteActionPerformed
@@ -206,9 +216,15 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextFieldClienteActionPerformed
 
     private void jTextFieldClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldClienteKeyTyped
-        String busqueda = jTextFieldCliente.getText();
+        String busqueda = jTextFieldCliente.getText();  
         buscador(busqueda);
     }//GEN-LAST:event_jTextFieldClienteKeyTyped
+
+    private void jListClientesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListClientesValueChanged
+        if (jListClientes.getSelectedValue() != null) {
+            jTextFieldCliente.setText(jListClientes.getSelectedValue().toString());
+        }
+    }//GEN-LAST:event_jListClientesValueChanged
 
     
     
@@ -249,7 +265,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     public void cargarjListProductos(){
         DefaultListModel<Cliente> modeloClientes = new DefaultListModel<>();
         jListClientes.setModel(modeloClientes);
-        
+       
         for (Cliente cliente : clientes) {
             modeloClientes.addElement(cliente);
         }
@@ -258,6 +274,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     public void asignarDatosListaClientes(){
         try {
             this.clientes = clienteBO.consultarTodosLosClientes();
+            this.clientes.addFirst(new Cliente(){});
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
@@ -265,13 +282,40 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     
     public void buscador(String busqueda){
         List<Cliente> clientesFiltrados = clientes.stream()
-                                                                .filter(cliente -> cliente.getNombre().concat(cliente.getApellidoPaterno()).trim().toLowerCase().startsWith(busqueda.trim().toLowerCase()))
+                                                                .filter(cliente -> (cliente.getNombre() + " " + cliente.getApellidoPaterno()).toLowerCase().startsWith(busqueda.toLowerCase()) || (cliente.getTelefono() +  " ").startsWith(busqueda))
                                                                 .collect(Collectors.toList());
         DefaultListModel<Cliente> modeloClientes = new DefaultListModel<>();
         jListClientes.setModel(modeloClientes);
         
         for (Cliente cliente : clientesFiltrados) {
             modeloClientes.addElement(cliente);
+        }
+    }
+    
+    public void crearComanda(){
+        if(jComboBoxMesas.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle una mesa a la comanda");
+        }
+        else{
+            Mesa mesa = (Mesa) jComboBoxMesas.getSelectedItem();
+            Cliente cliente = jListClientes.getSelectedValue();
+            List<ProductoComandaDTO> productos = productosComandaDTO;
+            double total = 0;
+            for (ProductoComandaDTO producto : productos) {
+                total += producto.getImporte();
+            }
+
+            NuevaComandaDTO comandaNueva = new NuevaComandaDTO(total, cliente, mesa, productosComandaDTO);
+
+            try {
+                NuevaComandaDTO comandaAgregada = comandaBO.crearComanda(comandaNueva);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
+            
+            JOptionPane.showMessageDialog(this, "Comanda Creada");
+            control.cerrarDialogo(this);
         }
     }
     
