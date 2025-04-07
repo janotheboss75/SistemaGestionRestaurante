@@ -1,20 +1,35 @@
 package GUI;
 
 import entidades.Cliente;
+import entidades.Mesa;
+import excepciones.NegocioException;
+import interfaces.IClienteBO;
+import interfaces.IMesaBO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 
 /**
  *
  * @author janot
  */
 public class VentanaComandaNueva extends javax.swing.JDialog {
-    Control control = new Control();
+    private IMesaBO mesaBO;
+    private IClienteBO clienteBO;
+    private Control control = new Control();
     
     /**
      * Creates new form VentanaComandaNueva
      */
     public VentanaComandaNueva(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        mesaBO = ManejadorObjetosNegocio.crearMesaBO();
+        clienteBO = ManejadorObjetosNegocio.crearClienteBO();
+        
         initComponents();
+        cargarJComboBoxMesas();
+        cargarJComboBoxClientes();
     }
 
     /**
@@ -30,16 +45,16 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelAgregarIngrediente2 = new javax.swing.JLabel();
         jLabelProductoNuevo2 = new javax.swing.JLabel();
         jLabelIconCerrar = new javax.swing.JLabel();
-        jTextFieldNombre = new javax.swing.JTextField();
-        jComboBoxCategoria = new javax.swing.JComboBox<>();
-        jLabelCategoria = new javax.swing.JLabel();
+        jComboBoxMesas = new javax.swing.JComboBox<>();
         jLabelNombre = new javax.swing.JLabel();
         jLabelPrecio = new javax.swing.JLabel();
         jLabelProductoNuevo3 = new javax.swing.JLabel();
         jLabelAgregarIngrediente1 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanelMesero = new GUI.PanelRound();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelIconAgregarProducto = new javax.swing.JLabel();
+        jPanelCrear = new GUI.PanelRound();
+        jLabelCrear = new javax.swing.JLabel();
+        jComboBoxClientes = new javax.swing.JComboBox<>();
+        jLabelPrecio1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -67,26 +82,18 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         });
         jPanel1.add(jLabelIconCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 60, 50));
 
-        jTextFieldNombre.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 200, 30));
-
-        jComboBoxCategoria.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.add(jComboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 110, 30));
-
-        jLabelCategoria.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
-        jLabelCategoria.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelCategoria.setText("Categoria");
-        jPanel1.add(jLabelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, -1, -1));
+        jComboBoxMesas.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(jComboBoxMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 160, 110, 30));
 
         jLabelNombre.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelNombre.setForeground(new java.awt.Color(0, 0, 0));
         jLabelNombre.setText("Asignar Mesa");
-        jPanel1.add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+        jPanel1.add(jLabelNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, -1, -1));
 
-        jLabelPrecio.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
+        jLabelPrecio.setFont(new java.awt.Font("Product Sans Infanity", 0, 12)); // NOI18N
         jLabelPrecio.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelPrecio.setText("Cliente");
-        jPanel1.add(jLabelPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
+        jLabelPrecio.setText("*Opcional");
+        jPanel1.add(jLabelPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, -1, -1));
 
         jLabelProductoNuevo3.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
         jLabelProductoNuevo3.setForeground(new java.awt.Color(0, 0, 0));
@@ -98,35 +105,43 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelAgregarIngrediente1.setText("Agregar");
         jPanel1.add(jLabelAgregarIngrediente1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 70, -1));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add.png"))); // NOI18N
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelIconAgregarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/add.png"))); // NOI18N
+        jLabelIconAgregarProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconAgregarProducto.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                jLabelIconAgregarProductoMouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, -1, -1));
+        jPanel1.add(jLabelIconAgregarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 130, -1, -1));
 
-        jPanelMesero.setBackground(new java.awt.Color(44, 44, 44));
-        jPanelMesero.setRoundBottomLeft(15);
-        jPanelMesero.setRoundBottomRight(15);
-        jPanelMesero.setRoundTopLeft(15);
-        jPanelMesero.setRoundTopRight(15);
-        jPanelMesero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanelCrear.setBackground(new java.awt.Color(44, 44, 44));
+        jPanelCrear.setRoundBottomLeft(15);
+        jPanelCrear.setRoundBottomRight(15);
+        jPanelCrear.setRoundTopLeft(15);
+        jPanelCrear.setRoundTopRight(15);
+        jPanelCrear.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Guardar");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelCrear.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabelCrear.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelCrear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelCrear.setText("Crear");
+        jLabelCrear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelCrear.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                jLabelCrearMouseClicked(evt);
             }
         });
-        jPanelMesero.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
+        jPanelCrear.add(jLabelCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
 
-        jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
+        jPanel1.add(jPanelCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
+
+        jComboBoxClientes.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.add(jComboBoxClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 160, 210, 30));
+
+        jLabelPrecio1.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
+        jLabelPrecio1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelPrecio1.setText("Asociar Cliente");
+        jPanel1.add(jLabelPrecio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 550));
 
@@ -137,30 +152,63 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabelIconCerrarMouseClicked
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        //control.mostrarPantallaAgregarIngredienteAProducto(this,rootPaneCheckingEnabled);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void jLabelIconAgregarProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconAgregarProductoMouseClicked
+        control.mostrarPantallaAgregarProductoAComanda(this,rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jLabelIconAgregarProductoMouseClicked
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void jLabelCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCrearMouseClicked
         control.cerrarDialogo(this);
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_jLabelCrearMouseClicked
 
     
+    
+    /*UTILS*/
+    public void cargarJComboBoxMesas(){
+        List<Mesa> mesasDisponibles = new ArrayList();
+        try {
+           mesasDisponibles =  mesaBO.consultarMesasDisponibles();
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        
+        if(mesasDisponibles.size() != 0){
+            for (Mesa mesa : mesasDisponibles) {
+                jComboBoxMesas.addItem(mesa);
+            }
+        }
+    }
+    
+    public void cargarJComboBoxClientes(){
+        jComboBoxClientes.addItem(new Cliente(null, null, null, null, null, null) {
+        });
+        List<Cliente> clientes = new ArrayList();
+        try {
+           clientes =  clienteBO.consultarTodosLosClientes();
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+        
+        if(clientes.size() != 0){
+            for (Cliente cliente : clientes) {
+                jComboBoxClientes.addItem(cliente);
+            }
+        }  
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<Cliente> jComboBoxCategoria;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox<Cliente> jComboBoxClientes;
+    private javax.swing.JComboBox<Mesa> jComboBoxMesas;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
     private javax.swing.JLabel jLabelAgregarIngrediente2;
-    private javax.swing.JLabel jLabelCategoria;
+    private javax.swing.JLabel jLabelCrear;
+    private javax.swing.JLabel jLabelIconAgregarProducto;
     private javax.swing.JLabel jLabelIconCerrar;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelPrecio;
+    private javax.swing.JLabel jLabelPrecio1;
     private javax.swing.JLabel jLabelProductoNuevo2;
     private javax.swing.JLabel jLabelProductoNuevo3;
     private javax.swing.JPanel jPanel1;
-    private GUI.PanelRound jPanelMesero;
-    private javax.swing.JTextField jTextFieldNombre;
+    private GUI.PanelRound jPanelCrear;
     // End of variables declaration//GEN-END:variables
 }

@@ -63,4 +63,6 @@ public interface IProductoDAO {
      */
     public List<IngredienteProducto> consultarIngredientesDelProducto(Long idProducto) throws PersistenciaException; 
     
+    public List<Producto> consultarProductosHabilitados() throws PersistenciaException;
+    
 }

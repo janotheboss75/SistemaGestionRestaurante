@@ -259,7 +259,12 @@ public abstract class Cliente implements Serializable {
      */
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", telefono=" + telefono + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correoElectronico=" + correoElectronico + ", fechaRegistro=" + fechaRegistro + ", comandas=" + comandas.size() + '}';
+        if(id != null){
+            return nombre + " " + apellidoPaterno + " (" +telefono + ")";
+        }
+        else{
+            return "No asignar";
+        }
     }
 
 }

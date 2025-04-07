@@ -2,6 +2,7 @@ package com.carniceria.capapersistencia;
 
 import DAO.ComandaDAO;
 import DAO.IngredienteProductoDAO;
+import DAO.MesaDAO;
 import DAO.ProductoComandaDAO;
 import DAO.ProductoDAO;
 import conexion.Conexion;
@@ -28,18 +29,9 @@ import javax.persistence.Persistence;
  * @author janot
  */
 public class CapaPersistencia {
-
     public static void main(String[] args) throws PersistenciaException {
-
-        ComandaDAO comandaDAO = ComandaDAO.getInstanceDAO();
-        ProductoDAO productoDAO = ProductoDAO.getInstanceDAO();
-        EntityManager em = Conexion.crearConexion();
-        Comanda comanda = new Comanda("47483djdj", new Date(), EstadoComanda.ENTREGADA, 0, null, em.find(Mesa.class, 1L));
-        
-        try {
-            System.out.println(productoDAO.inhabilitarProducto(1L));
-        } catch (PersistenciaException ex) {
-            ex.printStackTrace();
-        }
+        MesaDAO mesaDAO = MesaDAO.getInstanceDAO();
+   
+        System.out.println(mesaDAO.consultarMesasDisponibles());
     }
 }

@@ -7,6 +7,7 @@ import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IProductoBO;
 import interfaces.IProductoDAO;
+import java.util.List;
 import mappers.ProductoMapper;
 
 /**
@@ -31,6 +32,15 @@ public class ProductoBO implements IProductoBO{
             throw new NegocioException("Error: No se pudo guardar el producto " + nuevoProducto.getNombre() + " a la BD", e);
         }
         
+    }
+
+    @Override
+    public List<Producto> consultarProductosHabilitados() throws NegocioException {
+        try {
+            return productoDAO.consultarProductosHabilitados();
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
     
 }

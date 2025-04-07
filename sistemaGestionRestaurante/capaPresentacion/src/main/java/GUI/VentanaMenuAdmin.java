@@ -1,11 +1,19 @@
 package GUI;
 
+import BO.ProductoBO;
+import excepciones.NegocioException;
+import interfaces.IMesaBO;
+import javax.swing.JOptionPane;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+
 /**
  *
  * @author janot
  */
 public class VentanaMenuAdmin extends javax.swing.JFrame {
+    private IMesaBO mesaBO;
     private Control control = new Control();
+    private final int CANTIDAD_MESAS_AGREGAR = 20;
     
     /**
      * Creates new form VentanaMenuAdmin
@@ -13,6 +21,9 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     public VentanaMenuAdmin() {
         initComponents();
         this.setLocationRelativeTo(null);
+        mesaBO = ManejadorObjetosNegocio.crearMesaBO();
+        ocultarBtnInsertarMesas();
+        
     }
 
     /**
@@ -25,7 +36,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelRestaurante = new javax.swing.JLabel();
         jPanelComandas = new javax.swing.JPanel();
         jLabelIconComanda = new javax.swing.JLabel();
         jPanelProductos = new javax.swing.JPanel();
@@ -45,6 +56,10 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelClientes1 = new javax.swing.JLabel();
         jLabelNuevaComanda1 = new javax.swing.JLabel();
         jLabelRegresar = new javax.swing.JLabel();
+        jPanelInsertarMesas = new GUI.PanelRound();
+        jLabelInsertarMesas1 = new javax.swing.JLabel();
+        jLabelInsertarMesas2 = new javax.swing.JLabel();
+        jLabelInsertarMesas3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(920, 590));
@@ -53,11 +68,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Product Sans Infanity", 0, 66)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Restaurante");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 370, -1));
+        jLabelRestaurante.setFont(new java.awt.Font("Product Sans Infanity", 0, 66)); // NOI18N
+        jLabelRestaurante.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelRestaurante.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelRestaurante.setText("Restaurante");
+        jPanel1.add(jLabelRestaurante, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 30, 370, -1));
 
         jPanelComandas.setBackground(new java.awt.Color(217, 217, 217));
         jPanelComandas.setForeground(new java.awt.Color(217, 217, 217));
@@ -250,6 +265,51 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         });
         jPanel1.add(jLabelRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jPanelInsertarMesas.setBackground(new java.awt.Color(44, 44, 44));
+        jPanelInsertarMesas.setRoundBottomLeft(15);
+        jPanelInsertarMesas.setRoundBottomRight(15);
+        jPanelInsertarMesas.setRoundTopLeft(15);
+        jPanelInsertarMesas.setRoundTopRight(15);
+        jPanelInsertarMesas.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabelInsertarMesas1.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
+        jLabelInsertarMesas1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInsertarMesas1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelInsertarMesas1.setText("Insertar ");
+        jLabelInsertarMesas1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelInsertarMesas1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelInsertarMesas1MouseClicked(evt);
+            }
+        });
+        jPanelInsertarMesas.add(jLabelInsertarMesas1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, -1));
+
+        jLabelInsertarMesas2.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
+        jLabelInsertarMesas2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInsertarMesas2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelInsertarMesas2.setText("20");
+        jLabelInsertarMesas2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelInsertarMesas2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelInsertarMesas2MouseClicked(evt);
+            }
+        });
+        jPanelInsertarMesas.add(jLabelInsertarMesas2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 100, -1));
+
+        jLabelInsertarMesas3.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
+        jLabelInsertarMesas3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelInsertarMesas3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelInsertarMesas3.setText("Mesas");
+        jLabelInsertarMesas3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelInsertarMesas3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelInsertarMesas3MouseClicked(evt);
+            }
+        });
+        jPanelInsertarMesas.add(jLabelInsertarMesas3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 100, 30));
+
+        jPanel1.add(jPanelInsertarMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 40, 100, 70));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, 590));
 
         pack();
@@ -274,11 +334,53 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         control.mostrarPantallaComandaNueva(this, rootPaneCheckingEnabled);
     }//GEN-LAST:event_jLabelIconNuevaComandaMouseClicked
 
+    private void jLabelInsertarMesas1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInsertarMesas1MouseClicked
+        insertarMesas(CANTIDAD_MESAS_AGREGAR);
+    }//GEN-LAST:event_jLabelInsertarMesas1MouseClicked
+
+    private void jLabelInsertarMesas2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInsertarMesas2MouseClicked
+        insertarMesas(CANTIDAD_MESAS_AGREGAR);
+    }//GEN-LAST:event_jLabelInsertarMesas2MouseClicked
+
+    private void jLabelInsertarMesas3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInsertarMesas3MouseClicked
+        insertarMesas(CANTIDAD_MESAS_AGREGAR);
+    }//GEN-LAST:event_jLabelInsertarMesas3MouseClicked
 
 
+    /* UTILS */
+    
+    public void ocultarBtnInsertarMesas(){
+        if(mesasRegistradasEnBD() != 0){
+            jPanel1.remove(jPanelInsertarMesas);
+            jPanel1.repaint();
+        }
+    }
+    
+    public void insertarMesas(int cantidadMesas){
+        try {
+           if(mesaBO.agregarMesas(cantidadMesas)){
+               JOptionPane.showMessageDialog(this, "Se han insertado " + cantidadMesas + " mesas");
+               ocultarBtnInsertarMesas();
+               
+           }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+
+    public int mesasRegistradasEnBD(){
+        int size  = 0;
+        try {
+            size = mesaBO.consultarMesas().size();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        
+        return size;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanelClientes;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelClientes1;
     private javax.swing.JLabel jLabelComandas1;
     private javax.swing.JLabel jLabelIconClientes;
@@ -288,14 +390,19 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelIconNuevaComanda;
     private javax.swing.JLabel jLabelIconProductos;
     private javax.swing.JLabel jLabelIngredientes;
+    private javax.swing.JLabel jLabelInsertarMesas1;
+    private javax.swing.JLabel jLabelInsertarMesas2;
+    private javax.swing.JLabel jLabelInsertarMesas3;
     private javax.swing.JLabel jLabelNuevaComanda;
     private javax.swing.JLabel jLabelNuevaComanda1;
     private javax.swing.JLabel jLabelProductos;
     private javax.swing.JLabel jLabelRegresar;
+    private javax.swing.JLabel jLabelRestaurante;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelComandas;
     private javax.swing.JPanel jPanelComandasPendientes;
     private javax.swing.JPanel jPanelIngredientes;
+    private GUI.PanelRound jPanelInsertarMesas;
     private javax.swing.JPanel jPanelNuevaComanda;
     private javax.swing.JPanel jPanelProductos;
     // End of variables declaration//GEN-END:variables

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -230,6 +231,28 @@ public class ProductoDAO implements IProductoDAO{
                 em.close();
             }
         }
+    }
+
+    @Override
+    public List<Producto> consultarProductosHabilitados() throws PersistenciaException {
+        List<Producto> productos = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        String jpql = "SELECT p FROM Producto p WHERE p.estado= :estado";
+        try {
+            TypedQuery<Producto> query = em.createQuery(jpql, Producto.class);
+            query.setParameter("estado", EstadoProducto.HABILITADO);
+            return query.getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar a todas los prodcutos habilitados", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+
     }
     
 }

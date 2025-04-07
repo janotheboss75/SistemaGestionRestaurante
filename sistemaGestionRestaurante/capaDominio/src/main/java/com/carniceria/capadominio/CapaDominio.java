@@ -99,23 +99,21 @@ public class CapaDominio {
         entityManager.getTransaction().commit();
         */
         
-        /*
         //Agregar Clientes a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(cliente1);
         entityManager.persist(cliente2);
         entityManager.persist(cliente3);
         entityManager.getTransaction().commit();
-        */
-        
-        /*
+
+
         //Agregar Producto a la BD
         entityManager.getTransaction().begin();
         entityManager.persist(producto1);
         entityManager.persist(producto2);
         entityManager.persist(producto3);
         entityManager.getTransaction().commit();
-        */
+
         
         /*
         //Agregar Comanda a la BD

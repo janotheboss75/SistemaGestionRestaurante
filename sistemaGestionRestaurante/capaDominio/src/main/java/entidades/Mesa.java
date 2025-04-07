@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Representa una mesa de un restaurante
@@ -16,6 +17,7 @@ import javax.persistence.Id;
  * @author janot
  */
 @Entity
+@Table(name = "Mesas")
 public class Mesa implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,7 +67,7 @@ public class Mesa implements Serializable {
 
     @Override
     public String toString() {
-        return "Mesa{" + "id=" + id + ", numeroMesa=" + numeroMesa + ", estadoMesa=" + estadoMesa + '}';
+        return "Mesa: " + this.getNumeroMesa();
     }
     
 }

@@ -1,14 +1,23 @@
 package GUI;
 
+import entidades.Producto;
+import excepciones.NegocioException;
+import interfaces.IProductoBO;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 
 /**
  *
  * @author janot
  */
 public class Control {
+    private IProductoBO productoBO;
+    
     public Control() {
+        productoBO = ManejadorObjetosNegocio.crearProductoBO();
     }
     
     public void mostrarPantallaEscogerRol(){
@@ -50,11 +59,18 @@ public class Control {
         pantallaComandaNueva.setVisible(true);
     }
     
+    public void mostrarPantallaAgregarProductoAComanda(JDialog ventana, boolean modal){
+        VentanaAgregarProductoAComanda pantallaAgregarProductoAComanda = new VentanaAgregarProductoAComanda(ventana, modal);
+        pantallaAgregarProductoAComanda.setLocationRelativeTo(ventana);
+        pantallaAgregarProductoAComanda.setVisible(modal);
+   }
+    
     public void cerrarPantalla(JFrame ventana){
         ventana.dispose();
     }
     
     public void cerrarDialogo(JDialog ventana){
         ventana.dispose();
-    }
+    }  
+    
 }
