@@ -1,14 +1,10 @@
 package GUI;
 
 import DTOs.ProductoDTO;
-import entidades.Producto;
 import enums.EstadoProducto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 
@@ -23,7 +19,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     /**
      * Creates new form NewJDialog
      */
-    public VentanaProductoNuevo(java.awt.Frame parent, boolean modal) {
+    public VentanaProductoNuevo(VentanaProductos parent, boolean modal) {
         super(parent, modal);
         initComponents();
         cargarComboBoxCategoria();

@@ -40,13 +40,13 @@ public class Control {
         pantallaVentanaProductos.setVisible(true);
     }
     
-    public void mostrarPantallaProductoNuevo(JFrame ventana, boolean modal){
+    public void mostrarPantallaProductoNuevo(VentanaProductos ventana, boolean modal){
         VentanaProductoNuevo pantallaProductoNuevo = new VentanaProductoNuevo(ventana, modal);
         pantallaProductoNuevo.setLocationRelativeTo(ventana);
         pantallaProductoNuevo.setVisible(true);
     }
     
-    public void mostrarPantallaAgregarIngredienteAProducto(JDialog ventana, boolean modal){
+    public void mostrarPantallaAgregarIngredienteAProducto(VentanaProductoNuevo ventana, boolean modal){
         VentanaAgregarIngredienteAProducto pantallaAgregarIngredienteAProducto = new VentanaAgregarIngredienteAProducto(ventana,modal);
         pantallaAgregarIngredienteAProducto.setLocationRelativeTo(ventana);
         pantallaAgregarIngredienteAProducto.setVisible(true);

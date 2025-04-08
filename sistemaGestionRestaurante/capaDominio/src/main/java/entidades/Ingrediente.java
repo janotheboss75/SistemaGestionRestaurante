@@ -165,6 +165,14 @@ public class Ingrediente implements Serializable {
 
     @Override
     public String toString() {
-        return "Ingrediente{" + "id=" + id + ", nombre=" + nombre + ", unidadMedida=" + unidadMedida + ", stock=" + stock + '}';
+        if(unidadMedida == unidadMedida.GRAMOS){
+            return nombre + "   (gramos).";
+        }
+        else if(unidadMedida == unidadMedida.MILILITROS){
+            return nombre + "   (ml).";
+        }
+        else{
+            return nombre + "   (piezas).";
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.carniceria.capapersistencia;
 
 import DAO.ComandaDAO;
+import DAO.IngredienteDAO;
 import DAO.IngredienteProductoDAO;
 import DAO.MesaDAO;
 import DAO.ProductoComandaDAO;
@@ -30,8 +31,8 @@ import javax.persistence.Persistence;
  */
 public class CapaPersistencia {
     public static void main(String[] args) throws PersistenciaException {
-        MesaDAO mesaDAO = MesaDAO.getInstanceDAO();
+        IngredienteDAO ingDAO = IngredienteDAO.getInstanceDAO();
    
-        System.out.println(mesaDAO.consultarMesasDisponibles());
+        System.out.println(ingDAO.consultarTodosLosIngredientes());
     }
 }

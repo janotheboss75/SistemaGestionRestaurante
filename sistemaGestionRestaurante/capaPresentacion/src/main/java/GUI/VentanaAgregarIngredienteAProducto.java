@@ -1,26 +1,43 @@
 package GUI;
 
+import DTOs.IngredienteProductoDTO;
+import entidades.Ingrediente;
+import enums.UnidadDeMedida;
+import interfaces.IIngredienteBO;
 import java.awt.Dialog;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.SoloEnterosFilter;
+import utils.SoloFiltroNumerico;
 
 /**
  *
  * @author janot
  */
 public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
-
+    private Control control = new Control();
+    private IIngredienteBO ingredienteBO;
+    private List<Ingrediente> ingredientes;
+    private IngredienteProductoDTO ingredienteProductoDTO;
+    private VentanaProductoNuevo ventana;
+    
+    
     /**
      * Creates new form VentanaAgregarIngredienteAProducto
      */
-    public VentanaAgregarIngredienteAProducto(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public VentanaAgregarIngredienteAProducto(VentanaProductoNuevo ventana, boolean modal) {
+        super(ventana, modal);
+        ingredienteBO = ManejadorObjetosNegocio.crearIngredienteBO();
+        this.ventana = ventana;
         initComponents();
+        asignarDatosListaIngredientes();
+        cargarjListIngredientes();
     }
-
-    public VentanaAgregarIngredienteAProducto(Dialog owner, boolean modal) {
-        super(owner, modal);
-    }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,37 +49,179 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListIngredientes = new javax.swing.JList<>();
+        jTextFieldIngrediente = new javax.swing.JTextField();
+        jTextFieldCantidad = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jPanelMesero = new GUI.PanelRound();
+        jLabel1 = new javax.swing.JLabel();
+        jLabelCantidad = new javax.swing.JLabel();
+        jLabelIconCerrar = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
-        );
+        jLabel2.setFont(new java.awt.Font("Product Sans Infanity", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Ingrediente");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 620, -1));
+
+        jLabel3.setFont(new java.awt.Font("Product Sans Infanity", 1, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Agregar");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 180, -1));
+
+        jListIngredientes.setBackground(new java.awt.Color(255, 255, 255));
+        jListIngredientes.setModel(new DefaultListModel<Ingrediente>());
+        jListIngredientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListIngredientesValueChanged(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jListIngredientes);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 150, 170, 100));
+
+        jTextFieldIngrediente.setBackground(new java.awt.Color(255, 255, 255));
+        jTextFieldIngrediente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldIngredienteKeyTyped(evt);
+            }
+        });
+        jPanel1.add(jTextFieldIngrediente, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 120, 170, 30));
+
+        jTextFieldCantidad.setBackground(new java.awt.Color(255, 255, 255));
+        ((AbstractDocument) jTextFieldCantidad.getDocument()).setDocumentFilter(new SoloFiltroNumerico());
+        jPanel1.add(jTextFieldCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 170, 30));
+
+        jLabel4.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Ingrediente");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 100, -1, -1));
+
+        jPanelMesero.setBackground(new java.awt.Color(44, 44, 44));
+        jPanelMesero.setRoundBottomLeft(15);
+        jPanelMesero.setRoundBottomRight(15);
+        jPanelMesero.setRoundTopLeft(15);
+        jPanelMesero.setRoundTopRight(15);
+        jPanelMesero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Product Sans Infanity", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Agregar");
+        jPanelMesero.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
+
+        jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, 90, 30));
+
+        jLabelCantidad.setFont(new java.awt.Font("Product Sans Infanity", 0, 14)); // NOI18N
+        jLabelCantidad.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelCantidad.setText("Cantidad");
+        jPanel1.add(jLabelCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 270, -1, -1));
+
+        jLabelIconCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cross-small.png"))); // NOI18N
+        jLabelIconCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconCerrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconCerrarMouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabelIconCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 60, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 610, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 418, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jLabelIconCerrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconCerrarMouseClicked
+        control.cerrarDialogo(this);
+    }//GEN-LAST:event_jLabelIconCerrarMouseClicked
+
+    private void jTextFieldIngredienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldIngredienteKeyTyped
+        String busqueda = jTextFieldIngrediente.getText();
+        buscador(busqueda);
+    }//GEN-LAST:event_jTextFieldIngredienteKeyTyped
+
+    private void jListIngredientesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListIngredientesValueChanged
+        adaptarSegunUnidadDeMedida();
+    }//GEN-LAST:event_jListIngredientesValueChanged
+
+    public void cargarjListIngredientes(){
+        DefaultListModel<Ingrediente> modeloIngredientes = new DefaultListModel<>();
+        jListIngredientes.setModel(modeloIngredientes);
+        
+        for (Ingrediente ingrediente : ingredientes) {
+            modeloIngredientes.addElement(ingrediente);
+        }
+    }
+    
+    public void asignarDatosListaIngredientes(){
+        try {
+            this.ingredientes = ingredienteBO.consultarTodosLosIngredientes();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+    
+    public void buscador(String busqueda){
+        List<Ingrediente> ingredientesFiltrados = ingredientes.stream().
+                                                                filter(ingrediente -> ingrediente.getNombre().toLowerCase().trim().startsWith(busqueda.toLowerCase())).
+                                                                collect(Collectors.toList());
+        DefaultListModel<Ingrediente> modeloProductos = new DefaultListModel<>();
+        jListIngredientes.setModel(modeloProductos);
+        
+        for (Ingrediente ingrediente : ingredientesFiltrados) {
+            modeloProductos.addElement(ingrediente);
+        }                                                     
+    }
+    
+    public void adaptarSegunUnidadDeMedida(){
+        jLabelCantidad.setText("Cantidad");
+        if (jListIngredientes.getSelectedValue() != null) {
+            jTextFieldIngrediente.setText(jListIngredientes.getSelectedValue().toString());
+            jLabelCantidad.setText(jLabelCantidad.getText() + " (" + jListIngredientes.getSelectedValue().getUnidadMedida().toString().toLowerCase() +  ")");
+            
+            if(jListIngredientes.getSelectedValue().getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
+                ((AbstractDocument) jTextFieldCantidad.getDocument()).setDocumentFilter(new SoloEnterosFilter());
+            }
+            else{
+                ((AbstractDocument) jTextFieldCantidad.getDocument()).setDocumentFilter(new SoloFiltroNumerico());
+            }
+        }
+    }
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelCantidad;
+    private javax.swing.JLabel jLabelIconCerrar;
+    private javax.swing.JList<Ingrediente> jListIngredientes;
     private javax.swing.JPanel jPanel1;
+    private GUI.PanelRound jPanelMesero;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextFieldCantidad;
+    private javax.swing.JTextField jTextFieldIngrediente;
     // End of variables declaration//GEN-END:variables
 }
