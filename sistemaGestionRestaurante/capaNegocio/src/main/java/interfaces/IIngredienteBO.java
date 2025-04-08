@@ -1,5 +1,6 @@
 package interfaces;
 
+import DTOs.IngredienteProductoDTO;
 import entidades.Ingrediente;
 import excepciones.NegocioException;
 import java.util.List;
@@ -10,4 +11,5 @@ import java.util.List;
  */
 public interface IIngredienteBO {
     public List<Ingrediente> consultarTodosLosIngredientes() throws NegocioException;
+    
 }

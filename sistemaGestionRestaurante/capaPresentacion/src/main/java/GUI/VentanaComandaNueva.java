@@ -23,11 +23,11 @@ import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
  * @author janot
  */
 public class VentanaComandaNueva extends javax.swing.JDialog {
+    private Control control = new Control();
     private IMesaBO mesaBO;
     private IClienteBO clienteBO;
     private IComandaBO comandaBO;
-    private Control control = new Control();
-    public List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
+    protected List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
     private List<Cliente> clientes;
     
     /**
@@ -41,9 +41,9 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         
         initComponents();
         cargarJComboBoxMesas();
-        
         asignarDatosListaClientes();
         cargarjListProductos();
+        cargarDatosTabla();
     }
 
     /**
@@ -68,11 +68,11 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jPanelCrear = new GUI.PanelRound();
         jLabelCrear = new javax.swing.JLabel();
         jLabelPrecio1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListClientes = new javax.swing.JList<>();
         jTextFieldCliente = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableProductos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -158,18 +158,6 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelPrecio1.setText("Asociar Cliente");
         jPanel1.add(jLabelPrecio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 120, -1, -1));
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-            },
-            new String [] {
-                "Producto", "Cantidad", "Precio Unitario", "Importe", "Comentario", "Modificar", "Eliminar"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 870, 180));
-
         jListClientes.setBackground(new java.awt.Color(255, 255, 255));
         jListClientes.setModel(new javax.swing.DefaultListModel<Cliente>());
         jListClientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -193,6 +181,16 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
             }
         });
         jPanel1.add(jTextFieldCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 142, 210, 30));
+
+        jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {},
+            new String [] {
+                "Producto", "Cantidad", "Precio", "Importe","Modificar","Eliminar"
+            }
+        ));
+        jScrollPane3.setViewportView(jTableProductos);
+
+        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 250, 870, 220));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 870, 550));
 
@@ -245,8 +243,8 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }
     
     public void cargarDatosTabla(){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
+        DefaultTableModel model = (DefaultTableModel) jTableProductos.getModel();
+        model.setNumRows(0);
         for (ProductoComandaDTO productoComandaDTO : productosComandaDTO) {
             model.addRow(new Object[]{
                 productoComandaDTO.getProducto().getNombre(),
@@ -258,7 +256,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
                 "Eliminar"
             });
         }
-        jTable1.setModel(model);
+        jTableProductos.setModel(model);
         
     }
     
@@ -336,9 +334,9 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private javax.swing.JList<Cliente> jListClientes;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelCrear;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableProductos;
     private javax.swing.JTextField jTextFieldCliente;
     // End of variables declaration//GEN-END:variables
 }

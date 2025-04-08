@@ -288,10 +288,14 @@ public class VentanaAgregarProductoAComanda extends javax.swing.JDialog {
         if(jListProductos.getSelectedValue() == null){
             JOptionPane.showMessageDialog(this, "No se ha seleccionado un Producto");
         }
-        else if(jTextFieldCantidad.getText() == "0" || jTextFieldCantidad.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "La cantidad no puede ser 0, o estas vacia");
+        
+        if(jTextFieldCantidad.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "La cantidad esta vacia");
         }
-        else{
+        else if(Integer.parseInt(jTextFieldCantidad.getText()) <= 0 || jTextFieldCantidad.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "La cantidad no puede ser 0, menor a cero ,o estar vacia");
+        }
+        else if(jListProductos.getSelectedValue() != null){
             Producto producto = jListProductos.getSelectedValue();
             double precioActual = producto.getPrecio();
             String comentario = jTextAreaComentario.getText();

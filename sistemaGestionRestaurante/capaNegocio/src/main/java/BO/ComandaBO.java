@@ -7,6 +7,7 @@ import DTOs.ProductoComandaDTO;
 import entidades.Comanda;
 import entidades.ProductoComanda;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import interfaces.IComandaBO;
 import interfaces.IComandaDAO;
 import interfaces.IProductoComandaDAO;
@@ -36,7 +37,7 @@ public class ComandaBO implements IComandaBO{
         try {
            comandaCreada =  comandaDAO.crearComanda(comanda);    
            
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }
         
@@ -53,7 +54,7 @@ public class ComandaBO implements IComandaBO{
             for (ProductoComanda productoComanda : productosComanda) {
                 productoComandaDAO.agregarProductoAcomanda(productoComanda);
             }
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }
         

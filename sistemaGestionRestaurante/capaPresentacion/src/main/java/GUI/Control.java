@@ -22,33 +22,39 @@ public class Control {
     
     public void mostrarPantallaEscogerRol(){
         VentanaEscogerRol pantallaEscogerRol = new VentanaEscogerRol();
+        pantallaEscogerRol.setResizable(false);
         pantallaEscogerRol.setVisible(true);
     }
     
     public void mostrarPantallaMenuAdmin(){
         VentanaMenuAdmin pantallaMenuAdmin = new VentanaMenuAdmin();
+        pantallaMenuAdmin.setResizable(false);
         pantallaMenuAdmin.setVisible(true);
     }
 
     public void mostrarPantallaHistorialComandas(){
         VentanaHistorialComandas pantallaHistorialComandas = new VentanaHistorialComandas();
+        pantallaHistorialComandas.setResizable(false);
         pantallaHistorialComandas.setVisible(true);
     }
     
     public void mostrarPantallaProductos(){
         VentanaProductos pantallaVentanaProductos = new VentanaProductos();
+        pantallaVentanaProductos.setResizable(false);
         pantallaVentanaProductos.setVisible(true);
     }
     
     public void mostrarPantallaProductoNuevo(VentanaProductos ventana, boolean modal){
         VentanaProductoNuevo pantallaProductoNuevo = new VentanaProductoNuevo(ventana, modal);
         pantallaProductoNuevo.setLocationRelativeTo(ventana);
+        pantallaProductoNuevo.setResizable(false);
         pantallaProductoNuevo.setVisible(true);
     }
     
     public void mostrarPantallaAgregarIngredienteAProducto(VentanaProductoNuevo ventana, boolean modal){
         VentanaAgregarIngredienteAProducto pantallaAgregarIngredienteAProducto = new VentanaAgregarIngredienteAProducto(ventana,modal);
         pantallaAgregarIngredienteAProducto.setLocationRelativeTo(ventana);
+        pantallaAgregarIngredienteAProducto.setResizable(false);
         pantallaAgregarIngredienteAProducto.setVisible(true);
         
     }
@@ -56,12 +62,14 @@ public class Control {
     public void mostrarPantallaComandaNueva(JFrame ventana, boolean modal){
         VentanaComandaNueva pantallaComandaNueva = new VentanaComandaNueva(ventana, modal);
         pantallaComandaNueva.setLocationRelativeTo(ventana);
+        pantallaComandaNueva.setResizable(false);
         pantallaComandaNueva.setVisible(true);
     }
     
     public void mostrarPantallaAgregarProductoAComanda(VentanaComandaNueva ventana, boolean modal){
         VentanaAgregarProductoAComanda pantallaAgregarProductoAComanda = new VentanaAgregarProductoAComanda(ventana, modal);
         pantallaAgregarProductoAComanda.setLocationRelativeTo(ventana);
+        pantallaAgregarProductoAComanda.setResizable(false);
         pantallaAgregarProductoAComanda.setVisible(modal);
    }
     

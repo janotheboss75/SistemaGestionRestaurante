@@ -117,6 +117,12 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Agregar");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
         jPanelMesero.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, 90, 30));
@@ -164,6 +170,10 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
         adaptarSegunUnidadDeMedida();
     }//GEN-LAST:event_jListIngredientesValueChanged
 
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        agregarIngredienteAProducto();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     public void cargarjListIngredientes(){
         DefaultListModel<Ingrediente> modeloIngredientes = new DefaultListModel<>();
         jListIngredientes.setModel(modeloIngredientes);
@@ -208,6 +218,28 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
         }
     }
     
+    public void agregarIngredienteAProducto(){
+        if(jListIngredientes.getSelectedValue() == null){
+            JOptionPane.showMessageDialog(this, "No se ha seleccionado un Ingrediente");
+        }
+        
+        if(jTextFieldCantidad.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "La cantidad esta vacia");
+        }
+        else if(Double.parseDouble(jTextFieldCantidad.getText()) <= 0 || jTextFieldCantidad.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "La cantidad no puede ser 0, menor a cero ,o estar vacia");
+        }
+        else{
+            Ingrediente ingrediente = jListIngredientes.getSelectedValue();
+            double cantidad = Double.parseDouble(jTextFieldCantidad.getText());
+            
+            IngredienteProductoDTO ingredienteProductoDTO = new IngredienteProductoDTO(ingrediente, cantidad);
+            
+            ventana.ingredientesProductoDTO.add(ingredienteProductoDTO);
+            ventana.cargarDatosTabla();
+            control.cerrarDialogo(this);
+        }
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

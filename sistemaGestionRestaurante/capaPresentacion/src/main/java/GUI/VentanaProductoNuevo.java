@@ -1,20 +1,27 @@
 package GUI;
 
-import DTOs.ProductoDTO;
+import DTOs.IngredienteProductoDTO;
+import DTOs.NuevoProductoDTO;
 import enums.EstadoProducto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.AbstractDocument;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.SoloFiltroNumerico;
 
 /**
  *
  * @author janot
  */
 public class VentanaProductoNuevo extends javax.swing.JDialog {
+    private Control control = new Control();
     private IProductoBO productoBO;
-    Control control = new Control();
+    protected List<IngredienteProductoDTO> ingredientesProductoDTO = new ArrayList<>();
     
     /**
      * Creates new form NewJDialog
@@ -51,6 +58,8 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jPanelMesero = new GUI.PanelRound();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableIngredientes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -82,6 +91,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jPanel1.add(jTextFieldNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 200, 30));
 
         jTextFieldPrecio.setBackground(new java.awt.Color(255, 255, 255));
+        ((AbstractDocument) jTextFieldPrecio.getDocument()).setDocumentFilter(new SoloFiltroNumerico());
         jPanel1.add(jTextFieldPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 130, 30));
 
         jComboBoxCategoria.setBackground(new java.awt.Color(255, 255, 255));
@@ -142,6 +152,19 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
 
+        jTableIngredientes.setBackground(new java.awt.Color(255, 255, 255));
+        jTableIngredientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]{},
+            new String [] {
+                "Ingrediente", "Cantidad", "Modificar", "Eliminar"
+            }
+        ));
+        jTableIngredientes.setRowHeight(30);
+        jTableIngredientes.setRowSelectionAllowed(false);
+        jScrollPane1.setViewportView(jTableIngredientes);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 570, 240));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 840, 530));
 
         pack();
@@ -153,7 +176,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         guardarProducto();
-        control.cerrarDialogo(this);
+        //control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -162,24 +185,55 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
 
     private void guardarProducto(){
-        String nombre = jTextFieldNombre.getText();
-        String precio = jTextFieldPrecio.getText();
-        TipoProducto categoria = (TipoProducto) jComboBoxCategoria.getSelectedItem();
-        
-        ProductoDTO productoDTO = new ProductoDTO(EstadoProducto.HABILITADO, nombre, Double.parseDouble(precio), categoria);
-        try {
-            productoBO.agregarProductoAlMenu(productoDTO);
-            JOptionPane.showMessageDialog(rootPane, "Producto agregado con exito");
-        } catch (NegocioException ex) {
-            JOptionPane.showMessageDialog(rootPane, ex);
+        if(jTextFieldNombre.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle un nombre al producto");
         }
-        
+        else if(jTextFieldPrecio.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle un precio al producto");
+        }
+        else if(jComboBoxCategoria.getSelectedItem().equals(null)){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle una categoria al producto");
+        }
+        else if(jTextFieldPrecio.getText().equals(".")){
+            JOptionPane.showMessageDialog(this, "El precio no puede ser un .");
+        }
+        else{
+            String nombre = jTextFieldNombre.getText();
+            String precio = jTextFieldPrecio.getText();
+            TipoProducto categoria = (TipoProducto) jComboBoxCategoria.getSelectedItem();
+            List<IngredienteProductoDTO> ingredientes = ingredientesProductoDTO;
+
+            NuevoProductoDTO nuevoProductoDTO = new NuevoProductoDTO(EstadoProducto.HABILITADO, nombre, Double.parseDouble(precio), categoria, ingredientes);
+
+            try {
+                productoBO.agregarProductoAlMenu(nuevoProductoDTO);
+                JOptionPane.showMessageDialog(rootPane, "Producto agregado con exito");
+                control.cerrarDialogo(this);
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex);
+            }
+        }
     }
     
     private void cargarComboBoxCategoria(){
         jComboBoxCategoria.addItem(TipoProducto.PLATILLO);
         jComboBoxCategoria.addItem(TipoProducto.BEBIDA);
         jComboBoxCategoria.addItem(TipoProducto.POSTRE);     
+    }
+    
+    public void cargarDatosTabla(){
+        DefaultTableModel model = (DefaultTableModel) jTableIngredientes.getModel();
+        model.setRowCount(0);
+        for (IngredienteProductoDTO ingredienteComandaDTO : ingredientesProductoDTO) {
+            model.addRow(new Object[]{
+                ingredienteComandaDTO.getIngrediente().getNombre(),
+                ingredienteComandaDTO.getCantidad(),
+                "Modificar",
+                "Eliminar"
+            });
+        }
+        jTableIngredientes.setModel(model);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -196,6 +250,8 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelProductoNuevo3;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelMesero;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableIngredientes;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldPrecio;
     // End of variables declaration//GEN-END:variables

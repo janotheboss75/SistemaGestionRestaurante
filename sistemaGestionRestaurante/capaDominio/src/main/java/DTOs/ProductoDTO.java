@@ -1,43 +1,34 @@
 package DTOs;
 
+import entidades.IngredienteProducto;
 import enums.EstadoProducto;
 import enums.TipoProducto;
+import java.util.List;
 
 /**
  *
  * @author janot
  */
 public class ProductoDTO {
-    
-    private EstadoProducto estado;
-    
+    private Long id;
+
     private String nombre;
     
     private double precio;
     
-    private TipoProducto tipoProducto;
+    private TipoProducto tipo;
+    
+    private List<IngredienteProductoDTO> ingredientes;
+    
+    private EstadoProducto estado;
 
-    public ProductoDTO(EstadoProducto estado, String nombre, double precio, TipoProducto tipoProducto) {
-        this.estado = estado;
+    public ProductoDTO(Long id, String nombre, double precio, TipoProducto tipo, EstadoProducto estado, List<IngredienteProductoDTO> ingredientes) {
+        this.id = id;
         this.nombre = nombre;
         this.precio = precio;
-        this.tipoProducto = tipoProducto;
-    }
-
-    public EstadoProducto getEstado() {
-        return estado;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public TipoProducto getTipoProducto() {
-        return tipoProducto;
+        this.tipo = tipo;
+        this.estado = estado;
+        this.ingredientes = ingredientes;
     }
     
 }
