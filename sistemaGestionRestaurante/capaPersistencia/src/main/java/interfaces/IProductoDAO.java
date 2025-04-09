@@ -39,6 +39,8 @@ public interface IProductoDAO {
      */
     public boolean inhabilitarProducto(Long idProducto) throws PersistenciaException;
     
+    public boolean habilitarProducto(Long idProducto) throws PersistenciaException;
+    
     /**
      * Consulta un producto por su nombre
      * @param idProducto Identificador del producto que se desea consultar

@@ -71,8 +71,15 @@ public class Control {
         VentanaAgregarProductoAComanda pantallaAgregarProductoAComanda = new VentanaAgregarProductoAComanda(ventana, modal);
         pantallaAgregarProductoAComanda.setLocationRelativeTo(ventana);
         pantallaAgregarProductoAComanda.setResizable(false);
-        pantallaAgregarProductoAComanda.setVisible(modal);
+        pantallaAgregarProductoAComanda.setVisible(true);
    }
+    
+    public void mostrarPantallaIngredienteDeProducto(VentanaProductos ventana, boolean modal){
+        VentanaIngredientesDeProducto pantallaIngredientesDeProducto = new VentanaIngredientesDeProducto(ventana, modal);
+        pantallaIngredientesDeProducto.setLocationRelativeTo(ventana);
+        pantallaIngredientesDeProducto.setResizable(false);
+        pantallaIngredientesDeProducto.setVisible(true);
+    }
     
     public void cerrarPantalla(JFrame ventana){
         ventana.dispose();

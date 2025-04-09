@@ -172,22 +172,19 @@ public class ProductoDAO implements IProductoDAO{
      */
     @Override
     public List<IngredienteProducto> consultarIngredientesDelProducto(Long idProducto) throws PersistenciaException {
-        List<IngredienteProducto> IngredientesProducto = new ArrayList<>();
         EntityManager em = Conexion.crearConexion();
         
-        try {
-            IngredientesProducto = em.createQuery("SELECT ingProd FROM IngredienteProducto ingProd", IngredienteProducto.class).getResultList();
-            
-        } catch (Exception e) {
-            throw new PersistenciaException("Error al consultar a todos los ingredientes del producto", e);
-            
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
         }
         
-        return IngredientesProducto;
+        Producto p = em.find(Producto.class, idProducto);
+        
+        if (p == null) {
+            throw new PersistenciaException("Error: el id del producto no existe");
+        }
+        
+        return p.getIngredientes();
     }
 
     /**
@@ -281,5 +278,40 @@ public class ProductoDAO implements IProductoDAO{
         }
     }
     
-    
+    @Override
+    public boolean habilitarProducto(Long idProducto) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        Producto p = em.find(Producto.class, idProducto);
+        
+        if (p == null) {
+            throw new PersistenciaException("Error: el id del producto no existe");
+        }
+        
+        p.setEstado(EstadoProducto.HABILITADO);
+        
+        try {
+            em.getTransaction().begin();
+            em.merge(p);
+            em.getTransaction().commit();
+            
+            return true;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            
+            throw new PersistenciaException("No se pudo habilitar el producto: " + e.getMessage());
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
 }

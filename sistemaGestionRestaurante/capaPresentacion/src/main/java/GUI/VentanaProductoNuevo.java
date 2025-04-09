@@ -216,6 +216,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, ex);
             }
         }
+        ventanaProductos.asignarDatosListaProductos();
         ventanaProductos.cargarDatosTabla();
     }
     
