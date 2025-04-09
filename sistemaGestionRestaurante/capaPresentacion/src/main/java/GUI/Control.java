@@ -41,6 +41,7 @@ public class Control {
     public void mostrarPantallaProductos(){
         VentanaProductos pantallaVentanaProductos = new VentanaProductos();
         pantallaVentanaProductos.setResizable(false);
+        pantallaVentanaProductos.setLocationRelativeTo(null);
         pantallaVentanaProductos.setVisible(true);
     }
     

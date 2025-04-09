@@ -260,7 +260,7 @@ public abstract class Cliente implements Serializable {
     @Override
     public String toString() {
         if(id != null){
-            return nombre + " " + apellidoPaterno + " (" +telefono + ")";
+            return nombre + " " + apellidoPaterno;
         }
         else{
             return "No asignar";

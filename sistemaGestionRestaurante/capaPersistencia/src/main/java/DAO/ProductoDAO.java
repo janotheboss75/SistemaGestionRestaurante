@@ -4,6 +4,7 @@ import conexion.Conexion;
 import entidades.IngredienteProducto;
 import entidades.Producto;
 import enums.EstadoProducto;
+import enums.TipoProducto;
 import excepciones.PersistenciaException;
 import interfaces.IProductoDAO;
 import java.util.ArrayList;
@@ -254,5 +255,31 @@ public class ProductoDAO implements IProductoDAO{
         }
 
     }
+
+    @Override
+    public List<Producto> busquedaProductos(TipoProducto tipoProducto, String busqueda) throws PersistenciaException {
+        List<Producto> productos = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        String jpql = "SELECT p FROM Producto p " +
+              "WHERE (:tipoProducto IS NULL OR p.tipo = :tipoProducto) " +
+              "AND (:nombre IS NULL OR p.nombre LIKE :nombre)";
+        try {
+            TypedQuery<Producto> query = em.createQuery(jpql, Producto.class);
+            query.setParameter("tipoProducto", tipoProducto);
+            query.setParameter("nombre", (busqueda == null || busqueda.isBlank()) ? null : "%" + busqueda + "%");
+
+            return query.getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al realizar la consulta de busqueda", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+    
     
 }

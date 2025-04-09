@@ -2,6 +2,7 @@ package interfaces;
 
 import entidades.IngredienteProducto;
 import entidades.Producto;
+import enums.TipoProducto;
 import excepciones.PersistenciaException;
 import java.util.List;
 
@@ -64,5 +65,7 @@ public interface IProductoDAO {
     public List<IngredienteProducto> consultarIngredientesDelProducto(Long idProducto) throws PersistenciaException; 
     
     public List<Producto> consultarProductosHabilitados() throws PersistenciaException;
+    
+    public List<Producto> busquedaProductos(TipoProducto tipoProducto, String busqueda) throws PersistenciaException;
     
 }

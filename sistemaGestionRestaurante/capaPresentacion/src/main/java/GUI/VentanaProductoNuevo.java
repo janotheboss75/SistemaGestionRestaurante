@@ -2,12 +2,14 @@ package GUI;
 
 import DTOs.IngredienteProductoDTO;
 import DTOs.NuevoProductoDTO;
+import com.sun.source.tree.ParenthesizedTree;
 import enums.EstadoProducto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
@@ -22,16 +24,17 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     private Control control = new Control();
     private IProductoBO productoBO;
     protected List<IngredienteProductoDTO> ingredientesProductoDTO = new ArrayList<>();
+    VentanaProductos ventanaProductos;
     
     /**
      * Creates new form NewJDialog
      */
     public VentanaProductoNuevo(VentanaProductos parent, boolean modal) {
         super(parent, modal);
+        this.ventanaProductos = parent;
         initComponents();
         cargarComboBoxCategoria();
         productoBO = ManejadorObjetosNegocio.crearProductoBO();
-        
     }
 
     /**
@@ -213,6 +216,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, ex);
             }
         }
+        cargarDatosTabla();
     }
     
     private void cargarComboBoxCategoria(){
@@ -233,7 +237,6 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
             });
         }
         jTableIngredientes.setModel(model);
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

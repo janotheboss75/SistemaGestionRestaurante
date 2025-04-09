@@ -3,6 +3,7 @@ package GUI;
 import DTOs.IngredienteProductoDTO;
 import entidades.Ingrediente;
 import enums.UnidadDeMedida;
+import excepciones.NegocioException;
 import interfaces.IIngredienteBO;
 import java.awt.Dialog;
 import java.util.List;
@@ -186,7 +187,7 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
     public void asignarDatosListaIngredientes(){
         try {
             this.ingredientes = ingredienteBO.consultarTodosLosIngredientes();
-        } catch (Exception e) {
+        } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e);
         }
     }
@@ -225,6 +226,9 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
         
         if(jTextFieldCantidad.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(this, "La cantidad esta vacia");
+        }
+        else if(jTextFieldCantidad.getText().equals(".")){
+            JOptionPane.showMessageDialog(this, "El precio no puede ser un .");
         }
         else if(Double.parseDouble(jTextFieldCantidad.getText()) <= 0 || jTextFieldCantidad.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(this, "La cantidad no puede ser 0, menor a cero ,o estar vacia");

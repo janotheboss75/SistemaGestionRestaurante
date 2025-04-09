@@ -1,18 +1,33 @@
 package GUI;
 
+import BO.ProductoBO;
+import entidades.Producto;
+import enums.TipoProducto;
+import excepciones.NegocioException;
+import interfaces.IProductoBO;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+
 /**
  *
  * @author janot
  */
 public class VentanaProductos extends javax.swing.JFrame {
-    Control control = new Control();
+    private Control control = new Control();
+    private IProductoBO productoBO;
+    private List<Producto> productos = new ArrayList<>();
     
     /**
      * Creates new form VentanaProductos
      */
     public VentanaProductos() {
+        productoBO = ManejadorObjetosNegocio.crearProductoBO();
         initComponents();
-        this.setLocationRelativeTo(this);
+        asignarDatosListaProductos();
+        cargarTabla();
     }
 
     /**
@@ -33,17 +48,13 @@ public class VentanaProductos extends javax.swing.JFrame {
         jLabelIconFiltro = new javax.swing.JLabel();
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         jLabelProductoNuevo2 = new javax.swing.JLabel();
-        jPanelFiltro = new GUI.PanelRound();
-        jLabelFiltrar = new javax.swing.JLabel();
         jLabelCategoria = new javax.swing.JLabel();
         jTextFieldBuscar = new javax.swing.JTextField();
-        jPanelBuscar = new GUI.PanelRound();
-        jLabelBuscar = new javax.swing.JLabel();
         jLabelEstado3 = new javax.swing.JLabel();
         jLabelProductoNuevo1 = new javax.swing.JLabel();
         jLabelIconProductoNuevo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableProductos = new javax.swing.JTable();
         jLabelFiltrar2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,10 +72,10 @@ public class VentanaProductos extends javax.swing.JFrame {
         });
         jPanel1.add(jLabelRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jLabelProductos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProductos.setText("Productos");
         jLabelProductos.setFont(new java.awt.Font("Product Sans Infanity", 1, 66)); // NOI18N
         jLabelProductos.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelProductos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelProductos.setText("Productos");
         jPanel1.add(jLabelProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(69, 71, 75));
@@ -84,8 +95,13 @@ public class VentanaProductos extends javax.swing.JFrame {
         jLabelIconFiltro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/filter.png"))); // NOI18N
         jPanel3.add(jLabelIconFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Todo","Platillo", "Bebida", "Postre" }));
         jComboBoxCategoria.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new TipoProducto[] {null,TipoProducto.PLATILLO, TipoProducto.BEBIDA, TipoProducto.POSTRE }));
+        jComboBoxCategoria.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxCategoriaItemStateChanged(evt);
+            }
+        });
         jPanel3.add(jComboBoxCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 80, 30));
 
         jLabelProductoNuevo2.setText("Nuevo");
@@ -93,50 +109,23 @@ public class VentanaProductos extends javax.swing.JFrame {
         jLabelProductoNuevo2.setForeground(new java.awt.Color(0, 0, 0));
         jPanel3.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 30, -1, -1));
 
-        jPanelFiltro.setBackground(new java.awt.Color(44, 44, 44));
-        jPanelFiltro.setRoundBottomLeft(15);
-        jPanelFiltro.setRoundBottomRight(15);
-        jPanelFiltro.setRoundTopLeft(15);
-        jPanelFiltro.setRoundTopRight(15);
-        jPanelFiltro.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabelFiltrar.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
-        jLabelFiltrar.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFiltrar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelFiltrar.setText("Filtrar");
-        jLabelFiltrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanelFiltro.add(jLabelFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, 30));
-
-        jPanel3.add(jPanelFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, 100, 30));
-
         jLabelCategoria.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelCategoria.setForeground(new java.awt.Color(0, 0, 0));
         jLabelCategoria.setText("Categoria:");
         jPanel3.add(jLabelCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
         jTextFieldBuscar.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.add(jTextFieldBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 150, 30));
-
-        jPanelBuscar.setBackground(new java.awt.Color(44, 44, 44));
-        jPanelBuscar.setRoundBottomLeft(15);
-        jPanelBuscar.setRoundBottomRight(15);
-        jPanelBuscar.setRoundTopLeft(15);
-        jPanelBuscar.setRoundTopRight(15);
-        jPanelBuscar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabelBuscar.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
-        jLabelBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelBuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelBuscar.setText("Buscar");
-        jLabelBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jPanelBuscar.add(jLabelBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, 30));
-
-        jPanel3.add(jPanelBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 20, 100, 30));
+        jTextFieldBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldBuscarKeyTyped(evt);
+            }
+        });
+        jPanel3.add(jTextFieldBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 150, 30));
 
         jLabelEstado3.setText("Buscar:");
         jLabelEstado3.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
         jLabelEstado3.setForeground(new java.awt.Color(0, 0, 0));
-        jPanel3.add(jLabelEstado3, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, -1, -1));
+        jPanel3.add(jLabelEstado3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
 
         jLabelProductoNuevo1.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelProductoNuevo1.setForeground(new java.awt.Color(0, 0, 0));
@@ -155,32 +144,33 @@ public class VentanaProductos extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 920, 70));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Precio", "Tipo", "Ingredientes", "Modificar", "Eliminar"
+                "Nombre", "Precio", "Tipo", "Ingredientes", "Modificar", "Eliminar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
+        jScrollPane1.setViewportView(jTableProductos);
+        if (jTableProductos.getColumnModel().getColumnCount() > 0) {
+            jTableProductos.getColumnModel().getColumn(0).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(1).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(2).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(3).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(4).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 920, 370));
@@ -225,13 +215,54 @@ public class VentanaProductos extends javax.swing.JFrame {
         control.mostrarPantallaProductoNuevo(this, rootPaneCheckingEnabled);
     }//GEN-LAST:event_jLabelIconProductoNuevoMouseClicked
 
+    private void jTextFieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarKeyTyped
+        buscador();
+    }//GEN-LAST:event_jTextFieldBuscarKeyTyped
+
+    private void jComboBoxCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaItemStateChanged
+        buscador();
+    }//GEN-LAST:event_jComboBoxCategoriaItemStateChanged
+
+    public void asignarDatosListaProductos(){
+        try {
+            this.productos = productoBO.consultarTodosLosProductos();
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }
+    
+    private void cargarTabla(){
+        DefaultTableModel model = (DefaultTableModel) jTableProductos.getModel();
+        model.setRowCount(0);
+        for (Producto producto : productos) {
+            model.addRow(new Object[]{
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getTipo(),
+                "Ingredientes",
+                "Modificar",
+                "Eliminar"
+            });
+        }
+        jTableProductos.setModel(model);
+    }
+    
+    public void buscador(){
+        String busqueda = jTextFieldBuscar.getText();
+        TipoProducto tipoProducto = (TipoProducto) jComboBoxCategoria.getSelectedItem();
+        
+        try {
+            productos = productoBO.busquedaProducto(tipoProducto, busqueda);
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+       cargarTabla();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBoxCategoria;
-    private javax.swing.JLabel jLabelBuscar;
+    private javax.swing.JComboBox<Object> jComboBoxCategoria;
     private javax.swing.JLabel jLabelCategoria;
     private javax.swing.JLabel jLabelEstado3;
-    private javax.swing.JLabel jLabelFiltrar;
     private javax.swing.JLabel jLabelFiltrar2;
     private javax.swing.JLabel jLabelIconFiltro;
     private javax.swing.JLabel jLabelIconProductoNuevo;
@@ -243,10 +274,8 @@ public class VentanaProductos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private GUI.PanelRound jPanelBuscar;
-    private GUI.PanelRound jPanelFiltro;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableProductos;
     private javax.swing.JTextField jTextFieldBuscar;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,7 @@ import DTOs.ProductoDTO;
 import entidades.IngredienteProducto;
 import entidades.Producto;
 import static entidades.ProductoComanda_.producto;
+import enums.TipoProducto;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IIngredienteProductoDAO;
@@ -63,5 +64,22 @@ public class ProductoBO implements IProductoBO{
         }
     }
 
+    @Override
+    public List<Producto> consultarTodosLosProductos()throws NegocioException{
+        try {
+            return productoDAO.consultarTodosLosProductos();
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Producto> busquedaProducto(TipoProducto tipo, String busqueda) throws NegocioException {
+        try {
+            return productoDAO.busquedaProductos(tipo, busqueda);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
     
 }
