@@ -14,6 +14,8 @@ import java.util.List;
 public interface IProductoBO {
     public ProductoDTO agregarProductoAlMenu(NuevoProductoDTO nuevoProducto) throws NegocioException;
     
+    public boolean eliminarProductoDelMenu(Long idProducto) throws NegocioException;
+    
     public List<Producto> consultarProductosHabilitados() throws NegocioException;
     
     public List<Producto> consultarTodosLosProductos() throws NegocioException;

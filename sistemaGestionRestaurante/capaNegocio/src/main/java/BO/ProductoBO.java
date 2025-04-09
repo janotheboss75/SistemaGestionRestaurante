@@ -81,5 +81,14 @@ public class ProductoBO implements IProductoBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public boolean eliminarProductoDelMenu(Long idProducto) throws NegocioException {
+        try {
+            return productoDAO.inhabilitarProducto(idProducto);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error: No se pudo eliminar el producto con el id: " + idProducto,e);
+        }
+    }
     
 }

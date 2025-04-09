@@ -5,11 +5,16 @@ import entidades.Producto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.IconCellRenderer;
 
 /**
  *
@@ -146,31 +151,40 @@ public class VentanaProductos extends javax.swing.JFrame {
 
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "Precio", "Tipo", "Ingredientes", "Modificar", "Eliminar"
+                "Id", "Nombre", "Precio", "Tipo", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTableProductos.setRowHeight(30);
+        jTableProductos.setRowSelectionAllowed(false);
+        jTableProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableProductos);
         if (jTableProductos.getColumnModel().getColumnCount() > 0) {
             jTableProductos.getColumnModel().getColumn(0).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTableProductos.getColumnModel().getColumn(1).setResizable(false);
             jTableProductos.getColumnModel().getColumn(2).setResizable(false);
             jTableProductos.getColumnModel().getColumn(3).setResizable(false);
             jTableProductos.getColumnModel().getColumn(4).setResizable(false);
             jTableProductos.getColumnModel().getColumn(5).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 920, 370));
@@ -224,28 +238,57 @@ public class VentanaProductos extends javax.swing.JFrame {
         buscador();
     }//GEN-LAST:event_jComboBoxCategoriaItemStateChanged
 
+    private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
+        funcionalidadIconTablaEliminar(evt);
+        funcionalidadIconTablaModificar(evt);
+        funcionalidadIconTablaIngredientes(evt);
+    }//GEN-LAST:event_jTableProductosMouseClicked
+
     private void asignarDatosListaProductos(){
         try {
-            this.productos = productoBO.consultarTodosLosProductos();
+            this.productos = productoBO.consultarProductosHabilitados();
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e);
         }
     }
     
     public void cargarDatosTabla(){
+        asignarDatosListaProductos();
+        Icon iconoEliminar = new ImageIcon(getClass().getResource("/imagenes/trash.png"));
+        Icon iconoModificar = new ImageIcon(getClass().getResource("/imagenes/modificar.png"));
+        Icon iconoIngredientes = new ImageIcon(getClass().getResource("/imagenes/ingredientes.png"));
         DefaultTableModel model = (DefaultTableModel) jTableProductos.getModel();
         model.setRowCount(0);
+        
         for (Producto producto : productos) {
             model.addRow(new Object[]{
+                producto.getId(),
                 producto.getNombre(),
                 producto.getPrecio(),
                 producto.getTipo(),
-                "Ingredientes",
-                "Modificar",
-                "Eliminar"
             });
         }
+        
         jTableProductos.setModel(model);
+        jTableProductos.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableProductos.getColumnModel().getColumn(0).setWidth(0);
+        
+        jTableProductos.getColumnModel().getColumn(4).setMinWidth(40);
+        jTableProductos.getColumnModel().getColumn(4).setMaxWidth(40);
+        jTableProductos.getColumnModel().getColumn(4).setWidth(40);
+        
+        jTableProductos.getColumnModel().getColumn(5).setMinWidth(40);
+        jTableProductos.getColumnModel().getColumn(5).setMaxWidth(40);
+        jTableProductos.getColumnModel().getColumn(5).setWidth(40);
+        
+        jTableProductos.getColumnModel().getColumn(6).setMinWidth(40);
+        jTableProductos.getColumnModel().getColumn(6).setMaxWidth(40);
+        jTableProductos.getColumnModel().getColumn(6).setWidth(40);
+        
+        jTableProductos.getColumnModel().getColumn(4).setCellRenderer(new IconCellRenderer(iconoIngredientes));
+        jTableProductos.getColumnModel().getColumn(5).setCellRenderer(new IconCellRenderer(iconoModificar));
+        jTableProductos.getColumnModel().getColumn(6).setCellRenderer(new IconCellRenderer(iconoEliminar));
     }
     
     private void buscador(){
@@ -263,6 +306,50 @@ public class VentanaProductos extends javax.swing.JFrame {
     public void limpiarBusqueda(){
         jTextFieldBuscar.setText("");
         jComboBoxCategoria.setSelectedItem(null);
+    }
+    
+    public void funcionalidadIconTablaEliminar(MouseEvent evt){
+        int fila = jTableProductos.rowAtPoint(evt.getPoint());
+        int columna = jTableProductos.columnAtPoint(evt.getPoint());
+        
+        if (columna == 6) { // columna del ícono
+            Object id = jTableProductos.getModel().getValueAt(fila, 0);
+            Object nombreIngrediente = jTableProductos.getModel().getValueAt(fila, 1);
+            
+            int decision = JOptionPane.showConfirmDialog(this, "Desea eliminar Producto: " + nombreIngrediente);
+            
+            if (decision == JOptionPane.YES_OPTION) {
+                try {
+                    productoBO.eliminarProductoDelMenu((Long) id);
+                } catch (NegocioException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            
+        }
+        cargarDatosTabla();
+    }
+    
+    public void funcionalidadIconTablaModificar(MouseEvent evt){
+        int fila = jTableProductos.rowAtPoint(evt.getPoint());
+        int columna = jTableProductos.columnAtPoint(evt.getPoint());
+        
+        if (columna == 5) { // columna del ícono
+            Object id = jTableProductos.getModel().getValueAt(fila, 0);
+            System.out.println("Modificar producto con ID: " + id);
+            // Aquí podés llamar a tu lógica de eliminación
+        }
+    }
+    
+    public void funcionalidadIconTablaIngredientes(MouseEvent evt){
+        int fila = jTableProductos.rowAtPoint(evt.getPoint());
+        int columna = jTableProductos.columnAtPoint(evt.getPoint());
+        
+        if (columna == 4) { // columna del ícono
+            Object id = jTableProductos.getModel().getValueAt(fila, 0);
+            System.out.println("ver ingredientes de producto con ID: " + id);
+            // Aquí podés llamar a tu lógica de eliminación
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
