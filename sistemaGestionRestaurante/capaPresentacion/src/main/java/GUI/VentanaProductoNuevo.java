@@ -216,7 +216,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, ex);
             }
         }
-        cargarDatosTabla();
+        ventanaProductos.cargarDatosTabla();
     }
     
     private void cargarComboBoxCategoria(){

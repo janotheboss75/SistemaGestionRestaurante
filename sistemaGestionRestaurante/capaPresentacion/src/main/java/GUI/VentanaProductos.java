@@ -27,7 +27,7 @@ public class VentanaProductos extends javax.swing.JFrame {
         productoBO = ManejadorObjetosNegocio.crearProductoBO();
         initComponents();
         asignarDatosListaProductos();
-        cargarTabla();
+        cargarDatosTabla();
     }
 
     /**
@@ -213,6 +213,7 @@ public class VentanaProductos extends javax.swing.JFrame {
 
     private void jLabelIconProductoNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconProductoNuevoMouseClicked
         control.mostrarPantallaProductoNuevo(this, rootPaneCheckingEnabled);
+        limpiarBusqueda();
     }//GEN-LAST:event_jLabelIconProductoNuevoMouseClicked
 
     private void jTextFieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarKeyTyped
@@ -223,7 +224,7 @@ public class VentanaProductos extends javax.swing.JFrame {
         buscador();
     }//GEN-LAST:event_jComboBoxCategoriaItemStateChanged
 
-    public void asignarDatosListaProductos(){
+    private void asignarDatosListaProductos(){
         try {
             this.productos = productoBO.consultarTodosLosProductos();
         } catch (NegocioException e) {
@@ -231,7 +232,7 @@ public class VentanaProductos extends javax.swing.JFrame {
         }
     }
     
-    private void cargarTabla(){
+    public void cargarDatosTabla(){
         DefaultTableModel model = (DefaultTableModel) jTableProductos.getModel();
         model.setRowCount(0);
         for (Producto producto : productos) {
@@ -247,7 +248,7 @@ public class VentanaProductos extends javax.swing.JFrame {
         jTableProductos.setModel(model);
     }
     
-    public void buscador(){
+    private void buscador(){
         String busqueda = jTextFieldBuscar.getText();
         TipoProducto tipoProducto = (TipoProducto) jComboBoxCategoria.getSelectedItem();
         
@@ -256,7 +257,12 @@ public class VentanaProductos extends javax.swing.JFrame {
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-       cargarTabla();
+       cargarDatosTabla();
+    }
+    
+    public void limpiarBusqueda(){
+        jTextFieldBuscar.setText("");
+        jComboBoxCategoria.setSelectedItem(null);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
