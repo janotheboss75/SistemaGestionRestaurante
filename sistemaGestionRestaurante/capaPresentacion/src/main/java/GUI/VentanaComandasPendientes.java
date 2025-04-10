@@ -26,7 +26,7 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
     private Control control = new Control();
     private IComandaBO comandaBO;
     private IMesaBO mesaBO;
-    private Comanda comanda;
+    protected Comanda comanda;
     
     
     /**
@@ -247,6 +247,12 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
         if (columna == 6) { // columna del ícono
             Object id = jTableComandas.getModel().getValueAt(fila, 0);
             if(id != null){
+                try {
+                    comanda = comandaBO.consultarComandaPorID((Long) id);
+                    System.out.println(comanda);
+                } catch (NegocioException e) {
+                    JOptionPane.showMessageDialog(this, id);
+                }
                 control.mostrarPantallaModificarComanda(this, rootPaneCheckingEnabled);
             }
         } 

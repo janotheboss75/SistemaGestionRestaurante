@@ -6,17 +6,23 @@ import entidades.Cliente;
 import entidades.ClienteFrecuente;
 import entidades.Comanda;
 import entidades.Mesa;
+import entidades.ProductoComanda;
 import excepciones.NegocioException;
 import interfaces.IClienteBO;
 import interfaces.IComandaBO;
 import interfaces.IMesaBO;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import mappers.ProductoComandaMapper;
+import utils.IconCellRenderer;
 
 /**
  *
@@ -29,21 +35,24 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private IComandaBO comandaBO;
     protected List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
     private List<Cliente> clientes;
+    private VentanaComandasPendientes ventana;
     
     /**
      * Creates new form VentanaComandaNueva
      */
-    public VentanaComandaNueva(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public VentanaComandaNueva(VentanaComandasPendientes ventana, boolean modal) {
+        super(ventana, modal);
         mesaBO = ManejadorObjetosNegocio.crearMesaBO();
         clienteBO = ManejadorObjetosNegocio.crearClienteBO();
         comandaBO = ManejadorObjetosNegocio.crearComandaBO();
+        this.ventana = ventana;
         
         initComponents();
         cargarJComboBoxMesas();
         asignarDatosListaClientes();
         cargarjListProductos();
         cargarDatosTabla();
+        cargarDatosComandaAModificar();
     }
 
     /**
@@ -183,12 +192,38 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jPanel1.add(jTextFieldCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 142, 210, 30));
 
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {},
+            new Object [][] {
+
+            },
             new String [] {
-                "Producto", "Cantidad", "Precio", "Importe","Modificar","Eliminar"
+                "Id", "Producto", "Cantidad", "Precio", "Importe", "", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableProductos.setRowHeight(30);
+        jTableProductos.setRowSelectionAllowed(false);
+        jTableProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableProductosMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTableProductos);
+        if (jTableProductos.getColumnModel().getColumnCount() > 0) {
+            jTableProductos.getColumnModel().getColumn(0).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(1).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(2).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(3).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(4).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(5).setResizable(false);
+            jTableProductos.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 250, 870, 220));
 
@@ -224,6 +259,10 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jListClientesValueChanged
 
+    private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableProductosMouseClicked
+
     
     
     /*UTILS*/  
@@ -243,20 +282,36 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }
     
     public void cargarDatosTabla(){
+        Icon iconoModificar = new ImageIcon(getClass().getResource("/imagenes/modificar.png"));
+        Icon iconoEliminar = new ImageIcon(getClass().getResource("/imagenes/eliminar.png"));
+        
         DefaultTableModel model = (DefaultTableModel) jTableProductos.getModel();
         model.setNumRows(0);
         for (ProductoComandaDTO productoComandaDTO : productosComandaDTO) {
             model.addRow(new Object[]{
+                productoComandaDTO.getId(),
                 productoComandaDTO.getProducto().getNombre(),
                 productoComandaDTO.getCantidad(),
                 productoComandaDTO.getPrecioActual(),
                 productoComandaDTO.getImporte(),
                 productoComandaDTO.getComentario(),
-                "Modificar",
-                "Eliminar"
             });
         }
+        
         jTableProductos.setModel(model);
+        jTableProductos.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableProductos.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableProductos.getColumnModel().getColumn(0).setWidth(0);
+        
+        jTableProductos.getColumnModel().getColumn(5).setMinWidth(40);
+        jTableProductos.getColumnModel().getColumn(5).setMaxWidth(40);
+        jTableProductos.getColumnModel().getColumn(5).setWidth(40);
+        jTableProductos.getColumnModel().getColumn(5).setCellRenderer(new IconCellRenderer(iconoModificar));
+        
+        jTableProductos.getColumnModel().getColumn(6).setMinWidth(40);
+        jTableProductos.getColumnModel().getColumn(6).setMaxWidth(40);
+        jTableProductos.getColumnModel().getColumn(6).setWidth(40);
+        jTableProductos.getColumnModel().getColumn(6).setCellRenderer(new IconCellRenderer(iconoEliminar));
         
     }
     
@@ -316,6 +371,42 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
             control.cerrarDialogo(this);
         }
     }
+    /*
+    private void funcionalidadIconTablaEliminar(MouseEvent evt){
+        int fila = jTableIngredientes.rowAtPoint(evt.getPoint());
+        int columna = jTableIngredientes.columnAtPoint(evt.getPoint());
+        
+        if (columna == 4) { // columna del ícono
+            Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
+            ingredientesProductoDTO.remove(fila);
+            if(id != null){
+                try {
+                    ingredienteBO.quitarIngredienteAlProducto((Long) id);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            cargarDatosTabla();
+        } 
+    }*/
+    
+    private void cargarDatosComandaAModificar(){
+        if(ventana != null){
+            if(ventana.comanda != null){
+                jComboBoxMesas.addItem(ventana.comanda.getMesa());
+                jComboBoxMesas.setSelectedItem(ventana.comanda.getMesa());
+                if(ventana.comanda.getCliente() != null){
+                    jTextFieldCliente.setText(ventana.comanda.getCliente().toString());
+                    for (ProductoComanda comanda : ventana.comanda.getProductos()) {
+                        productosComandaDTO.add(ProductoComandaMapper.toDTO(comanda));
+                    }
+                }                        
+
+
+            }
+        }
+        cargarDatosTabla();
+    }
     
     
     
@@ -323,7 +414,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private javax.swing.JComboBox<Mesa> jComboBoxMesas;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
     private javax.swing.JLabel jLabelAgregarIngrediente2;
-    private javax.swing.JLabel jLabelCrear;
+    public javax.swing.JLabel jLabelCrear;
     private javax.swing.JLabel jLabelIconAgregarProducto;
     private javax.swing.JLabel jLabelIconCerrar;
     private javax.swing.JLabel jLabelNombre;

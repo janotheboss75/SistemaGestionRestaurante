@@ -169,11 +169,11 @@ public class VentanaMenuMesero extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelIconComandaMouseClicked
 
     private void jLabelIconNuevaComandaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconNuevaComandaMouseClicked
-        control.mostrarPantallaComandaNueva(this, rootPaneCheckingEnabled);
+        control.mostrarPantallaComandaNueva(null, rootPaneCheckingEnabled);
     }//GEN-LAST:event_jLabelIconNuevaComandaMouseClicked
 
     private void jLabelIconComandasPendientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconComandasPendientesMouseClicked
-        control.mostrarHistorialComandasConPermisosDeMesero();
+        control.mostrarComandasPendientesConPermisosDeMesero();
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelIconComandasPendientesMouseClicked
 

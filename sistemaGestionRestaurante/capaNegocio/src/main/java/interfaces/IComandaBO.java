@@ -32,5 +32,7 @@ public interface IComandaBO {
     
     public Comanda finalizarComanda(Long idComanda) throws NegocioException;
     
+    public Comanda consultarComandaPorID(Long idComanda) throws NegocioException;
+    
     
 }

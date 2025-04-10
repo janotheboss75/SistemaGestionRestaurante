@@ -23,9 +23,6 @@ public class ComandaMapper {
         ZonedDateTime zdt = ahora.atZone(ZoneId.systemDefault());
         Date date = Date.from(zdt.toInstant());
 
-        System.out.println("LocalDateTime: " + ahora);
-        System.out.println("Date: " + date);
-        
         //Primera parte Folio
         SimpleDateFormat formato = new SimpleDateFormat("yyyyMMdd");
         String fechaFormateada = formato.format(date);

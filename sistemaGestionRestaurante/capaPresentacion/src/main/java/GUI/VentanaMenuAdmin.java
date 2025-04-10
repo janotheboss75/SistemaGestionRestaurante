@@ -336,7 +336,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelIconProductosMouseClicked
 
     private void jLabelIconNuevaComandaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconNuevaComandaMouseClicked
-        control.mostrarPantallaComandaNueva(this, rootPaneCheckingEnabled);
+        control.mostrarPantallaComandaNueva(null, rootPaneCheckingEnabled);
     }//GEN-LAST:event_jLabelIconNuevaComandaMouseClicked
 
     private void jLabelInsertarMesas1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInsertarMesas1MouseClicked

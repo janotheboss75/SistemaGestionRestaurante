@@ -58,7 +58,7 @@ public class Control {
         
     }
     
-    public void mostrarPantallaComandaNueva(JFrame ventana, boolean modal){
+    public void mostrarPantallaComandaNueva(VentanaComandasPendientes ventana, boolean modal){
         VentanaComandaNueva pantallaComandaNueva = new VentanaComandaNueva(ventana, modal);
         pantallaComandaNueva.setLocationRelativeTo(ventana);
         pantallaComandaNueva.setResizable(false);
@@ -99,6 +99,7 @@ public class Control {
         VentanaComandaNueva pantallaComandaNueva = new VentanaComandaNueva(ventana, modal);
         pantallaComandaNueva.jLabelProductoNuevo1.setText("Modificar");
         pantallaComandaNueva.jLabelProductoNuevo2.setText("Comanda");
+        pantallaComandaNueva.jLabelCrear.setText("Guardar");
         pantallaComandaNueva.setLocationRelativeTo(ventana);
         pantallaComandaNueva.setResizable(false);
         pantallaComandaNueva.setVisible(true);
@@ -126,6 +127,8 @@ public class Control {
         pantallaComandasPendientes.setResizable(false);
         pantallaComandasPendientes.setVisible(true);
     }
+    
+    
     
     
     public void cerrarPantalla(JFrame ventana){

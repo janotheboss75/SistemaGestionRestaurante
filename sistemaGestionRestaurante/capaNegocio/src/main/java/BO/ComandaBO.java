@@ -125,5 +125,14 @@ public class ComandaBO implements IComandaBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public Comanda consultarComandaPorID(Long idComanda) throws NegocioException {
+        try {
+            return comandaDAO.consultarComandaPorId(idComanda);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
     
 }

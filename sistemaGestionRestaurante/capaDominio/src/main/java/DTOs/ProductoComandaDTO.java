@@ -7,6 +7,7 @@ import entidades.Producto;
  * @author janot
  */
 public class ProductoComandaDTO {
+    private Long id;
     private Producto producto;
     private double precioActual;
     private String comentario;
@@ -41,6 +42,16 @@ public class ProductoComandaDTO {
         return importe;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "ProductoComandaDTO{" + "producto=" + producto + ", precioActual=" + precioActual + ", comentario=" + comentario + ", cantidad=" + cantidad + ", importe=" + importe + '}';
