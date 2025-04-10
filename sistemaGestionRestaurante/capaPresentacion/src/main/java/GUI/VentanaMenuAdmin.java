@@ -199,6 +199,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconComandasPendientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconComandasPendientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pending.png"))); // NOI18N
         jLabelIconComandasPendientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconComandasPendientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconComandasPendientesMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelComandasPendientesLayout = new javax.swing.GroupLayout(jPanelComandasPendientes);
         jPanelComandasPendientes.setLayout(jPanelComandasPendientesLayout);
@@ -345,6 +350,10 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
     private void jLabelInsertarMesas3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelInsertarMesas3MouseClicked
         insertarMesas(CANTIDAD_MESAS_AGREGAR);
     }//GEN-LAST:event_jLabelInsertarMesas3MouseClicked
+
+    private void jLabelIconComandasPendientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconComandasPendientesMouseClicked
+        control.mostrarPantallaComandasPendientes();
+    }//GEN-LAST:event_jLabelIconComandasPendientesMouseClicked
 
 
     /* UTILS */

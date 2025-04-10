@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
 
@@ -136,16 +137,16 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
         jLabelFechaDesde.setText("Fecha Desde:");
         jPanel3.add(jLabelFechaDesde, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, 20));
 
-        jLabelReporte.setText("Reporte");
-        jLabelReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabelReporte.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelReporte.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelReporte.setText("Reporte");
+        jLabelReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel3.add(jLabelReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 30, -1, 20));
 
-        jLabelGenerar.setText("Generar");
-        jLabelGenerar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabelGenerar.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelGenerar.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelGenerar.setText("Generar");
+        jLabelGenerar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel3.add(jLabelGenerar, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, -1, 20));
 
         datePickerFechaDesde.addKeyListener(new java.awt.event.KeyAdapter() {

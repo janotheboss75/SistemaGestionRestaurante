@@ -26,4 +26,6 @@ public interface IComandaBO {
     
     public List<Comanda> buscadorComandas(EstadoComanda estadoComanda, Date desde, Date hasta) throws NegocioException;
     
+    public List<Comanda> consultarComandasPendientes() throws NegocioException;
+    
 }

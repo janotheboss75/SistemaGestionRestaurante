@@ -14,10 +14,8 @@ import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
  * @author janot
  */
 public class Control {
-    private IProductoBO productoBO;
     
     public Control() {
-        productoBO = ManejadorObjetosNegocio.crearProductoBO();
     }
     
     public void mostrarPantallaEscogerRol(){
@@ -88,6 +86,13 @@ public class Control {
         pantallaProductoNuevo.setLocationRelativeTo(ventana);
         pantallaProductoNuevo.setResizable(false);
         pantallaProductoNuevo.setVisible(true);
+    }
+    
+    public void mostrarPantallaComandasPendientes(){
+        VentanaComandasPendientes pantallaComandasPendientes = new VentanaComandasPendientes();
+        pantallaComandasPendientes.setLocationRelativeTo(null);
+        pantallaComandasPendientes.setResizable(false);
+        pantallaComandasPendientes.setVisible(true);
     }
     
     public void cerrarPantalla(JFrame ventana){

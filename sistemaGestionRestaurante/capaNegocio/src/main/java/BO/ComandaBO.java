@@ -92,5 +92,14 @@ public class ComandaBO implements IComandaBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public List<Comanda> consultarComandasPendientes() throws NegocioException {
+        try {
+           return comandaDAO.consultarComandasPorEstado(EstadoComanda.ABIERTA);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
     
 }
