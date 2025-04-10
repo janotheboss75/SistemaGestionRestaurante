@@ -116,5 +116,8 @@ public interface IComandaDAO {
      * @throws PersistenciaException 
      */
     public List<Comanda> consultarComandasPorFecha(Date desde, Date hasta) throws PersistenciaException;
+    
+    public List<Comanda> buscadorComandas(EstadoComanda estadoComanda, Date desde, Date hasta) throws PersistenciaException;
+   
 
 }

@@ -403,5 +403,34 @@ public class ComandaDAO implements IComandaDAO{
         
         return comandas;
     }
+
+    @Override
+    public List<Comanda> buscadorComandas(EstadoComanda estadoComanda, Date desde, Date hasta) throws PersistenciaException {
+        List<Comanda> comandas = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        String jpql = "SELECT c FROM Comanda c " +
+              "WHERE (:estadoComanda IS NULL OR c.estado = :estadoComanda) " +
+              "AND (:fechaDesde IS NULL OR c.fechaComanda >= :fechaDesde)" +
+              "AND (:fechaHasta IS NULL OR c.fechaComanda <= :fechaHasta)";
+
+
+        try {
+            TypedQuery<Comanda> query = em.createQuery(jpql, Comanda.class);
+            query.setParameter("estadoComanda", estadoComanda);
+            query.setParameter("fechaDesde", desde);
+            query.setParameter("fechaHasta", hasta);
+            
+            return query.getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al realizar la consulta de busqueda", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
     
 }

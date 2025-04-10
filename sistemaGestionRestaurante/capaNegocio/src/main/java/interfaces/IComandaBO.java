@@ -3,8 +3,12 @@ package interfaces;
 import DTOs.ComandaDTO;
 import DTOs.NuevaComandaDTO;
 import DTOs.ProductoComandaDTO;
+import entidades.Comanda;
 import entidades.ProductoComanda;
+import enums.EstadoComanda;
 import excepciones.NegocioException;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -19,5 +23,7 @@ public interface IComandaBO {
     public ComandaDTO modificarComanda(ComandaDTO comanda) throws NegocioException;
     
     public ProductoComanda agregarProductoAcomanda(ProductoComandaDTO productoComandaDTO) throws NegocioException;
+    
+    public List<Comanda> buscadorComandas(EstadoComanda estadoComanda, Date desde, Date hasta) throws NegocioException;
     
 }

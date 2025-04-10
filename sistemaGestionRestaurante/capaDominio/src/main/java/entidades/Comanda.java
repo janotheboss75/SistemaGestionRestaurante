@@ -49,7 +49,7 @@ public class Comanda implements Serializable {
      * Fecha en la que se creó la comanda 
      */
     @Column(name = "fechaComanda", nullable = false)
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaComanda;
     
     /** 

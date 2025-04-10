@@ -6,12 +6,14 @@ import DTOs.NuevaComandaDTO;
 import DTOs.ProductoComandaDTO;
 import entidades.Comanda;
 import entidades.ProductoComanda;
+import enums.EstadoComanda;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IComandaBO;
 import interfaces.IComandaDAO;
 import interfaces.IProductoComandaDAO;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import mappers.ComandaMapper;
 import mappers.ProductoComandaMapper;
@@ -77,7 +79,16 @@ public class ComandaBO implements IComandaBO{
         
         try {
             return productoComandaDAO.agregarProductoAcomanda(productoComanda);
-        } catch (Exception e) {
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Comanda> buscadorComandas(EstadoComanda estadoComanda, Date desde, Date hasta) throws NegocioException {
+        try {
+            return comandaDAO.buscadorComandas(estadoComanda, desde, hasta);
+        } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
