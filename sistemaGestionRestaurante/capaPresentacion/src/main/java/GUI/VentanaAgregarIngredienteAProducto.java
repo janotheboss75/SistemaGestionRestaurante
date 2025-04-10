@@ -239,7 +239,7 @@ public class VentanaAgregarIngredienteAProducto extends javax.swing.JDialog {
             
             IngredienteProductoDTO ingredienteProductoDTO = new IngredienteProductoDTO(ingrediente, cantidad);
             
-            ventana.ingredientesProductoDTO.add(ingredienteProductoDTO);
+            ventana.ingredientesProductoDTO.addLast(ingredienteProductoDTO);
             ventana.cargarDatosTabla();
             control.cerrarDialogo(this);
         }

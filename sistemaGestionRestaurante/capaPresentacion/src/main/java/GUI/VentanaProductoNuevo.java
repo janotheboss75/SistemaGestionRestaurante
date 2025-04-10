@@ -2,18 +2,26 @@ package GUI;
 
 import DTOs.IngredienteProductoDTO;
 import DTOs.NuevoProductoDTO;
+import DTOs.ProductoDTO;
 import com.sun.source.tree.ParenthesizedTree;
+import entidades.IngredienteProducto;
 import enums.EstadoProducto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
+import interfaces.IIngredienteBO;
 import interfaces.IProductoBO;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import mappers.IngredienteProductoMapper;
+import utils.IconCellRenderer;
 import utils.SoloFiltroNumerico;
 
 /**
@@ -23,18 +31,22 @@ import utils.SoloFiltroNumerico;
 public class VentanaProductoNuevo extends javax.swing.JDialog {
     private Control control = new Control();
     private IProductoBO productoBO;
+    private IIngredienteBO ingredienteBO;
     protected List<IngredienteProductoDTO> ingredientesProductoDTO = new ArrayList<>();
     VentanaProductos ventanaProductos;
     
     /**
      * Creates new form NewJDialog
      */
-    public VentanaProductoNuevo(VentanaProductos parent, boolean modal) {
-        super(parent, modal);
-        this.ventanaProductos = parent;
+    public VentanaProductoNuevo(VentanaProductos ventana, boolean modal) {
+        super(ventana, modal);
+        this.ventanaProductos = ventana;
         initComponents();
         cargarComboBoxCategoria();
         productoBO = ManejadorObjetosNegocio.crearProductoBO();
+        ingredienteBO = ManejadorObjetosNegocio.crearIngredienteBO();
+        cargarDatosProductoAModificar();
+        cargarDatosTabla();
     }
 
     /**
@@ -56,7 +68,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabelCategoria = new javax.swing.JLabel();
         jLabelNombre = new javax.swing.JLabel();
         jLabelPrecio = new javax.swing.JLabel();
-        jLabelProductoNuevo3 = new javax.swing.JLabel();
+        jLabelProductoNuevo1 = new javax.swing.JLabel();
         jLabelAgregarIngrediente1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanelMesero = new GUI.PanelRound();
@@ -79,7 +91,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabelProductoNuevo2.setForeground(new java.awt.Color(0, 0, 0));
         jLabelProductoNuevo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelProductoNuevo2.setText("Nuevo");
-        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 150, -1));
+        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 370, -1));
 
         jLabelIconCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cross-small.png"))); // NOI18N
         jLabelIconCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -115,10 +127,11 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabelPrecio.setText("Precio");
         jPanel1.add(jLabelPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 110, -1, -1));
 
-        jLabelProductoNuevo3.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
-        jLabelProductoNuevo3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelProductoNuevo3.setText("Producto");
-        jPanel1.add(jLabelProductoNuevo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 0, 210, -1));
+        jLabelProductoNuevo1.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
+        jLabelProductoNuevo1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelProductoNuevo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelProductoNuevo1.setText("Producto");
+        jPanel1.add(jLabelProductoNuevo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 380, -1));
 
         jLabelAgregarIngrediente1.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelAgregarIngrediente1.setForeground(new java.awt.Color(0, 0, 0));
@@ -157,14 +170,37 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
 
         jTableIngredientes.setBackground(new java.awt.Color(255, 255, 255));
         jTableIngredientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]{},
+            new Object [][] {
+
+            },
             new String [] {
-                "Ingrediente", "Cantidad", "Modificar", "Eliminar"
+                "Id", "Ingrediente", "Cantidad", "Unidad De Medida", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableIngredientes.setRowHeight(30);
         jTableIngredientes.setRowSelectionAllowed(false);
+        jTableIngredientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableIngredientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableIngredientes);
+        if (jTableIngredientes.getColumnModel().getColumnCount() > 0) {
+            jTableIngredientes.getColumnModel().getColumn(0).setResizable(false);
+            jTableIngredientes.getColumnModel().getColumn(0).setPreferredWidth(0);
+            jTableIngredientes.getColumnModel().getColumn(1).setResizable(false);
+            jTableIngredientes.getColumnModel().getColumn(2).setResizable(false);
+            jTableIngredientes.getColumnModel().getColumn(3).setResizable(false);
+            jTableIngredientes.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 570, 240));
 
@@ -178,16 +214,81 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabelIconCerrarMouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        guardarProducto();
-        //control.cerrarDialogo(this);
+        operacionProducto();
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         control.mostrarPantallaAgregarIngredienteAProducto(this,rootPaneCheckingEnabled);
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jTableIngredientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIngredientesMouseClicked
+        funcionalidadIconTablaEliminar(evt);
+    }//GEN-LAST:event_jTableIngredientesMouseClicked
 
-    private void guardarProducto(){
+
+    private void operacionProducto(){
+        if(ventanaProductos.producto == null){
+            guardarProductoNuevo();
+        }
+        else if(ventanaProductos.producto != null){
+            modificarProducto();
+        }
+        
+        ventanaProductos.asignarDatosListaProductos();
+        ventanaProductos.cargarDatosTabla();
+    }
+    
+    private void cargarComboBoxCategoria(){
+        jComboBoxCategoria.addItem(TipoProducto.PLATILLO);
+        jComboBoxCategoria.addItem(TipoProducto.BEBIDA);
+        jComboBoxCategoria.addItem(TipoProducto.POSTRE);     
+    }
+    
+    public void cargarDatosTabla(){
+        Icon iconoEliminar = new ImageIcon(getClass().getResource("/imagenes/eliminar.png"));
+        
+        DefaultTableModel model = (DefaultTableModel) jTableIngredientes.getModel();
+        model.setRowCount(0);
+        for (IngredienteProductoDTO ingredienteComandaDTO : ingredientesProductoDTO) {
+            model.addRow(new Object[]{
+                ingredienteComandaDTO.getId(),
+                ingredienteComandaDTO.getIngrediente().getNombre(),
+                ingredienteComandaDTO.getCantidad(),
+                ingredienteComandaDTO.getIngrediente().getUnidadMedida()
+            });
+        }
+        jTableIngredientes.setModel(model);
+        
+        jTableIngredientes.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableIngredientes.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableIngredientes.getColumnModel().getColumn(0).setWidth(0);
+        
+        jTableIngredientes.getColumnModel().getColumn(4).setMinWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(4).setMaxWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(4).setWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(4).setCellRenderer(new IconCellRenderer(iconoEliminar));
+    }
+    
+    
+    private void funcionalidadIconTablaEliminar(MouseEvent evt){
+        int fila = jTableIngredientes.rowAtPoint(evt.getPoint());
+        int columna = jTableIngredientes.columnAtPoint(evt.getPoint());
+        
+        if (columna == 4) { // columna del ícono
+            Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
+            ingredientesProductoDTO.remove(fila);
+            if(id != null){
+                try {
+                    ingredienteBO.quitarIngredienteAlProducto((Long) id);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            cargarDatosTabla();
+        } 
+    }
+    
+    private void guardarProductoNuevo(){
         if(jTextFieldNombre.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(this, "Tienes que asignarle un nombre al producto");
         }
@@ -216,32 +317,54 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(rootPane, ex);
             }
         }
-        ventanaProductos.asignarDatosListaProductos();
-        ventanaProductos.cargarDatosTabla();
     }
     
-    private void cargarComboBoxCategoria(){
-        jComboBoxCategoria.addItem(TipoProducto.PLATILLO);
-        jComboBoxCategoria.addItem(TipoProducto.BEBIDA);
-        jComboBoxCategoria.addItem(TipoProducto.POSTRE);     
-    }
-    
-    public void cargarDatosTabla(){
-        DefaultTableModel model = (DefaultTableModel) jTableIngredientes.getModel();
-        model.setRowCount(0);
-        for (IngredienteProductoDTO ingredienteComandaDTO : ingredientesProductoDTO) {
-            model.addRow(new Object[]{
-                ingredienteComandaDTO.getIngrediente().getNombre(),
-                ingredienteComandaDTO.getCantidad(),
-                "Modificar",
-                "Eliminar"
-            });
+    private void modificarProducto(){
+        if(jTextFieldNombre.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle un nombre al producto");
         }
-        jTableIngredientes.setModel(model);
+        else if(jTextFieldPrecio.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle un precio al producto");
+        }
+        else if(jComboBoxCategoria.getSelectedItem().equals(null)){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle una categoria al producto");
+        }
+        else if(jTextFieldPrecio.getText().equals(".")){
+            JOptionPane.showMessageDialog(this, "El precio no puede ser un .");
+        }
+        else{
+            String nombre = jTextFieldNombre.getText();
+            String precio = jTextFieldPrecio.getText();
+            TipoProducto categoria = (TipoProducto) jComboBoxCategoria.getSelectedItem();
+            List<IngredienteProductoDTO> ingredientes = ingredientesProductoDTO;
+
+            ProductoDTO productoDTO = new ProductoDTO(ventanaProductos.producto.getId(),nombre, Double.parseDouble(precio), categoria, ventanaProductos.producto.getEstado(), ingredientes);
+
+            try {
+                productoBO.modificarProducto(productoDTO);
+                JOptionPane.showMessageDialog(rootPane, "Producto Modificado con exito");
+                control.cerrarDialogo(this);
+            } catch (NegocioException ex) {
+                JOptionPane.showMessageDialog(rootPane, ex);
+            }
+        }
+    }
+    
+    private void cargarDatosProductoAModificar(){
+        if(ventanaProductos.producto != null){
+            jTextFieldNombre.setText(ventanaProductos.producto.getNombre());
+            jTextFieldPrecio.setText(String.valueOf(ventanaProductos.producto.getPrecio()));
+            jComboBoxCategoria.setSelectedItem(ventanaProductos.producto.getTipo());
+            
+            for (IngredienteProducto ingredienteProducto : ventanaProductos.producto.getIngredientes()) {
+                ingredientesProductoDTO.add(IngredienteProductoMapper.toDTO(ingredienteProducto));
+            }
+            
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<TipoProducto> jComboBoxCategoria;
+    protected javax.swing.JComboBox<TipoProducto> jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
@@ -250,13 +373,13 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelIconCerrar;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelPrecio;
-    private javax.swing.JLabel jLabelProductoNuevo2;
-    private javax.swing.JLabel jLabelProductoNuevo3;
+    protected javax.swing.JLabel jLabelProductoNuevo1;
+    protected javax.swing.JLabel jLabelProductoNuevo2;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelMesero;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableIngredientes;
-    private javax.swing.JTextField jTextFieldNombre;
-    private javax.swing.JTextField jTextFieldPrecio;
+    protected javax.swing.JTable jTableIngredientes;
+    protected javax.swing.JTextField jTextFieldNombre;
+    protected javax.swing.JTextField jTextFieldPrecio;
     // End of variables declaration//GEN-END:variables
 }

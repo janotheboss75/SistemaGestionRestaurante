@@ -4,7 +4,6 @@ import DTOs.IngredienteProductoDTO;
 import DTOs.NuevoProductoDTO;
 import DTOs.ProductoDTO;
 import entidades.IngredienteProducto;
-import entidades.IngredienteProducto_;
 import entidades.Producto;
 import enums.EstadoProducto;
 import enums.TipoProducto;
@@ -40,5 +39,16 @@ public class ProductoMapper {
                               producto.getTipo(),
                             producto.getEstado(), 
                         ingredientesProducto);
+    }
+    
+    public static Producto toEntity(ProductoDTO productoDTO){
+
+        Producto p = new Producto(productoDTO.getNombre(), 
+                            productoDTO.getPrecio(), 
+                            productoDTO.getTipo(), 
+                            productoDTO.getEstado());
+        p.setId(productoDTO.getId());
+        
+        return p;
     }
 }

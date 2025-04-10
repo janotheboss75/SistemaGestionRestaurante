@@ -178,13 +178,20 @@ public class ProductoDAO implements IProductoDAO{
             throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
         }
         
-        Producto p = em.find(Producto.class, idProducto);
-        
-        if (p == null) {
-            throw new PersistenciaException("Error: el id del producto no existe");
+        String jpql = "SELECT ingProd FROM IngredienteProducto ingProd INNER JOIN ingProd.producto p WHERE ingProd.producto.id = :idProducto";
+        try {
+            TypedQuery<IngredienteProducto> query = em.createQuery(jpql, IngredienteProducto.class);
+            query.setParameter("idProducto", idProducto);
+            return query.getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al consultar a todos los ingredientes del producto", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
-        
-        return p.getIngredientes();
     }
 
     /**

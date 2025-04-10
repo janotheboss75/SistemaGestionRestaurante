@@ -12,4 +12,6 @@ import java.util.List;
 public interface IIngredienteBO {
     public List<Ingrediente> consultarTodosLosIngredientes() throws NegocioException;
     
+    public boolean quitarIngredienteAlProducto(Long idIngredienteProducto) throws NegocioException;
+    
 }

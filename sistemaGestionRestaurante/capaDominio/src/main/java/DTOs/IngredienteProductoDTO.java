@@ -9,6 +9,7 @@ import entidades.Ingrediente;
 public class IngredienteProductoDTO {
     private Ingrediente ingrediente;
     private double cantidad;
+    private Long id;
 
     public IngredienteProductoDTO(Ingrediente ingrediente, double cantidad) {
         this.ingrediente = ingrediente;
@@ -30,5 +31,15 @@ public class IngredienteProductoDTO {
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    
     
 }

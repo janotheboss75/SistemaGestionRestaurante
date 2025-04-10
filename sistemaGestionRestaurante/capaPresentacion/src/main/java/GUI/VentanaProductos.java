@@ -28,6 +28,7 @@ public class VentanaProductos extends javax.swing.JFrame {
     private IProductoBO productoBO;
     private List<Producto> productos = new ArrayList<>();
     protected List<IngredienteProducto> ingredientesDeProducto;
+    protected Producto producto;
     
     /**
      * Creates new form VentanaProductos
@@ -250,6 +251,7 @@ public class VentanaProductos extends javax.swing.JFrame {
         funcionalidadIconTablaModificar(evt);
         funcionalidadIconTablaIngredientes(evt);
         cargarDatosTabla();
+        producto = null;
     }//GEN-LAST:event_jTableProductosMouseClicked
 
     public void asignarDatosListaProductos(){
@@ -361,7 +363,10 @@ public class VentanaProductos extends javax.swing.JFrame {
         if (columna == 6) { // columna del ícono
             Object id = jTableProductos.getModel().getValueAt(fila, 0);
             System.out.println("Modificar producto con ID: " + id);
-            // Aquí podés llamar a tu lógica de eliminación
+            
+            obtenerProductoAmodificar((Long) id);
+           
+            control.mostrarPantallaModificarProducto(this, rootPaneCheckingEnabled);
         }
     }
     
@@ -371,7 +376,6 @@ public class VentanaProductos extends javax.swing.JFrame {
         
         if (columna == 5) { // columna del ícono
             Object id = jTableProductos.getModel().getValueAt(fila, 0);
-            
             obtenerIngredientesDeProducto((Long) id);
             control.mostrarPantallaIngredienteDeProducto(this, rootPaneCheckingEnabled);
         }
@@ -384,6 +388,18 @@ public class VentanaProductos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
+    
+    private void obtenerProductoAmodificar(Long idProducto){
+        try {
+            System.out.println(productoBO.consultarProductoPorId(idProducto));
+            producto = productoBO.consultarProductoPorId(idProducto);
+            ingredientesDeProducto = productoBO.consultarIngredientesProducto(idProducto);
+            producto.setIngredientes(ingredientesDeProducto);
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<Object> jComboBoxCategoria;

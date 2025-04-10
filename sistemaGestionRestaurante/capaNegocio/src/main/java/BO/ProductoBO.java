@@ -6,7 +6,6 @@ import DTOs.NuevoProductoDTO;
 import DTOs.ProductoDTO;
 import entidades.IngredienteProducto;
 import entidades.Producto;
-import static entidades.ProductoComanda_.producto;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
@@ -107,6 +106,49 @@ public class ProductoBO implements IProductoBO{
         } catch (Exception e) {
             throw new NegocioException(e.getMessage());
         }
+    }
+
+    @Override
+    public Producto consultarProductoPorId(Long idProducto) throws NegocioException {
+        try {
+            return productoDAO.consultarProductoPorId(idProducto);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Producto modificarProducto(ProductoDTO p) throws NegocioException {
+        Producto producto = ProductoMapper.toEntity(p);
+                
+         List<IngredienteProducto> ingredientesProducto = producto.getIngredientes();
+                
+        
+        try {
+           Producto productoModificado = productoDAO.modificarProductoDelMenu(producto);
+           
+            for (IngredienteProductoDTO ingredienteProductoDTO : p.getIngredientes()) {
+                IngredienteProducto ingredienteProducto = new IngredienteProducto(productoModificado, ingredienteProductoDTO.getIngrediente(), ingredienteProductoDTO.getCantidad());
+                ingredienteProducto.setId(ingredienteProductoDTO.getId());
+                
+                ingredientesProducto.add(ingredienteProducto);
+            }
+            
+            try {
+                for (IngredienteProducto ingredienteProducto : ingredientesProducto) {
+                    if(ingredienteProducto.getId() == null){
+                        ingredienteProductoDAO.asignarIngredienteAlProducto(productoModificado.getId(), ingredienteProducto.getIngrediente().getId(), ingredienteProducto.getCantidad());
+                    }
+                }
+            } catch (PersistenciaException e) {
+                throw new NegocioException(e.getMessage());
+            }
+            
+            return productoModificado;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+
     }
     
 }
