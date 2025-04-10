@@ -24,6 +24,7 @@ import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
  * @author janot
  */
 public class VentanaHistorialComandas extends javax.swing.JFrame {
+    private boolean esAdmin = true;
     Control control = new Control();
     IComandaBO comandaBO;
     private List<Comanda> comandasCargadas = new ArrayList<>();
@@ -232,7 +233,13 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
-        control.mostrarPantallaMenuAdmin();
+        if (esAdmin) {
+            control.mostrarPantallaMenuAdmin();
+        }
+        else{
+            control.mostrarPantallaMenuMesero();
+        }
+        
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelRegresarMouseClicked
 
@@ -345,6 +352,10 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
     
     public EstadoComanda obtenerEstado(){
         return (EstadoComanda) jComboBoxEstado.getSelectedItem();
+    }
+
+    public void setEsAdmin(boolean esAdmin) {
+        this.esAdmin = esAdmin;
     }
     
     

@@ -106,4 +106,40 @@ public class MesaDAO implements IMesaDAO{
         
         return mesas;
     }
+
+    @Override
+    public boolean cambiarEstadoDeMesa(Long idMesa, EstadoMesa estadoMesa) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        Mesa mesa = em.find(Mesa.class, idMesa);
+        
+        if(mesa == null){
+            throw new PersistenciaException("Error: El id de la comanda no existe");
+        }
+        
+        mesa.setEstadoMesa(estadoMesa);
+        
+        try {
+            em.getTransaction().begin();
+            em.merge(mesa);
+            em.getTransaction().commit();
+            
+            return true;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("No se pudo actualizar el estado de la mesa: " + e.getMessage());
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
 }

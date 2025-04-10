@@ -1,6 +1,8 @@
 package interfaces;
 
 import entidades.Mesa;
+import enums.EstadoMesa;
+import enums.TipoProducto;
 import excepciones.NegocioException;
 import java.util.List;
 
@@ -14,5 +16,7 @@ public interface IMesaBO {
     public List<Mesa> consultarMesas() throws NegocioException;
     
     public List<Mesa> consultarMesasDisponibles() throws NegocioException;
+    
+    public boolean cambiarEstadoMesa(Long idMesa, EstadoMesa estadoMesa) throws NegocioException;
     
 }

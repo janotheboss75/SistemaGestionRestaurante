@@ -80,6 +80,11 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         jLabelMesero.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelMesero.setText("Soy Mesero");
         jLabelMesero.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelMesero.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelMeseroMouseClicked(evt);
+            }
+        });
         jPanelMesero.add(jLabelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 60));
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 310, 60));
@@ -94,6 +99,12 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jLabelMeseroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelMeseroMouseClicked
+        control.mostrarPantallaMenuMesero();
+        control.cerrarPantalla(this);
+    }//GEN-LAST:event_jLabelMeseroMouseClicked
+
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

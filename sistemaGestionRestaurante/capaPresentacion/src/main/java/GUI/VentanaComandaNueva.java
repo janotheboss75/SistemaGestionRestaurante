@@ -57,12 +57,12 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabelAgregarIngrediente2 = new javax.swing.JLabel();
-        jLabelProductoNuevo2 = new javax.swing.JLabel();
+        jLabelProductoNuevo1 = new javax.swing.JLabel();
         jLabelIconCerrar = new javax.swing.JLabel();
         jComboBoxMesas = new javax.swing.JComboBox<>();
         jLabelNombre = new javax.swing.JLabel();
         jLabelPrecio = new javax.swing.JLabel();
-        jLabelProductoNuevo3 = new javax.swing.JLabel();
+        jLabelProductoNuevo2 = new javax.swing.JLabel();
         jLabelAgregarIngrediente1 = new javax.swing.JLabel();
         jLabelIconAgregarProducto = new javax.swing.JLabel();
         jPanelCrear = new GUI.PanelRound();
@@ -85,11 +85,11 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelAgregarIngrediente2.setText("Producto");
         jPanel1.add(jLabelAgregarIngrediente2, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 100, -1, -1));
 
-        jLabelProductoNuevo2.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
-        jLabelProductoNuevo2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelProductoNuevo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelProductoNuevo2.setText("Nueva");
-        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 0, 150, -1));
+        jLabelProductoNuevo1.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
+        jLabelProductoNuevo1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelProductoNuevo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelProductoNuevo1.setText("Nueva");
+        jPanel1.add(jLabelProductoNuevo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 360, -1));
 
         jLabelIconCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cross-small.png"))); // NOI18N
         jLabelIconCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -113,10 +113,10 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jLabelPrecio.setText("*Opcional");
         jPanel1.add(jLabelPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, -1, -1));
 
-        jLabelProductoNuevo3.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
-        jLabelProductoNuevo3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabelProductoNuevo3.setText("Comanda");
-        jPanel1.add(jLabelProductoNuevo3, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, 230, -1));
+        jLabelProductoNuevo2.setFont(new java.awt.Font("Product Sans Infanity", 1, 48)); // NOI18N
+        jLabelProductoNuevo2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabelProductoNuevo2.setText("Comanda");
+        jPanel1.add(jLabelProductoNuevo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, 230, -1));
 
         jLabelAgregarIngrediente1.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelAgregarIngrediente1.setForeground(new java.awt.Color(0, 0, 0));
@@ -329,8 +329,8 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelPrecio;
     private javax.swing.JLabel jLabelPrecio1;
-    private javax.swing.JLabel jLabelProductoNuevo2;
-    private javax.swing.JLabel jLabelProductoNuevo3;
+    protected javax.swing.JLabel jLabelProductoNuevo1;
+    protected javax.swing.JLabel jLabelProductoNuevo2;
     private javax.swing.JList<Cliente> jListClientes;
     private javax.swing.JPanel jPanel1;
     private GUI.PanelRound jPanelCrear;

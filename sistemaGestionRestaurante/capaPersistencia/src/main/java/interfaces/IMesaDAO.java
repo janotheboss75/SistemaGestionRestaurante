@@ -1,6 +1,7 @@
 package interfaces;
 
 import entidades.Mesa;
+import enums.EstadoMesa;
 import excepciones.PersistenciaException;
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface IMesaDAO {
     public List<Mesa> consultarMesas() throws PersistenciaException;
     
     public List<Mesa> consultarMesasDisponibles() throws PersistenciaException;
+    
+    public boolean cambiarEstadoDeMesa(Long idMesa, EstadoMesa estadoMesa) throws PersistenciaException;
 }

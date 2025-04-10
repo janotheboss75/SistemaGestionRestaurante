@@ -2,27 +2,41 @@ package GUI;
 
 import entidades.Comanda;
 import enums.EstadoComanda;
+import enums.EstadoMesa;
 import excepciones.NegocioException;
 import interfaces.IComandaBO;
+import interfaces.IMesaBO;
 import interfaces.IProductoBO;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.IconCellRenderer;
 
 /**
  *
  * @author janot
  */
 public class VentanaComandasPendientes extends javax.swing.JFrame {
-    IComandaBO comandaBO;
+    private boolean esAdmin = true;
+    private Control control = new Control();
+    private IComandaBO comandaBO;
+    private IMesaBO mesaBO;
+    private Comanda comanda;
+    
     
     /**
      * Creates new form VentanaComandasPendientes
      */
     public VentanaComandasPendientes() {
         comandaBO = ManejadorObjetosNegocio.crearComandaBO();
+        mesaBO = ManejadorObjetosNegocio.crearMesaBO();
         initComponents();
+        cargarDatosTabla();
     }
 
     /**
@@ -81,38 +95,60 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Folio", "Fecha", "Mesa", "Cliente", "Estado", "Productos", "", ""
+                "Id", "Folio", "Fecha", "Mesa", "Cliente", "Estado", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTableComandas.setRowHeight(40);
+        jTableComandas.setRowSelectionAllowed(false);
+        jTableComandas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableComandasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableComandas);
         if (jTableComandas.getColumnModel().getColumnCount() > 0) {
             jTableComandas.getColumnModel().getColumn(0).setResizable(false);
             jTableComandas.getColumnModel().getColumn(1).setResizable(false);
+            jTableComandas.getColumnModel().getColumn(2).setResizable(false);
             jTableComandas.getColumnModel().getColumn(3).setResizable(false);
             jTableComandas.getColumnModel().getColumn(4).setResizable(false);
             jTableComandas.getColumnModel().getColumn(5).setResizable(false);
             jTableComandas.getColumnModel().getColumn(6).setResizable(false);
             jTableComandas.getColumnModel().getColumn(7).setResizable(false);
+            jTableComandas.getColumnModel().getColumn(8).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 920, 370));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 910, 370));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 940, 600));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
-
+        if (esAdmin) {
+            control.mostrarPantallaMenuAdmin();
+        }
+        else{
+            control.mostrarPantallaMenuMesero();
+        }
+        
+        control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelRegresarMouseClicked
+
+    private void jTableComandasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableComandasMouseClicked
+        funcionalidadIconTablaCancelarComanda(evt);
+        funcionalidadIconTablaFinalizar(evt);
+        funcionalidadIconTablaProductos(evt);
+    }//GEN-LAST:event_jTableComandasMouseClicked
 
     
     private void cargarDatosTabla(){
@@ -123,10 +159,104 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         
+        Icon iconoProductos = new ImageIcon(getClass().getResource("/imagenes/ingredientes.png"));
+        Icon iconoFinalizar = new ImageIcon(getClass().getResource("/imagenes/finalizar.png"));
+        Icon iconoCancelar = new ImageIcon(getClass().getResource("/imagenes/eliminar-documento.png"));
         
+        DefaultTableModel model = (DefaultTableModel) jTableComandas.getModel();
+        model.setRowCount(0);
+        for (Comanda comanda : comandas) {
+            model.addRow(new Object[]{
+                comanda.getId(),
+                comanda.getFolio(),
+                comanda.getFechaComanda(),
+                comanda.getMesa(),
+                comanda.getCliente(),
+                comanda.getEstado(),
+                
+                
+            });
+        }
         
+        jTableComandas.setModel(model);
+        
+       
+        jTableComandas.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableComandas.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableComandas.getColumnModel().getColumn(0).setWidth(0);
+        
+        jTableComandas.getColumnModel().getColumn(6).setMinWidth(40);
+        jTableComandas.getColumnModel().getColumn(6).setMaxWidth(40);
+        jTableComandas.getColumnModel().getColumn(6).setWidth(40);
+        
+        jTableComandas.getColumnModel().getColumn(7).setMinWidth(40);
+        jTableComandas.getColumnModel().getColumn(7).setMaxWidth(40);
+        jTableComandas.getColumnModel().getColumn(7).setWidth(40);
+        
+        jTableComandas.getColumnModel().getColumn(8).setMinWidth(40);
+        jTableComandas.getColumnModel().getColumn(8).setMaxWidth(40);
+        jTableComandas.getColumnModel().getColumn(8).setWidth(40);
+        
+        jTableComandas.getColumnModel().getColumn(6).setCellRenderer(new IconCellRenderer(iconoProductos));
+        jTableComandas.getColumnModel().getColumn(7).setCellRenderer(new IconCellRenderer(iconoFinalizar));
+        jTableComandas.getColumnModel().getColumn(8).setCellRenderer(new IconCellRenderer(iconoCancelar));
     }
 
+    
+    private void funcionalidadIconTablaCancelarComanda(MouseEvent evt){
+        int fila = jTableComandas.rowAtPoint(evt.getPoint());
+        int columna = jTableComandas.columnAtPoint(evt.getPoint());
+
+        if (columna == 8) { // columna del ícono
+            Object id = jTableComandas.getModel().getValueAt(fila, 0);
+            if(id != null){
+                try {
+                    Comanda comandaCancelada = comandaBO.cancelarComanda((Long) id);
+                    mesaBO.cambiarEstadoMesa(comandaCancelada.getMesa().getId(), EstadoMesa.DISPONIBLE);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            cargarDatosTabla();
+        } 
+    }
+    
+    private void funcionalidadIconTablaFinalizar(MouseEvent evt){
+        int fila = jTableComandas.rowAtPoint(evt.getPoint());
+        int columna = jTableComandas.columnAtPoint(evt.getPoint());
+
+        if (columna == 7) { // columna del ícono
+            Object id = jTableComandas.getModel().getValueAt(fila, 0);
+            if(id != null){
+                try {
+                    Comanda comandaFinalizada = comandaBO.finalizarComanda((Long) id);
+                    mesaBO.cambiarEstadoMesa(comandaFinalizada.getMesa().getId(), EstadoMesa.DISPONIBLE);
+                    
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
+            cargarDatosTabla();
+        } 
+    }
+    
+    private void funcionalidadIconTablaProductos(MouseEvent evt){
+        int fila = jTableComandas.rowAtPoint(evt.getPoint());
+        int columna = jTableComandas.columnAtPoint(evt.getPoint());
+
+        if (columna == 6) { // columna del ícono
+            Object id = jTableComandas.getModel().getValueAt(fila, 0);
+            if(id != null){
+                control.mostrarPantallaModificarComanda(this, rootPaneCheckingEnabled);
+            }
+        } 
+    }
+
+    public void setEsAdmin(boolean esAdmin) {
+        this.esAdmin = esAdmin;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelComandas;
     private javax.swing.JLabel jLabelHistorialComandas;

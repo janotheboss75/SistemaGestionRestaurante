@@ -237,8 +237,7 @@ public class ComandaDAO implements IComandaDAO{
             if (em.isOpen()) {
                 em.close();
             }
-        }
-        
+        }       
     }
 
     /**

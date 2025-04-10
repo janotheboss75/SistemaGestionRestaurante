@@ -1,6 +1,7 @@
 package BO;
 
 import entidades.Mesa;
+import enums.EstadoMesa;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IMesaBO;
@@ -43,6 +44,17 @@ public class MesaBO implements IMesaBO{
         } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean cambiarEstadoMesa(Long idMesa, EstadoMesa estadoMesa) throws NegocioException {
+        try {
+            mesaDAO.cambiarEstadoDeMesa(idMesa, estadoMesa);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+        
+        return true;
     }
 
     

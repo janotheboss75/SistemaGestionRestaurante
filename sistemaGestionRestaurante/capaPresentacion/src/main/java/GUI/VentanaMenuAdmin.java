@@ -353,6 +353,7 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
 
     private void jLabelIconComandasPendientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconComandasPendientesMouseClicked
         control.mostrarPantallaComandasPendientes();
+        control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelIconComandasPendientesMouseClicked
 
 

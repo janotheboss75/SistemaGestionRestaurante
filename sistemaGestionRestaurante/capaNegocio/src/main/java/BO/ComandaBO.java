@@ -1,5 +1,6 @@
 package BO;
 
+import DAO.MesaDAO;
 import DAO.ProductoComandaDAO;
 import DTOs.ComandaDTO;
 import DTOs.NuevaComandaDTO;
@@ -7,10 +8,12 @@ import DTOs.ProductoComandaDTO;
 import entidades.Comanda;
 import entidades.ProductoComanda;
 import enums.EstadoComanda;
+import enums.EstadoMesa;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import interfaces.IComandaBO;
 import interfaces.IComandaDAO;
+import interfaces.IMesaDAO;
 import interfaces.IProductoComandaDAO;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,10 +27,12 @@ import mappers.ProductoComandaMapper;
  */
 public class ComandaBO implements IComandaBO{
     IComandaDAO comandaDAO;
+    IMesaDAO mesaDAO;
     IProductoComandaDAO productoComandaDAO;
 
     public ComandaBO(IComandaDAO comandaDAO) {
         this.comandaDAO = comandaDAO;
+        this.mesaDAO = MesaDAO.getInstanceDAO();
         this.productoComandaDAO = ProductoComandaDAO.getInstanceDAO();
     }
     
@@ -37,7 +42,8 @@ public class ComandaBO implements IComandaBO{
         Comanda comandaCreada = null;
               
         try {
-           comandaCreada =  comandaDAO.crearComanda(comanda);    
+           comandaCreada =  comandaDAO.crearComanda(comanda);   
+           mesaDAO.cambiarEstadoDeMesa(comandaCreada.getMesa().getId(), EstadoMesa.OCUPADA);
            
         } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
@@ -97,6 +103,24 @@ public class ComandaBO implements IComandaBO{
     public List<Comanda> consultarComandasPendientes() throws NegocioException {
         try {
            return comandaDAO.consultarComandasPorEstado(EstadoComanda.ABIERTA);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Comanda cancelarComanda(Long idComanda) throws NegocioException {
+        try {
+            return comandaDAO.cambiarEstadoComanda(idComanda, EstadoComanda.CANCELADA);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Comanda finalizarComanda(Long idComanda) throws NegocioException {
+        try {
+            return comandaDAO.cambiarEstadoComanda(idComanda, EstadoComanda.ENTREGADA);
         } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }

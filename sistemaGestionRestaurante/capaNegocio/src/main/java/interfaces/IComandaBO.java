@@ -28,4 +28,9 @@ public interface IComandaBO {
     
     public List<Comanda> consultarComandasPendientes() throws NegocioException;
     
+    public Comanda cancelarComanda(Long idComanda) throws NegocioException;
+    
+    public Comanda finalizarComanda(Long idComanda) throws NegocioException;
+    
+    
 }

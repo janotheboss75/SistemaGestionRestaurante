@@ -95,6 +95,39 @@ public class Control {
         pantallaComandasPendientes.setVisible(true);
     }
     
+    public void mostrarPantallaModificarComanda(VentanaComandasPendientes ventana, boolean modal){
+        VentanaComandaNueva pantallaComandaNueva = new VentanaComandaNueva(ventana, modal);
+        pantallaComandaNueva.jLabelProductoNuevo1.setText("Modificar");
+        pantallaComandaNueva.jLabelProductoNuevo2.setText("Comanda");
+        pantallaComandaNueva.setLocationRelativeTo(ventana);
+        pantallaComandaNueva.setResizable(false);
+        pantallaComandaNueva.setVisible(true);
+    }
+    
+    
+    public void mostrarPantallaMenuMesero(){
+        VentanaMenuMesero pantallaMenuMesero = new VentanaMenuMesero();
+        pantallaMenuMesero.setLocationRelativeTo(null);
+        pantallaMenuMesero.setResizable(false);
+        pantallaMenuMesero.setVisible(true);
+    }
+    
+    public void mostrarHistorialComandasConPermisosDeMesero(){
+        VentanaHistorialComandas pantallaHistorialComandas = new VentanaHistorialComandas();
+        pantallaHistorialComandas.setEsAdmin(false);
+        pantallaHistorialComandas.setResizable(false);
+        pantallaHistorialComandas.setVisible(true);
+    }
+    
+    public void mostrarComandasPendientesConPermisosDeMesero(){
+        VentanaComandasPendientes pantallaComandasPendientes = new VentanaComandasPendientes();
+        pantallaComandasPendientes.setEsAdmin(false);
+        pantallaComandasPendientes.setLocationRelativeTo(null);
+        pantallaComandasPendientes.setResizable(false);
+        pantallaComandasPendientes.setVisible(true);
+    }
+    
+    
     public void cerrarPantalla(JFrame ventana){
         ventana.dispose();
     }
