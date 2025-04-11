@@ -1,5 +1,6 @@
 package GUI;
 
+import DTOs.ComandaDTO;
 import DTOs.NuevaComandaDTO;
 import DTOs.ProductoComandaDTO;
 import entidades.Cliente;
@@ -7,6 +8,7 @@ import entidades.ClienteFrecuente;
 import entidades.Comanda;
 import entidades.Mesa;
 import entidades.ProductoComanda;
+import enums.EstadoMesa;
 import excepciones.NegocioException;
 import interfaces.IClienteBO;
 import interfaces.IComandaBO;
@@ -51,8 +53,8 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         cargarJComboBoxMesas();
         asignarDatosListaClientes();
         cargarjListProductos();
-        cargarDatosTabla();
         cargarDatosComandaAModificar();
+        cargarDatosTabla();
     }
 
     /**
@@ -196,11 +198,11 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Id", "Producto", "Cantidad", "Precio", "Importe", "", ""
+                "Id", "Producto", "Cantidad", "Precio", "Importe", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -222,7 +224,6 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
             jTableProductos.getColumnModel().getColumn(3).setResizable(false);
             jTableProductos.getColumnModel().getColumn(4).setResizable(false);
             jTableProductos.getColumnModel().getColumn(5).setResizable(false);
-            jTableProductos.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 250, 870, 220));
@@ -241,7 +242,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabelIconAgregarProductoMouseClicked
 
     private void jLabelCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCrearMouseClicked
-        crearComanda();
+        operacionComandas();
     }//GEN-LAST:event_jLabelCrearMouseClicked
 
     private void jTextFieldClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldClienteActionPerformed
@@ -260,7 +261,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     }//GEN-LAST:event_jListClientesValueChanged
 
     private void jTableProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableProductosMouseClicked
-        // TODO add your handling code here:
+        funcionalidadIconTablaEliminar(evt);
     }//GEN-LAST:event_jTableProductosMouseClicked
 
     
@@ -306,12 +307,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jTableProductos.getColumnModel().getColumn(5).setMinWidth(40);
         jTableProductos.getColumnModel().getColumn(5).setMaxWidth(40);
         jTableProductos.getColumnModel().getColumn(5).setWidth(40);
-        jTableProductos.getColumnModel().getColumn(5).setCellRenderer(new IconCellRenderer(iconoModificar));
-        
-        jTableProductos.getColumnModel().getColumn(6).setMinWidth(40);
-        jTableProductos.getColumnModel().getColumn(6).setMaxWidth(40);
-        jTableProductos.getColumnModel().getColumn(6).setWidth(40);
-        jTableProductos.getColumnModel().getColumn(6).setCellRenderer(new IconCellRenderer(iconoEliminar));
+        jTableProductos.getColumnModel().getColumn(5).setCellRenderer(new IconCellRenderer(iconoEliminar));
         
     }
     
@@ -371,24 +367,24 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
             control.cerrarDialogo(this);
         }
     }
-    /*
+    
     private void funcionalidadIconTablaEliminar(MouseEvent evt){
-        int fila = jTableIngredientes.rowAtPoint(evt.getPoint());
-        int columna = jTableIngredientes.columnAtPoint(evt.getPoint());
+        int fila = jTableProductos.rowAtPoint(evt.getPoint());
+        int columna = jTableProductos.columnAtPoint(evt.getPoint());
         
-        if (columna == 4) { // columna del ícono
-            Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
-            ingredientesProductoDTO.remove(fila);
+        if (columna == 5) { 
+            Object id = jTableProductos.getModel().getValueAt(fila, 0);
+            productosComandaDTO.remove(fila);
             if(id != null){
                 try {
-                    ingredienteBO.quitarIngredienteAlProducto((Long) id);
-                } catch (Exception e) {
+                    comandaBO.quitarProductoDecomanda((Long) id);
+                } catch (NegocioException e) {
                     JOptionPane.showMessageDialog(this, e.getMessage());
                 }
             }
             cargarDatosTabla();
         } 
-    }*/
+    }
     
     private void cargarDatosComandaAModificar(){
         if(ventana != null){
@@ -397,16 +393,69 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
                 jComboBoxMesas.setSelectedItem(ventana.comanda.getMesa());
                 if(ventana.comanda.getCliente() != null){
                     jTextFieldCliente.setText(ventana.comanda.getCliente().toString());
-                    for (ProductoComanda comanda : ventana.comanda.getProductos()) {
-                        productosComandaDTO.add(ProductoComandaMapper.toDTO(comanda));
-                    }
-                }                        
-
-
+                }     
+                
+                List<ProductoComandaDTO> productosComandaDTOCargados = new ArrayList<>();
+                try {
+                    productosComandaDTOCargados = comandaBO.consultarProductosDeComanda(ventana.comanda.getId());
+                } catch (NegocioException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+                
+                for (ProductoComandaDTO productoCargado : productosComandaDTOCargados) {
+                        productosComandaDTO.add(productoCargado);
+                }
             }
         }
         cargarDatosTabla();
     }
+    
+    private void operacionComandas(){
+        if(ventana != null){         
+            if(ventana.comanda == null){
+                crearComanda();
+            }
+            else if(ventana.comanda != null){
+                modificarComanda();
+            }
+        }
+        else{
+            crearComanda();
+        }
+    }
+    
+    public void modificarComanda(){
+        if(jComboBoxMesas.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(this, "Tienes que asignarle una mesa a la comanda");
+        }
+        else{
+            Mesa mesa = (Mesa) jComboBoxMesas.getSelectedItem();
+            Cliente cliente = null;
+            if(jListClientes.getSelectedValue() != null){
+                cliente = jListClientes.getSelectedValue();
+            }
+            else{
+                cliente = ventana.comanda.getCliente();
+            }
+            List<ProductoComandaDTO> productos = productosComandaDTO;
+            double total = 0;
+            for (ProductoComandaDTO producto : productos) {
+                total += producto.getImporte();
+            }
+            ComandaDTO comandaDTO = new ComandaDTO(ventana.comanda.getId(), ventana.comanda.getFolio(), ventana.comanda.getFechaComanda(), ventana.comanda.getEstado(), total, cliente, mesa,productos);
+
+            try {
+                comandaBO.modificarComanda(comandaDTO);
+                JOptionPane.showMessageDialog(rootPane, "Comanda Modificada con exito");
+                control.cerrarDialogo(this);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
+            
+            control.cerrarDialogo(this);
+        }
+    }
+    
     
     
     

@@ -4,6 +4,7 @@ import entidades.Cliente;
 import entidades.Mesa;
 import enums.EstadoComanda;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -23,8 +24,10 @@ public class ComandaDTO {
     private Cliente cliente;
     
     private Mesa mesa;
+    
+    private List<ProductoComandaDTO> productos;
 
-    public ComandaDTO(Long id, String folio, Date fechaComanda, EstadoComanda estado, double total, Cliente cliente, Mesa mesa) {
+    public ComandaDTO(Long id, String folio, Date fechaComanda, EstadoComanda estado, double total, Cliente cliente, Mesa mesa, List<ProductoComandaDTO> productos) {
         this.id = id;
         this.folio = folio;
         this.fechaComanda = fechaComanda;
@@ -32,6 +35,7 @@ public class ComandaDTO {
         this.total = total;
         this.cliente = cliente;
         this.mesa = mesa;
+        this.productos = productos;
     }
 
     public Long getId() {
@@ -89,6 +93,13 @@ public class ComandaDTO {
     public void setMesa(Mesa mesa) {
         this.mesa = mesa;
     }
-    
+
+    public List<ProductoComandaDTO> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<ProductoComandaDTO> productos) {
+        this.productos = productos;
+    }
     
 }

@@ -20,7 +20,7 @@ public interface IComandaBO {
     
     public boolean eliminarComanda(Long id) throws NegocioException ;
     
-    public ComandaDTO modificarComanda(ComandaDTO comanda) throws NegocioException;
+    public Comanda modificarComanda(ComandaDTO comanda) throws NegocioException;
     
     public ProductoComanda agregarProductoAcomanda(ProductoComandaDTO productoComandaDTO) throws NegocioException;
     
@@ -34,5 +34,7 @@ public interface IComandaBO {
     
     public Comanda consultarComandaPorID(Long idComanda) throws NegocioException;
     
+    public boolean quitarProductoDecomanda(Long idProductoDeComanda) throws NegocioException;
     
+    public List<ProductoComandaDTO> consultarProductosDeComanda(Long idComanda) throws NegocioException;
 }

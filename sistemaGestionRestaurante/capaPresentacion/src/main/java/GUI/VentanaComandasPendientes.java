@@ -148,6 +148,7 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
         funcionalidadIconTablaCancelarComanda(evt);
         funcionalidadIconTablaFinalizar(evt);
         funcionalidadIconTablaProductos(evt);
+        cargarDatosTabla();
     }//GEN-LAST:event_jTableComandasMouseClicked
 
     
@@ -249,7 +250,6 @@ public class VentanaComandasPendientes extends javax.swing.JFrame {
             if(id != null){
                 try {
                     comanda = comandaBO.consultarComandaPorID((Long) id);
-                    System.out.println(comanda);
                 } catch (NegocioException e) {
                     JOptionPane.showMessageDialog(this, id);
                 }

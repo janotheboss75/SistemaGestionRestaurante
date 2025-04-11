@@ -72,7 +72,7 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jLabelAgregarIngrediente1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanelMesero = new GUI.PanelRound();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelGuardar = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableIngredientes = new javax.swing.JTable();
 
@@ -154,17 +154,17 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         jPanelMesero.setRoundTopRight(15);
         jPanelMesero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Guardar");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelGuardar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabelGuardar.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelGuardar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelGuardar.setText("Guardar");
+        jLabelGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                jLabelGuardarMouseClicked(evt);
             }
         });
-        jPanelMesero.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
+        jPanelMesero.add(jLabelGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 30));
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 480, 110, 30));
 
@@ -213,9 +213,9 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
         control.cerrarDialogo(this);
     }//GEN-LAST:event_jLabelIconCerrarMouseClicked
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void jLabelGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelGuardarMouseClicked
         operacionProducto();
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_jLabelGuardarMouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         control.mostrarPantallaAgregarIngredienteAProducto(this,rootPaneCheckingEnabled);
@@ -358,18 +358,18 @@ public class VentanaProductoNuevo extends javax.swing.JDialog {
             
             for (IngredienteProducto ingredienteProducto : ventanaProductos.producto.getIngredientes()) {
                 ingredientesProductoDTO.add(IngredienteProductoMapper.toDTO(ingredienteProducto));
-            }
-            
+            }            
         }
+        cargarDatosTabla();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JComboBox<TipoProducto> jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelAgregarIngrediente1;
     private javax.swing.JLabel jLabelAgregarIngrediente2;
     private javax.swing.JLabel jLabelCategoria;
+    private javax.swing.JLabel jLabelGuardar;
     private javax.swing.JLabel jLabelIconCerrar;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelPrecio;

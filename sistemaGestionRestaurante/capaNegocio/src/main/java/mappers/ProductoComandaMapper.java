@@ -13,6 +13,8 @@ public class ProductoComandaMapper {
     }
     
     public static ProductoComandaDTO toDTO(ProductoComanda productoComanda){
-        return new ProductoComandaDTO(productoComanda.getProducto(), productoComanda.getPrecioActual(), productoComanda.getComentario(),(int)productoComanda.getCantidad(), productoComanda.getImporte());
+        ProductoComandaDTO productoComandaDTO = new ProductoComandaDTO(productoComanda.getProducto(), productoComanda.getPrecioActual(), productoComanda.getComentario(),(int)productoComanda.getCantidad(), productoComanda.getImporte());
+        productoComandaDTO.setId(productoComanda.getId());
+        return productoComandaDTO;
     }
 }

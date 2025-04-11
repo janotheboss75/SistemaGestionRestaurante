@@ -75,8 +75,36 @@ public class ComandaBO implements IComandaBO{
     }
 
     @Override
-    public ComandaDTO modificarComanda(ComandaDTO comanda) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Comanda modificarComanda(ComandaDTO c) throws NegocioException {   
+        Comanda comanda = ComandaMapper.toEntity(c);
+                
+         List<ProductoComanda> productosComanda = comanda.getProductos();
+                
+        
+        try {
+           Comanda comandaModificada = comandaDAO.actualizarComanda(comanda);
+           
+            for (ProductoComandaDTO productoComandaDTO : c.getProductos()) {
+                ProductoComanda productoComanda = new ProductoComanda(comandaModificada,productoComandaDTO.getProducto(), productoComandaDTO.getPrecioActual(),productoComandaDTO.getComentario(), productoComandaDTO.getCantidad(), productoComandaDTO.getImporte());
+                productoComanda.setId(productoComandaDTO.getId());
+                
+                productosComanda.add(productoComanda);
+            }
+            
+            try {
+                for (ProductoComanda productoComanda : productosComanda) {
+                    if(productoComanda.getId() == null){
+                        productoComandaDAO.agregarProductoAcomanda(productoComanda);
+                    }
+                }
+            } catch (PersistenciaException e) {
+                throw new NegocioException(e.getMessage());
+            }
+            
+            return comandaModificada;
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @Override
@@ -134,5 +162,33 @@ public class ComandaBO implements IComandaBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public boolean quitarProductoDecomanda(Long idProductoDeComanda) throws NegocioException {
+        try {
+            return productoComandaDAO.quitarProductoDecomanda(idProductoDeComanda);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ProductoComandaDTO> consultarProductosDeComanda(Long idComanda) throws NegocioException {
+        List<ProductoComandaDTO> productosComandaDTO = new ArrayList<>();
+        try {
+            List<ProductoComanda> productosComanda = comandaDAO.consultarTodosLosProductosDeComanda(idComanda);
+            
+            for (ProductoComanda producto : productosComanda) {
+                productosComandaDTO.add(ProductoComandaMapper.toDTO(producto));
+            }
+            
+        } catch (Exception e) {
+            throw new NegocioException(e.getMessage());
+        }
+        
+        return productosComandaDTO;
+    }
+    
+    
     
 }
