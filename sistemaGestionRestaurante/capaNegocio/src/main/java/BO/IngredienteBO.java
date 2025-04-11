@@ -58,5 +58,14 @@ public class IngredienteBO implements IIngredienteBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public List<Ingrediente> buscadorComandas(String nombre) throws NegocioException {
+        try {
+            return ingredienteDAO.buscadorComandas(nombre);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
     
 }

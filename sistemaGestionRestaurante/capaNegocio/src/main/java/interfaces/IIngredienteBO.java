@@ -19,4 +19,5 @@ public interface IIngredienteBO {
     
     public Ingrediente agregarIngredienteAlInventario(Ingrediente ingrediene) throws NegocioException;
     
+    public List<Ingrediente> buscadorComandas(String nombre) throws NegocioException;
 }

@@ -1,17 +1,32 @@
 package GUI;
 
+import entidades.Ingrediente;
+import excepciones.NegocioException;
+import interfaces.IIngredienteBO;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+
 /**
  *
  * @author janot
  */
 public class VentanaIngredientes extends javax.swing.JFrame {
     private Control control = new Control();
+    private IIngredienteBO ingredienteBO;
+    private List<Ingrediente> ingredientes = new ArrayList<>();
     
     /**
      * Creates new form VentanaIngredientes
      */
     public VentanaIngredientes() {
+        ingredienteBO = ManejadorObjetosNegocio.crearIngredienteBO();
         initComponents();
+        asignarIngredientesALista();
+        cargarDatosTabla();
     }
 
     /**
@@ -114,17 +129,17 @@ public class VentanaIngredientes extends javax.swing.JFrame {
 
         jTableIngredientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nombre", "UnidadDeMedida", "Stock", "SubirStock", "BajarStock"
+                "Id", "Nombre", "UnidadDeMedida", "Stock", "SubirStock", "BajarStock"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -145,6 +160,7 @@ public class VentanaIngredientes extends javax.swing.JFrame {
             jTableIngredientes.getColumnModel().getColumn(2).setResizable(false);
             jTableIngredientes.getColumnModel().getColumn(3).setResizable(false);
             jTableIngredientes.getColumnModel().getColumn(4).setResizable(false);
+            jTableIngredientes.getColumnModel().getColumn(5).setResizable(false);
         }
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 920, 370));
@@ -186,7 +202,10 @@ public class VentanaIngredientes extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelRegresarMouseClicked
 
     private void jTextFieldBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBuscarKeyTyped
-
+        String busqueda = jTextFieldBuscar.getText();
+        buscador(busqueda);
+        cargarDatosTabla();
+        
     }//GEN-LAST:event_jTextFieldBuscarKeyTyped
 
     private void jLabelIconIngredienteNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconIngredienteNuevoMouseClicked
@@ -197,6 +216,38 @@ public class VentanaIngredientes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTableIngredientesMouseClicked
 
+    private void asignarIngredientesALista(){
+        try {
+            ingredientes = ingredienteBO.consultarTodosLosIngredientes();
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    
+    private void cargarDatosTabla(){    
+        DefaultTableModel model = (DefaultTableModel) jTableIngredientes.getModel();
+        model.setRowCount(0);
+        for (Ingrediente ingrediente : ingredientes) {
+            model.addRow(new Object[]{
+                ingrediente.getId(),
+                ingrediente.getNombre(),
+                ingrediente.getUnidadMedida(),
+                ingrediente.getStock()
+            });
+        }
+        
+        jTableIngredientes.setModel(model);    
+    }
+    
+    public void buscador(String busqueda){
+        try {
+            ingredientes = ingredienteBO.buscadorComandas(busqueda);
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelBuscar;

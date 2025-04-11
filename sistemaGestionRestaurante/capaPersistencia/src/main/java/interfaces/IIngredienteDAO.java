@@ -56,4 +56,6 @@ public interface IIngredienteDAO {
     public Ingrediente consultarIngredientePorId(Long idIngrediente) throws PersistenciaException;
     
     public Long obtenerNombresRepetidosDeProducto(String nombreIngrediente) throws PersistenciaException;
+    
+    public List<Ingrediente> buscadorComandas(String nombre) throws PersistenciaException;
 }

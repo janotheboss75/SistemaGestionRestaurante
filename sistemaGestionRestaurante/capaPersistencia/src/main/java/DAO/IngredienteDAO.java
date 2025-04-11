@@ -7,6 +7,7 @@ import interfaces.IIngredienteDAO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -113,5 +114,27 @@ public class IngredienteDAO implements IIngredienteDAO{
             }
         }
         
+    }
+
+    @Override
+    public List<Ingrediente> buscadorComandas(String nombre) throws PersistenciaException {
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        EntityManager em = Conexion.crearConexion();
+        
+        String jpql = "SELECT i FROM Ingrediente i " +
+              "WHERE (:nombreIngrediente IS NULL OR i.nombre LIKE CONCAT('%', :nombreIngrediente, '%'))";
+        try {
+            TypedQuery<Ingrediente> query = em.createQuery(jpql, Ingrediente.class);
+            query.setParameter("nombreIngrediente", nombre);
+            return query.getResultList();
+            
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al realizar la consulta de busqueda", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 }
