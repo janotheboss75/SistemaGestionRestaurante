@@ -1,11 +1,14 @@
 package GUI;
 
 import BO.ComandaBO;
+import conexion.ConexionConJDBC;
 import entidades.Comanda;
 import enums.EstadoComanda;
 import enums.TipoProducto;
 import excepciones.NegocioException;
 import interfaces.IComandaBO;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,12 +16,21 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
-
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import conexion.ConexionConJDBC;
+import java.io.InputStream;
+import net.sf.jasperreports.view.JasperViewer;
 /**
  *
  * @author janot
@@ -131,6 +143,11 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
 
         jLabelIconPdf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/file-pdf.png"))); // NOI18N
         jLabelIconPdf.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconPdf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconPdfMouseClicked(evt);
+            }
+        });
         jPanel3.add(jLabelIconPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 10, -1, 40));
 
         jLabelFechaDesde.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
@@ -142,12 +159,22 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
         jLabelReporte.setForeground(new java.awt.Color(0, 0, 0));
         jLabelReporte.setText("Reporte");
         jLabelReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelReporte.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelReporteMouseClicked(evt);
+            }
+        });
         jPanel3.add(jLabelReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 30, -1, 20));
 
         jLabelGenerar.setFont(new java.awt.Font("Product Sans Infanity", 1, 18)); // NOI18N
         jLabelGenerar.setForeground(new java.awt.Color(0, 0, 0));
         jLabelGenerar.setText("Generar");
         jLabelGenerar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelGenerar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelGenerarMouseClicked(evt);
+            }
+        });
         jPanel3.add(jLabelGenerar, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 10, -1, 20));
 
         datePickerFechaDesde.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -264,6 +291,18 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
 
     }//GEN-LAST:event_timePickerHoraHastaKeyTyped
 
+    private void jLabelIconPdfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconPdfMouseClicked
+        reportePDF();
+    }//GEN-LAST:event_jLabelIconPdfMouseClicked
+
+    private void jLabelGenerarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelGenerarMouseClicked
+        reportePDF();
+    }//GEN-LAST:event_jLabelGenerarMouseClicked
+
+    private void jLabelReporteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelReporteMouseClicked
+        reportePDF();
+    }//GEN-LAST:event_jLabelReporteMouseClicked
+
     
     
     public void cargarDatosTabla(){
@@ -359,7 +398,41 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
     }
     
     
+    public void reportePDF(){
+        Connection conexion = null;
+        try {
+            conexion = ConexionConJDBC.obtenerConexion();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        Date fechaDesde = obtenerFechaDesde();
+        Date fechaHasta = obtenerFechaHasta();    
+        String estado = null;
+        if(obtenerEstado() != null){
+            estado = obtenerEstado().toString();
+        }
 
+        
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("Estado", estado);
+        parametros.put("FechaDesde", fechaDesde);
+        parametros.put("FechaHasta", fechaHasta);
+        
+        try {
+            InputStream jasperStream = getClass().getClassLoader().getResourceAsStream("reportes/ReporteComandasConFiltro100.jasper");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, parametros, conexion);
+            JasperViewer viewer = new JasperViewer(jasperPrint, false);
+            viewer.setVisible(true);
+
+        } catch (JRException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+        try {
+            conexion.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
