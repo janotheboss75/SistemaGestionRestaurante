@@ -134,6 +134,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconIngredientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconIngredientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/recipe.png"))); // NOI18N
         jLabelIconIngredientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconIngredientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconIngredientesMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelIngredientesLayout = new javax.swing.GroupLayout(jPanelIngredientes);
         jPanelIngredientes.setLayout(jPanelIngredientesLayout);
@@ -355,6 +360,11 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         control.mostrarPantallaComandasPendientes();
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelIconComandasPendientesMouseClicked
+
+    private void jLabelIconIngredientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconIngredientesMouseClicked
+        control.mostrarPantallaIngredientes();
+        control.cerrarPantalla(this);
+    }//GEN-LAST:event_jLabelIconIngredientesMouseClicked
 
 
     /* UTILS */

@@ -31,9 +31,9 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanelAdmin = new GUI.PanelRound();
         jLabel1 = new javax.swing.JLabel();
-        JLabelTitulo = new javax.swing.JLabel();
         jPanelMesero = new GUI.PanelRound();
         jLabelMesero = new javax.swing.JLabel();
+        JLabelTitulo1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -62,12 +62,6 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
 
         jPanel1.add(jPanelAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 190, 310, 60));
 
-        JLabelTitulo.setFont(new java.awt.Font("Product Sans Infanity", 0, 48)); // NOI18N
-        JLabelTitulo.setForeground(new java.awt.Color(0, 0, 0));
-        JLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JLabelTitulo.setText("Sistema Restaurante");
-        jPanel1.add(JLabelTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 640, 60));
-
         jPanelMesero.setBackground(new java.awt.Color(44, 44, 44));
         jPanelMesero.setRoundBottomLeft(15);
         jPanelMesero.setRoundBottomRight(15);
@@ -89,6 +83,12 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
 
         jPanel1.add(jPanelMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 310, 60));
 
+        JLabelTitulo1.setFont(new java.awt.Font("Product Sans Infanity", 0, 48)); // NOI18N
+        JLabelTitulo1.setForeground(new java.awt.Color(0, 0, 0));
+        JLabelTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        JLabelTitulo1.setText("Sistema Restaurante");
+        jPanel1.add(JLabelTitulo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 640, 60));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 340));
 
         pack();
@@ -108,7 +108,7 @@ public class VentanaEscogerRol extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel JLabelTitulo;
+    private javax.swing.JLabel JLabelTitulo1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelMesero;
     private javax.swing.JPanel jPanel1;

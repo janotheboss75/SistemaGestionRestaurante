@@ -3,6 +3,7 @@ package BO;
 import DAO.IngredienteProductoDAO;
 import entidades.Ingrediente;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;
 import interfaces.IIngredienteDAO;
 import interfaces.IIngredienteProductoDAO;
@@ -36,6 +37,24 @@ public class IngredienteBO implements IIngredienteBO{
         try {
             return ingredienteProductoDAO.quitarIngredienteAlProducto(idIngredienteProducto);
         } catch (Exception e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Long obtenerNombresRepetidosDeProducto(String nombreIngrediente) throws NegocioException {
+        try {
+            return ingredienteDAO.obtenerNombresRepetidosDeProducto(nombreIngrediente);
+        } catch (Exception e) {
+            throw new NegocioException(nombreIngrediente);
+        }
+    }
+
+    @Override
+    public Ingrediente agregarIngredienteAlInventario(Ingrediente ingrediene) throws NegocioException {
+        try {
+            return ingredienteDAO.agregarIngredienteAlInventario(ingrediene);
+        } catch (PersistenciaException e) {
             throw new NegocioException(e.getMessage());
         }
     }

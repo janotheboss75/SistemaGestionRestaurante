@@ -38,7 +38,33 @@ public class IngredienteDAO implements IIngredienteDAO{
 
     @Override
     public Ingrediente agregarIngredienteAlInventario(Ingrediente ingrediente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = Conexion.crearConexion();
+
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+
+        try {
+            em.getTransaction().begin();
+            em.persist(ingrediente);
+            em.getTransaction().commit();
+
+            if (ingrediente.getId() == null) {
+                throw new PersistenciaException("Error: No se generó un ID para el producto.");
+            }
+            return ingrediente;
+
+        } catch (PersistenciaException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new PersistenciaException("No se pudo registrar el ingrediente: " + e.getMessage(), e);
+
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     @Override
@@ -69,5 +95,23 @@ public class IngredienteDAO implements IIngredienteDAO{
     @Override
     public Ingrediente consultarIngredientePorId(Long idIngrediente) throws PersistenciaException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Long obtenerNombresRepetidosDeProducto(String nombreIngrediente) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        try {
+            return em.createQuery("SELECT COUNT(i) FROM Ingrediente i WHERE i.nombre = :nombre", Long.class).setParameter("nombre", nombreIngrediente).getSingleResult();
+
+        } catch (Exception e) {
+            throw new PersistenciaException("Error al obetner la cantidad de repetidos", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+        
     }
 }

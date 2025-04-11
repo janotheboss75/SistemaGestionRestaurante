@@ -37,18 +37,18 @@ public class CapaDominio {
         Mesa mesa4 = new Mesa(4, EstadoMesa.DISPONIBLE);
         
         //INGREDIENTES
-        Ingrediente ingrediente1 = new Ingrediente("Pan", UnidadDeMedida.PIEZAS, 10);
-        Ingrediente ingrediente2 = new Ingrediente("Carne", UnidadDeMedida.GRAMOS, 1000);
-        Ingrediente ingrediente3 = new Ingrediente("Lechuga", UnidadDeMedida.PIEZAS, 10);
-        Ingrediente ingrediente4 = new Ingrediente("Tomate", UnidadDeMedida.PIEZAS, 10);
-        Ingrediente ingrediente5 = new Ingrediente("Tocino", UnidadDeMedida.PIEZAS, 10);
-        Ingrediente ingrediente6 = new Ingrediente("Limon", UnidadDeMedida.PIEZAS, 10);
-        Ingrediente ingrediente7 = new Ingrediente("azucar", UnidadDeMedida.GRAMOS, 1000);
-        Ingrediente ingrediente8 = new Ingrediente("agua", UnidadDeMedida.MILILITROS, 1000);
-        Ingrediente ingrediente9 = new Ingrediente("Leche", UnidadDeMedida.MILILITROS, 1000);
-        Ingrediente ingrediente10 = new Ingrediente("Levadura", UnidadDeMedida.GRAMOS, 1000);
-        Ingrediente ingrediente11 = new Ingrediente("Harina", UnidadDeMedida.GRAMOS, 1000);
-        Ingrediente ingrediente12 = new Ingrediente("Huevo", UnidadDeMedida.PIEZAS, 1000);
+        Ingrediente ingrediente1 = new Ingrediente("Pan", UnidadDeMedida.PIEZAS, 10d);
+        Ingrediente ingrediente2 = new Ingrediente("Carne", UnidadDeMedida.GRAMOS, 1000d);
+        Ingrediente ingrediente3 = new Ingrediente("Lechuga", UnidadDeMedida.PIEZAS, 10d);
+        Ingrediente ingrediente4 = new Ingrediente("Tomate", UnidadDeMedida.PIEZAS, 10d);
+        Ingrediente ingrediente5 = new Ingrediente("Tocino", UnidadDeMedida.PIEZAS, 10d);
+        Ingrediente ingrediente6 = new Ingrediente("Limon", UnidadDeMedida.PIEZAS, 10d);
+        Ingrediente ingrediente7 = new Ingrediente("azucar", UnidadDeMedida.GRAMOS, 1000d);
+        Ingrediente ingrediente8 = new Ingrediente("agua", UnidadDeMedida.MILILITROS, 1000d);
+        Ingrediente ingrediente9 = new Ingrediente("Leche", UnidadDeMedida.MILILITROS, 1000d);
+        Ingrediente ingrediente10 = new Ingrediente("Levadura", UnidadDeMedida.GRAMOS, 1000d);
+        Ingrediente ingrediente11 = new Ingrediente("Harina", UnidadDeMedida.GRAMOS, 1000d);
+        Ingrediente ingrediente12 = new Ingrediente("Huevo", UnidadDeMedida.PIEZAS, 1000d);
         
         //PRODUCTOS
         Producto producto1 = new Producto("Hamburguesa", 150, TipoProducto.PLATILLO, EstadoProducto.HABILITADO);

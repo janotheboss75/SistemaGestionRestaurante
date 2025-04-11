@@ -54,4 +54,6 @@ public interface IIngredienteDAO {
      * @throws PersistenciaException Si el id del ingrediente no existe.
      */
     public Ingrediente consultarIngredientePorId(Long idIngrediente) throws PersistenciaException;
+    
+    public Long obtenerNombresRepetidosDeProducto(String nombreIngrediente) throws PersistenciaException;
 }

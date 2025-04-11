@@ -53,7 +53,7 @@ public class Ingrediente implements Serializable {
      * Cantidad disponible del ingrediente en stock. 
      */
     @Column(name = "stock", nullable = false)
-    private Integer stock;
+    private Double stock;
     
     /* Lista de Ingredientes para elaborar el producto
      * Relacion uno a muchos, bidireccional, la entidad IngredienteProducto 
@@ -75,7 +75,7 @@ public class Ingrediente implements Serializable {
      * @param unidadMedida Unidad de medida utilizada para el ingrediente.
      * @param stock Cantidad disponible en stock.
      */
-    public Ingrediente(String nombre, UnidadDeMedida unidadMedida, Integer stock) {
+    public Ingrediente(String nombre, UnidadDeMedida unidadMedida, Double stock) {
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
         this.stock = stock;
@@ -140,7 +140,7 @@ public class Ingrediente implements Serializable {
      * 
      * @return Cantidad en stock.
      */
-    public Integer getStock() {
+    public Double getStock() {
         return stock;
     }
 
@@ -149,7 +149,7 @@ public class Ingrediente implements Serializable {
      * 
      * @param stock Nueva cantidad en stock.
      */
-    public void setStock(Integer stock) {
+    public void setStock(Double stock) {
         this.stock = stock;
     }
 

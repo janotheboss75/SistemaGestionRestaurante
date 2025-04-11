@@ -128,8 +128,19 @@ public class Control {
         pantallaComandasPendientes.setVisible(true);
     }
     
+    public void mostrarPantallaIngredientes(){
+        VentanaIngredientes pantallaIngredientes = new VentanaIngredientes();
+        pantallaIngredientes.setLocationRelativeTo(null);
+        pantallaIngredientes.setResizable(false);
+        pantallaIngredientes.setVisible(true);
+    }
     
-    
+    public void mostrarPantallaIngredienteNuevo(VentanaIngredientes ventana, boolean modal){
+        VentanaIngredienteNuevo pantallaIngredienteNuevo = new VentanaIngredienteNuevo(ventana, modal);
+        pantallaIngredienteNuevo.setLocationRelativeTo(null);
+        pantallaIngredienteNuevo.setResizable(false);
+        pantallaIngredienteNuevo.setVisible(true);
+    }
     
     public void cerrarPantalla(JFrame ventana){
         ventana.dispose();
