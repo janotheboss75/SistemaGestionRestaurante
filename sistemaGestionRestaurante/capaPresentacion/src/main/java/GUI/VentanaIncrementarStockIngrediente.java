@@ -1,7 +1,11 @@
 package GUI;
 
 import entidades.Ingrediente;
+import enums.UnidadDeMedida;
+import excepciones.NegocioException;
+import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
+import utils.SoloEnterosFilter;
 import utils.SoloFiltroNumerico;
 
 /**
@@ -9,13 +13,19 @@ import utils.SoloFiltroNumerico;
  * @author janot
  */
 public class VentanaIncrementarStockIngrediente extends javax.swing.JDialog {
-
+    private Ingrediente ingrediente;
+    private VentanaIngredientes ventana;
+    private Control control;
     /**
      * Creates new form VentanaIncrementarStockIngrediente
      */
     public VentanaIncrementarStockIngrediente(VentanaIngredientes ventana, boolean modal, Ingrediente ingrediente) {
         super(ventana, modal);
+        this.ingrediente = ingrediente;
+        this.ventana = ventana;
+        this.control = new Control();
         initComponents();
+        cargarStockIngrediente();
     }
 
     /**
@@ -95,13 +105,37 @@ public class VentanaIncrementarStockIngrediente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabelAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAceptarMouseClicked
-        
+        guardar();
     }//GEN-LAST:event_jLabelAceptarMouseClicked
 
     private void jTextFieldIncrementarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIncrementarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIncrementarActionPerformed
 
+    private void cargarStockIngrediente(){
+        jLabelStock.setText(jLabelStock.getText() + " " + ingrediente.getStock());
+        if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
+            ((AbstractDocument) jTextFieldIncrementar.getDocument()).setDocumentFilter(new SoloEnterosFilter());
+        }
+    }
+    
+    private void guardar(){
+        if (jTextFieldIncrementar.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo esta vacio");
+        }
+        else{
+            Double incremento = Double.parseDouble(jTextFieldIncrementar.getText());
+            ingrediente.setStock(ingrediente.getStock() + incremento);
+            try {
+                ventana.ingredienteBO.modificarIngrediente(ingrediente);
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+        ventana.asignarIngredientesALista();
+        ventana.cargarDatosTabla();
+        control.cerrarDialogo(this);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;

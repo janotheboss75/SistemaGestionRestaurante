@@ -21,7 +21,7 @@ import utils.IconCellRenderer;
  */
 public class VentanaIngredientes extends javax.swing.JFrame {
     private Control control = new Control();
-    private IIngredienteBO ingredienteBO;
+    protected IIngredienteBO ingredienteBO;
     private List<Ingrediente> ingredientes = new ArrayList<>();
     
     /**
@@ -283,14 +283,8 @@ public class VentanaIngredientes extends javax.swing.JFrame {
             
             try {
                 Ingrediente ingrediente = ingredienteBO.consultarIngredientePorId((Long) id);
+                control.mostrarPantallaIncrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
                 
-                if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
-                    ingrediente.setStock(ingrediente.getStock() + 1);
-                    ingredienteBO.modificarIngrediente(ingrediente);
-                }
-                else{
-                    control.mostrarPantallaIncrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
-                }
             } catch (NegocioException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }
@@ -305,14 +299,7 @@ public class VentanaIngredientes extends javax.swing.JFrame {
             Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
             try {
                 Ingrediente ingrediente = ingredienteBO.consultarIngredientePorId((Long) id);
-                
-                if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
-                    ingrediente.setStock(ingrediente.getStock() - 1);
-                    ingredienteBO.modificarIngrediente(ingrediente);
-                }
-                else{
-                    control.mostrarPantallaDecrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
-                }
+                control.mostrarPantallaDecrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
             } catch (NegocioException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage());
             }

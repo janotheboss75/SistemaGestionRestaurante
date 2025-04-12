@@ -5,7 +5,11 @@
 package GUI;
 
 import entidades.Ingrediente;
+import enums.UnidadDeMedida;
+import excepciones.NegocioException;
+import javax.swing.JOptionPane;
 import javax.swing.text.AbstractDocument;
+import utils.SoloEnterosFilter;
 import utils.SoloFiltroNumerico;
 
 /**
@@ -13,13 +17,19 @@ import utils.SoloFiltroNumerico;
  * @author janot
  */
 public class VentanaDecrementarStockIngrediente extends javax.swing.JDialog {
-
+    private Ingrediente ingrediente;
+    private VentanaIngredientes ventana;
+    private Control control;
     /**
      * Creates new form VentanaDecrementarStockIngrediente
      */
     public VentanaDecrementarStockIngrediente(VentanaIngredientes ventana, boolean modal, Ingrediente ingrediente) {
         super(ventana, modal);
+        this.ingrediente = ingrediente;
+        this.ventana = ventana;
+        this.control = new Control();
         initComponents();
+        cargarStockIngrediente();
     }
 
     /**
@@ -103,10 +113,37 @@ public class VentanaDecrementarStockIngrediente extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextFieldDecrementarActionPerformed
 
     private void jLabelAceptarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAceptarMouseClicked
-
+        guardar();
     }//GEN-LAST:event_jLabelAceptarMouseClicked
 
- 
+    private void cargarStockIngrediente(){
+        jLabelStock.setText(jLabelStock.getText() + " " + ingrediente.getStock());
+        
+        if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
+            ((AbstractDocument) jTextFieldDecrementar.getDocument()).setDocumentFilter(new SoloEnterosFilter());
+        }
+    }
+
+    private void guardar(){
+        if (jTextFieldDecrementar.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El campo esta vacio");
+        }
+        else if(ingrediente.getStock() < Double.parseDouble(jTextFieldDecrementar.getText())){
+            JOptionPane.showMessageDialog(rootPane, "El decremento aumenta al stock actual");
+        }
+        else{
+            Double decremento = Double.parseDouble(jTextFieldDecrementar.getText());
+            ingrediente.setStock(ingrediente.getStock() - decremento);
+            try {
+                ventana.ingredienteBO.modificarIngrediente(ingrediente);
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+        ventana.asignarIngredientesALista();
+        ventana.cargarDatosTabla();
+        control.cerrarDialogo(this);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
