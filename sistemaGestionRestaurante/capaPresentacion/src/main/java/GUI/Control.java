@@ -1,5 +1,6 @@
 package GUI;
 
+import entidades.Ingrediente;
 import entidades.Producto;
 import excepciones.NegocioException;
 import interfaces.IProductoBO;
@@ -140,6 +141,20 @@ public class Control {
         pantallaIngredienteNuevo.setLocationRelativeTo(null);
         pantallaIngredienteNuevo.setResizable(false);
         pantallaIngredienteNuevo.setVisible(true);
+    }
+    
+    public void mostrarPantallaIncrementarStockIngrediente(VentanaIngredientes ventana, boolean modal, Ingrediente ingrediente){
+        VentanaIncrementarStockIngrediente pantallaIncrementarStockIngrediente = new VentanaIncrementarStockIngrediente(ventana, modal, ingrediente);
+        pantallaIncrementarStockIngrediente.setLocationRelativeTo(null);
+        pantallaIncrementarStockIngrediente.setResizable(false);
+        pantallaIncrementarStockIngrediente.setVisible(true);
+    }
+    
+    public void mostrarPantallaDecrementarStockIngrediente(VentanaIngredientes ventana, boolean modal, Ingrediente ingrediente){
+        VentanaDecrementarStockIngrediente pantallaDecrementarStockIngrediente = new VentanaDecrementarStockIngrediente(ventana, modal, ingrediente);
+        pantallaDecrementarStockIngrediente.setLocationRelativeTo(null);
+        pantallaDecrementarStockIngrediente.setResizable(false);
+        pantallaDecrementarStockIngrediente.setVisible(true);
     }
     
     public void cerrarPantalla(JFrame ventana){

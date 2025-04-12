@@ -1,14 +1,19 @@
 package GUI;
 
 import entidades.Ingrediente;
+import enums.UnidadDeMedida;
 import excepciones.NegocioException;
 import interfaces.IIngredienteBO;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import manejadoresDeObjetoNegocio.ManejadorObjetosNegocio;
+import utils.IconCellRenderer;
 
 /**
  *
@@ -135,7 +140,7 @@ public class VentanaIngredientes extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "UnidadDeMedida", "Stock", "SubirStock", "BajarStock"
+                "Id", "Nombre", "UnidadDeMedida", "Stock", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -213,10 +218,13 @@ public class VentanaIngredientes extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelIconIngredienteNuevoMouseClicked
 
     private void jTableIngredientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableIngredientesMouseClicked
-
+        subirStock(evt);
+        bajarStock(evt);
+        asignarIngredientesALista();
+        cargarDatosTabla();
     }//GEN-LAST:event_jTableIngredientesMouseClicked
 
-    private void asignarIngredientesALista(){
+    protected void asignarIngredientesALista(){
         try {
             ingredientes = ingredienteBO.consultarTodosLosIngredientes();
         } catch (NegocioException e) {
@@ -225,7 +233,9 @@ public class VentanaIngredientes extends javax.swing.JFrame {
     }
     
     
-    private void cargarDatosTabla(){    
+    protected void cargarDatosTabla(){    
+        Icon iconoSubirStock = new ImageIcon(getClass().getResource("/imagenes/incrementar.png"));
+        Icon iconoBajarStock = new ImageIcon(getClass().getResource("/imagenes/decrementar.png"));
         DefaultTableModel model = (DefaultTableModel) jTableIngredientes.getModel();
         model.setRowCount(0);
         for (Ingrediente ingrediente : ingredientes) {
@@ -238,6 +248,22 @@ public class VentanaIngredientes extends javax.swing.JFrame {
         }
         
         jTableIngredientes.setModel(model);    
+        
+        jTableIngredientes.setModel(model);
+        jTableIngredientes.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableIngredientes.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableIngredientes.getColumnModel().getColumn(0).setWidth(0);
+        
+        jTableIngredientes.getColumnModel().getColumn(4).setMinWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(4).setMaxWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(4).setWidth(40);
+        
+        jTableIngredientes.getColumnModel().getColumn(5).setMinWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(5).setMaxWidth(40);
+        jTableIngredientes.getColumnModel().getColumn(5).setWidth(40);
+        
+        jTableIngredientes.getColumnModel().getColumn(4).setCellRenderer(new IconCellRenderer(iconoSubirStock));
+        jTableIngredientes.getColumnModel().getColumn(5).setCellRenderer(new IconCellRenderer(iconoBajarStock));
     }
     
     public void buscador(String busqueda){
@@ -245,6 +271,51 @@ public class VentanaIngredientes extends javax.swing.JFrame {
             ingredientes = ingredienteBO.buscadorComandas(busqueda);
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    public void subirStock(MouseEvent evt){
+        int fila = jTableIngredientes.rowAtPoint(evt.getPoint());
+        int columna = jTableIngredientes.columnAtPoint(evt.getPoint());
+        
+        if (columna == 4) { 
+            Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
+            
+            try {
+                Ingrediente ingrediente = ingredienteBO.consultarIngredientePorId((Long) id);
+                
+                if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
+                    ingrediente.setStock(ingrediente.getStock() + 1);
+                    ingredienteBO.modificarIngrediente(ingrediente);
+                }
+                else{
+                    control.mostrarPantallaIncrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
+                }
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+    }
+    
+    public void bajarStock(MouseEvent evt){
+        int fila = jTableIngredientes.rowAtPoint(evt.getPoint());
+        int columna = jTableIngredientes.columnAtPoint(evt.getPoint());
+        
+        if (columna == 5) { 
+            Object id = jTableIngredientes.getModel().getValueAt(fila, 0);
+            try {
+                Ingrediente ingrediente = ingredienteBO.consultarIngredientePorId((Long) id);
+                
+                if(ingrediente.getUnidadMedida().equals(UnidadDeMedida.PIEZAS)){
+                    ingrediente.setStock(ingrediente.getStock() - 1);
+                    ingredienteBO.modificarIngrediente(ingrediente);
+                }
+                else{
+                    control.mostrarPantallaDecrementarStockIngrediente(this, rootPaneCheckingEnabled, ingrediente);
+                }
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
         }
     }
     

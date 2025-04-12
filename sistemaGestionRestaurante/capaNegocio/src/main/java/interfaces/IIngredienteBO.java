@@ -20,4 +20,8 @@ public interface IIngredienteBO {
     public Ingrediente agregarIngredienteAlInventario(Ingrediente ingrediene) throws NegocioException;
     
     public List<Ingrediente> buscadorComandas(String nombre) throws NegocioException;
+    
+    public Ingrediente consultarIngredientePorId(Long idIngrediente) throws NegocioException;
+    
+    public Ingrediente modificarIngrediente(Ingrediente ingrediente) throws NegocioException;
 }

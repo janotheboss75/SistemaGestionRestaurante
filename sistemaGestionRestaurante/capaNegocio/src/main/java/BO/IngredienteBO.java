@@ -7,7 +7,6 @@ import excepciones.PersistenciaException;
 import interfaces.IIngredienteBO;
 import interfaces.IIngredienteDAO;
 import interfaces.IIngredienteProductoDAO;
-import interfaces.IProductoDAO;
 import java.util.List;
 
 /**
@@ -67,5 +66,25 @@ public class IngredienteBO implements IIngredienteBO{
             throw new NegocioException(e.getMessage());
         }
     }
+
+    @Override
+    public Ingrediente consultarIngredientePorId(Long idIngrediente) throws NegocioException {
+        try {
+            return ingredienteDAO.consultarIngredientePorId(idIngrediente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Ingrediente modificarIngrediente(Ingrediente ingrediente) throws NegocioException {
+        try {
+            return ingredienteDAO.modificarIngrediente(ingrediente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+    }
+    
+    
     
 }

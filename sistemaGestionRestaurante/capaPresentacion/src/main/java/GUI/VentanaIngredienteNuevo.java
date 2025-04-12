@@ -18,12 +18,14 @@ import utils.SoloFiltroNumerico;
 public class VentanaIngredienteNuevo extends javax.swing.JDialog {
     private Control control = new Control();
     private IIngredienteBO ingredienteBO;
+    private VentanaIngredientes ventana;
     /**
      * Creates new form VentanaIngredienteNuevo
      */
     public VentanaIngredienteNuevo(VentanaIngredientes ventana, boolean modal) {
         super(ventana, modal);
         ingredienteBO = ManejadorObjetosNegocio.crearIngredienteBO();
+        this.ventana = ventana;
         initComponents();
     }
 
@@ -142,6 +144,8 @@ public class VentanaIngredienteNuevo extends javax.swing.JDialog {
 
     private void jLabelCrearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCrearMouseClicked
         agregarIngrediente();
+        ventana.asignarIngredientesALista();
+        ventana.cargarDatosTabla();
     }//GEN-LAST:event_jLabelCrearMouseClicked
 
     private void jComboBoxUnidadDeMedidaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxUnidadDeMedidaItemStateChanged

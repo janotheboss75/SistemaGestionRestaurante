@@ -69,11 +69,6 @@ public class IngredienteDAO implements IIngredienteDAO{
     }
 
     @Override
-    public Ingrediente modificarIngrediente(Ingrediente ingrediente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
     public List<Ingrediente> consultarTodosLosIngredientes() throws PersistenciaException {
         List<Ingrediente> ingredientes = new ArrayList<>();
         EntityManager em = Conexion.crearConexion();
@@ -95,7 +90,19 @@ public class IngredienteDAO implements IIngredienteDAO{
 
     @Override
     public Ingrediente consultarIngredientePorId(Long idIngrediente) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        Ingrediente c = em.find(Ingrediente.class, idIngrediente);
+        
+        if (c == null) {
+            throw new PersistenciaException("Error: el id de la comanda no existe");
+        }
+        
+        return c;
     }
 
     @Override
@@ -130,6 +137,35 @@ public class IngredienteDAO implements IIngredienteDAO{
             
         } catch (Exception e) {
             throw new PersistenciaException("Error al realizar la consulta de busqueda", e);
+            
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    @Override
+    public Ingrediente modificarIngrediente(Ingrediente ingrediente) throws PersistenciaException {
+        EntityManager em = Conexion.crearConexion();
+        
+        if (em == null) {
+            throw new PersistenciaException("Error: No se pudo obtener la conexión con la base de datos.");
+        }
+        
+        try {
+            em.getTransaction().begin();
+            Ingrediente actualizado = em.merge(ingrediente);
+            em.getTransaction().commit();
+            
+            return actualizado;
+            
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            
+            throw new PersistenciaException("No se pudo actualizar el producto: " + e.getMessage());
             
         } finally {
             if (em.isOpen()) {
