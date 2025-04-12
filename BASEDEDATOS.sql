@@ -31,3 +31,19 @@ BEGIN
 END $$
 DELIMITER ;
 
+/*
+DELIMITER $$
+DROP TRIGGER IF EXISTS triggerBajarStockAIngrediente $$
+CREATE TRIGGER triggerBajarStockAIngrediente
+AFTER INSERT
+ON productocomanda FOR EACH ROW
+BEGIN
+	IF
+END $$
+DELIMITER ;
+
+SELECT *
+FROM productosComandas AS proCom
+LEFT JOIN productos AS p ON p.idProducto = proCom.idProducto
+LEFT JOIN ingredientesproductos AS ingPro ON ingPro.idProducto = p.idProducto
+*/

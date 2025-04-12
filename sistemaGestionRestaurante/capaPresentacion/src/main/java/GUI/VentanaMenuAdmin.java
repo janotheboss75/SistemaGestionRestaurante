@@ -159,6 +159,16 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         jLabelIconClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelIconClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/book-user.png"))); // NOI18N
         jLabelIconClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabelIconClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelIconClientesMouseClicked(evt);
+            }
+        });
+        jLabelIconClientes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLabelIconClientesKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanelClientesLayout = new javax.swing.GroupLayout(JPanelClientes);
         JPanelClientes.setLayout(JPanelClientesLayout);
@@ -365,6 +375,14 @@ public class VentanaMenuAdmin extends javax.swing.JFrame {
         control.mostrarPantallaIngredientes();
         control.cerrarPantalla(this);
     }//GEN-LAST:event_jLabelIconIngredientesMouseClicked
+
+    private void jLabelIconClientesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabelIconClientesKeyPressed
+
+    }//GEN-LAST:event_jLabelIconClientesKeyPressed
+
+    private void jLabelIconClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelIconClientesMouseClicked
+        JOptionPane.showMessageDialog(this, "SE LA DEBO PROFE\nFUE MUCHA CARGA PARA UNA PERSONA :(");
+    }//GEN-LAST:event_jLabelIconClientesMouseClicked
 
 
     /* UTILS */

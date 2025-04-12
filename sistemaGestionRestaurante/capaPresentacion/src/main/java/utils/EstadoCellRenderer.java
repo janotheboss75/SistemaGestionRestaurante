@@ -8,7 +8,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
+ * Esta clase se usa especificamente en ventanaProductos, y es para habilitar y deshabilitar
+ * un producto y que su icono de la tabla cambia de imagen.
  * @author janot
  */
 public class EstadoCellRenderer extends DefaultTableCellRenderer {

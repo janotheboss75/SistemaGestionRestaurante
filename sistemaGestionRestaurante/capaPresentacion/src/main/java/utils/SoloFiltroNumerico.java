@@ -5,7 +5,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 /**
- *
+ * Lo que hace esta clase es hacer un bloque en jTextFields, para que nomas
+ * reciba como entrada numeros tanto enteros como doubles y decimales, NO TEXTO
  * @author janot
  */
 public class SoloFiltroNumerico extends DocumentFilter{

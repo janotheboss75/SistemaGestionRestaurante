@@ -20,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author janot
  */
 public class ComandaMapper {
+    //CUANDO CONVIERTO LA NUEVACOMANDADTO A ENTIDAD, LO QUE SE HACE ES DE UNA VEZ
+    //AGREGARLE LA FECHA Y EL FOLIO, HACIENDO AQUI LAS OPERACIONES (NO ME JUZGUEEEEEE)
     public static Comanda toEntity(NuevaComandaDTO nuevaComanda){
         LocalDateTime ahora = LocalDateTime.now();
 
@@ -42,6 +44,8 @@ public class ComandaMapper {
         return new Comanda(folio, date, EstadoComanda.ABIERTA, nuevaComanda.getTotal(), nuevaComanda.getCliente(), nuevaComanda.getMesa());
     }
     
+    //AQUI CUANDO CONVIERTE A DTO, AGARRA LA LISTA DE PRODUCTOS DE LA ENTIDAD COMANDA,Y ESTA LA
+    //CONVIERTE EN DTOS PARA LUEGO ASIGMARSELA A LA COMANDADTO
     public static ComandaDTO toDTO(Comanda comanda){  
         List<ProductoComandaDTO> productosComanda = new ArrayList<>();
         for (ProductoComanda producto : comanda.getProductos()) {
@@ -52,7 +56,7 @@ public class ComandaMapper {
         return new ComandaDTO(comanda.getId(), comanda.getFolio(), comanda.getFechaComanda(), comanda.getEstado(), comanda.getTotal(), comanda.getCliente(), comanda.getMesa(), productosComanda);
     }
     
-    
+    //ESTE METODO CONVIERTE UNA COMANDADTO ENTITY, ESTA ES PARA MANEJAR DATOS PARA MODIFICAR COMANDAS
     public static Comanda toEntity(ComandaDTO comandaDTO){
         Comanda c = new Comanda(comandaDTO.getFolio(), comandaDTO.getFechaComanda(), comandaDTO.getEstado(), comandaDTO.getTotal(), comandaDTO.getCliente(), comandaDTO.getMesa());
         c.setId(comandaDTO.getId());

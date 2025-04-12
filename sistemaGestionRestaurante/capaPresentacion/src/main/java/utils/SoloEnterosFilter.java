@@ -2,6 +2,11 @@ package utils;
 
 import javax.swing.text.*;
 
+/**
+ * Lo que hace esta clase es hacer un bloque en jTextFields, para que nomas
+ * reciba como entrada numeros enteros y no texto
+ * @author janot
+ */
 public class SoloEnterosFilter extends DocumentFilter {
     @Override
     public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
