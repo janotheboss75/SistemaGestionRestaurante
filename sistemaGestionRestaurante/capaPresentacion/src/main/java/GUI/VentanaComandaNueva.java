@@ -112,6 +112,11 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         jPanel1.add(jLabelIconCerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 0, 60, 50));
 
         jComboBoxMesas.setBackground(new java.awt.Color(255, 255, 255));
+        jComboBoxMesas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxMesasActionPerformed(evt);
+            }
+        });
         jPanel1.add(jComboBoxMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 110, 30));
 
         jLabelNombre.setFont(new java.awt.Font("Product Sans Infanity", 0, 18)); // NOI18N
@@ -264,6 +269,10 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
         funcionalidadIconTablaEliminar(evt);
     }//GEN-LAST:event_jTableProductosMouseClicked
 
+    private void jComboBoxMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMesasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxMesasActionPerformed
+
     
     
     /*UTILS*/  
@@ -323,7 +332,7 @@ public class VentanaComandaNueva extends javax.swing.JDialog {
     public void asignarDatosListaClientes(){
         try {
             this.clientes = clienteBO.consultarTodosLosClientes();
-            this.clientes.addFirst(new Cliente(){});
+            //this.clientes.addFirst(new Cliente(){});
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e);
         }
