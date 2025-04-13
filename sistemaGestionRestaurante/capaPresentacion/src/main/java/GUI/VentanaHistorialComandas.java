@@ -419,7 +419,7 @@ public class VentanaHistorialComandas extends javax.swing.JFrame {
         parametros.put("FechaHasta", fechaHasta);
         
         try {
-            InputStream jasperStream = getClass().getClassLoader().getResourceAsStream("reportes/ReporteComandasConFiltro100.jasper");
+            InputStream jasperStream = getClass().getClassLoader().getResourceAsStream("ReportePDF/MyReports/ReporteComandas/ReporteComandasConFiltro100.jasper");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, parametros, conexion);
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setVisible(true);

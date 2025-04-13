@@ -1,0 +1,211 @@
+<!-- Created with Jaspersoft Studio version 7.0.2.final using JasperReports Library version 7.0.2-31532122640f516c6d17238ae0e41a08113d5ac0  -->
+<jasperReport name="ReporteComandasConFiltro100" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a458109-7a1c-4d7b-a4e9-0cb46d649fae">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="restaurante"/>
+	<parameter name="Estado" class="java.lang.String">
+		<description><![CDATA[Estado de comandas a fitrar]]></description>
+	</parameter>
+	<parameter name="FechaDesde" class="java.util.Date">
+		<description><![CDATA[Fecha desde la cual se querran las comandas]]></description>
+	</parameter>
+	<parameter name="FechaHasta" class="java.util.Date">
+		<description><![CDATA[Hasta que fecha se mostraran las comandas]]></description>
+	</parameter>
+	<query language="SQL"><![CDATA[SELECT restaurante.mesas.`idMesa`,
+	restaurante.mesas.`numeroMesa`,
+	restaurante.comandas.estado,
+	restaurante.comandas.`fechaComanda`,
+	restaurante.comandas.folio,
+	restaurante.comandas.total,
+	restaurante.comandas.`idCliente`,
+	restaurante.comandas.`Idmesa`,
+	restaurante.comandas.`idComanda`,
+	restaurante.clientes.`idCliente`,
+	restaurante.clientes.`apellidoMaterno`,
+	restaurante.clientes.`apellidoPaterno`,
+	restaurante.clientes.`correoElectronico`,
+	restaurante.clientes.nombre,
+	restaurante.clientes.telefono,
+	restaurante.mesas.`numeroMesa`,
+	restaurante.mesas.`idMesa`
+FROM restaurante.comandas
+	INNER JOIN restaurante.mesas ON 
+	 restaurante.comandas.`Idmesa` = restaurante.mesas.`idMesa` 
+	LEFT JOIN restaurante.clientes ON 
+	 restaurante.comandas.`idCliente` = restaurante.clientes.`idCliente`
+	 WHERE ($P{Estado} IS NULL OR comandas.estado = $P{Estado})
+	AND (fechaComanda >= $P{FechaDesde} OR $P{FechaDesde} IS NULL)
+	AND (fechaComanda <= $P{FechaHasta} OR $P{FechaHasta} IS NULL)]]></query>
+	<field name="idMesa" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="idMesa"/>
+		<property name="com.jaspersoft.studio.field.label" value="idMesa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mesas"/>
+	</field>
+	<field name="numeroMesa" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="numeroMesa"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeroMesa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mesas"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="fechaComanda" class="java.time.LocalDateTime">
+		<property name="com.jaspersoft.studio.field.name" value="fechaComanda"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaComanda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="folio"/>
+		<property name="com.jaspersoft.studio.field.label" value="folio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="idCliente" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="idCliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="idCliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="Idmesa" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="Idmesa"/>
+		<property name="com.jaspersoft.studio.field.label" value="Idmesa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="idComanda" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="idComanda"/>
+		<property name="com.jaspersoft.studio.field.label" value="idComanda"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="comandas"/>
+	</field>
+	<field name="COLUMN_10" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="idCliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="idCliente"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="apellidoMaterno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidoMaterno"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidoMaterno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="apellidoPaterno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="apellidoPaterno"/>
+		<property name="com.jaspersoft.studio.field.label" value="apellidoPaterno"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="correoElectronico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="correoElectronico"/>
+		<property name="com.jaspersoft.studio.field.label" value="correoElectronico"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="COLUMN_16" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="numeroMesa"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeroMesa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mesas"/>
+	</field>
+	<field name="COLUMN_17" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="idMesa"/>
+		<property name="com.jaspersoft.studio.field.label" value="idMesa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mesas"/>
+	</field>
+	<background splitType="Stretch"/>
+	<title height="80" splitType="Stretch">
+		<element kind="rectangle" uuid="ac6f1a17-035d-4d21-a66c-5f42f2e2ce5c" x="90" y="0" width="485" height="80" forecolor="#45474B" backcolor="#45474B"/>
+		<element kind="staticText" uuid="c3dd3c7d-5bb1-4ae6-b3f3-c6e0da0d02bd" x="247" y="0" width="170" height="40" forecolor="#FFFFFF" fontSize="30.0">
+			<text><![CDATA[Restaurante]]></text>
+		</element>
+		<element kind="staticText" uuid="a0f7227c-9866-418e-8489-5718f712611e" x="197" y="35" width="270" height="40" forecolor="#FFFFFF" fontSize="30.0">
+			<text><![CDATA[Reporte Comandas]]></text>
+		</element>
+	</title>
+	<pageHeader height="81" splitType="Stretch">
+		<element kind="staticText" uuid="fb948e5e-7816-4ec8-8b7d-fd5d8d73e0d9" x="90" y="30" width="100" height="20">
+			<text><![CDATA[Fecha Desde:]]></text>
+		</element>
+		<element kind="staticText" uuid="6caaf62f-ede0-4c77-a175-f9709ec9fcf2" x="90" y="50" width="100" height="20">
+			<text><![CDATA[Fecha Hasta:]]></text>
+		</element>
+		<element kind="staticText" uuid="165f78dc-9856-433f-9bd8-ff3a9fd213b3" x="90" y="10" width="70" height="20">
+			<text><![CDATA[Estado:]]></text>
+		</element>
+		<element kind="textField" uuid="599eac0e-eaee-4340-9120-895cb1e94eb0" x="160" y="10" width="100" height="20">
+			<expression><![CDATA[$P{Estado}]]></expression>
+		</element>
+		<element kind="textField" uuid="6ab2bebd-b793-498d-a25f-ede5007e030f" x="160" y="30" width="100" height="20">
+			<expression><![CDATA[$P{FechaDesde}]]></expression>
+		</element>
+		<element kind="textField" uuid="7b0822d6-a29d-4270-8585-9c14b5c34ee4" x="160" y="50" width="100" height="20">
+			<expression><![CDATA[$P{FechaHasta}]]></expression>
+		</element>
+	</pageHeader>
+	<columnHeader height="61" splitType="Stretch">
+		<element kind="staticText" uuid="db9b7d0f-b1aa-4b1c-964c-6daa36eac500" x="0" y="40" width="100" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[FechaComanda]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4ddbed09-9519-4b7d-bbbc-5bc62dbde693"/>
+		</element>
+		<element kind="staticText" uuid="6daa30a7-ede0-4e9e-9680-06b7739c62c6" x="110" y="40" width="70" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[NumeroMesa]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58511050-a975-4d89-bef9-a31c1ed5fb50"/>
+		</element>
+		<element kind="staticText" uuid="6cce8900-38dd-483b-9f85-3e7bb31aa707" x="210" y="40" width="70" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[Nombre]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f193305-8f9b-424a-b863-c7788b22eaa9"/>
+		</element>
+		<element kind="staticText" uuid="f9649b5f-b230-4bab-b101-e566c99d48e6" x="280" y="40" width="70" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[Apellido]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f193305-8f9b-424a-b863-c7788b22eaa9"/>
+		</element>
+		<element kind="staticText" uuid="79b4dc81-8db5-4380-9657-13a1adfd9a5a" x="350" y="40" width="70" height="20" fontSize="11.0" bold="true">
+			<text><![CDATA[Estado]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f193305-8f9b-424a-b863-c7788b22eaa9"/>
+		</element>
+		<element kind="staticText" uuid="486d862a-db12-428c-9e45-94ad38ae75a8" x="440" y="40" width="70" height="20" fontSize="11.0" bold="true" hTextAlign="Right">
+			<text><![CDATA[Total]]></text>
+			<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f193305-8f9b-424a-b863-c7788b22eaa9"/>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<element kind="textField" uuid="813beb2d-5b93-4a5e-84ce-a2e66500a3cc" x="0" y="0" width="100" height="20">
+				<expression><![CDATA[$F{fechaComanda}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4ddbed09-9519-4b7d-bbbc-5bc62dbde693"/>
+			</element>
+			<element kind="textField" uuid="4808014f-c6fe-4707-8bb8-0f10fe68a869" x="100" y="1" width="100" height="19" hTextAlign="Center">
+				<expression><![CDATA[$F{numeroMesa}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58511050-a975-4d89-bef9-a31c1ed5fb50"/>
+			</element>
+			<element kind="textField" uuid="a95cfc33-38b5-4b3e-8926-5d0a33fa2644" x="210" y="1" width="70" height="19">
+				<expression><![CDATA[$F{nombre}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6f193305-8f9b-424a-b863-c7788b22eaa9"/>
+			</element>
+			<element kind="textField" uuid="978bc687-ee70-460e-9133-f533b73f1ec4" x="282" y="0" width="68" height="20">
+				<expression><![CDATA[$F{apellidoPaterno}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3245f1ec-e605-4ae3-89e0-239473dfd2be"/>
+			</element>
+			<element kind="textField" uuid="ac6bd5c8-e15d-4d1c-bb2e-f598fd3ab4a9" x="350" y="1" width="70" height="19">
+				<expression><![CDATA[$F{estado}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="68801eab-d49f-43d9-8cdf-9133ab75d844"/>
+			</element>
+			<element kind="textField" uuid="2318fd4d-1bf6-4f12-8080-640a8bcb8706" x="425" y="0" width="80" height="20" hTextAlign="Right">
+				<expression><![CDATA[$F{total}]]></expression>
+				<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="648809da-6c22-4e03-83b5-bf8c2d7638ca"/>
+			</element>
+		</band>
+	</detail>
+	<columnFooter height="55" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>
